@@ -1,0 +1,71 @@
+
+syntax = "proto3";
+
+option csharp_namespace = "HcManService";
+
+service HcMan {
+    rpc AddUsingAzureAccount (AddConnectionRequest) returns (CommandResponse);
+    rpc AddUsingConnectionString (AddConnectionRequest) returns (CommandResponse);
+    rpc AddUsingHybridConnectionInfo (AddConnectionRequest) returns (CommandResponse);
+    rpc ListConnection (ListConnectionsRequest) returns (CommandResponse);
+    rpc RemoveConnection (RemoveConnectionRequest) returns (CommandResponse);
+    rpc ShowConnection (ShowConnectionRequest) returns (HybridConnectionInformationResponse);
+}
+
+message AddConnectionRequest {
+    bool Debug = 1;
+    bool OnlyShowErrors = 2;
+    bool Verbose = 3;
+    string Query = 4;
+    string Output = 5;
+    string Namespace = 6;
+    string Name = 7;
+    string SubscriptionId = 8;
+    string ResourceGroup = 9;
+    string KeyName = 10;
+    string KeyValue = 11;
+    string ConnectionString = 12;
+}
+
+message ListConnectionsRequest {
+    bool Debug = 1;
+    bool OnlyShowErrors = 2;
+    bool Verbose = 3;
+    string Query = 4;
+    string Output = 5;
+}
+
+message RemoveConnectionRequest {
+    bool Debug = 1;
+    bool OnlyShowErrors = 2;
+    bool Verbose = 3;
+    string Query = 4;
+    string Output = 5;
+    string Namespace = 6;
+    string Name = 7;
+}
+
+message ShowConnectionRequest {
+    bool Debug = 1;
+    bool OnlyShowErrors = 2;
+    bool Verbose = 3;
+    string Query = 4;
+    string Output = 5;
+    string Namespace = 6;
+    string Name = 7;
+}
+
+message HybridConnectionInformationResponse {
+    string Namespace = 1;
+    string Name = 2;
+    string Uri = 3;
+    string EndpointHost = 6;
+    string EndpointPort = 7;
+    string Status = 8;
+    string NumberOfListeners = 9;
+    string ServiceBusEndpoint = 10;
+}
+
+message CommandResponse {
+    string Content = 1;
+}
