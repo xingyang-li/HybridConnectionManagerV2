@@ -1,6 +1,6 @@
 ﻿using Grpc.Core;
 using Grpc.Net.Client;
-using HcManClient;
+using HcManProto;
 
 namespace HybridConnectionManager.Client
 {
@@ -11,12 +11,11 @@ namespace HybridConnectionManager.Client
         {
             var channel = GrpcChannel.ForAddress("https://localhost:5001");
             _client = new HcMan.HcManClient(channel);
-            Console.WriteLine("Client created");
         }
 
         public async Task<string> AddUsingConnectionString(string connectionString)
         {
-            var response = new CommandResponse { Content = String.Empty };
+            var response = new StringResponse { Content = String.Empty };
             try
             {
                 var request = new AddConnectionRequest { ConnectionString = connectionString };
@@ -65,6 +64,13 @@ namespace HybridConnectionManager.Client
         {
             var request = new RemoveConnectionRequest { Namespace = @namespace, Name = name };
             var response = await _client.RemoveConnectionAsync(request);
+            return response.Content;
+        }
+
+        public async Task<string> AuthenticateUser()
+        {
+            var request = new AuthRequest();
+            var response = await _client.AuthenticateUserAsync(request);
             return response.Content;
         }
     }
