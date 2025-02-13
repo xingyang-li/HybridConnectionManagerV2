@@ -33,6 +33,8 @@ namespace HybridConnectionManager.Service
 
             IsOpen = false;
             _isShuttingDown = false;
+
+            Task.Run(() => RefreshConnectionInformation()).GetAwaiter().GetResult();
         }
 
         public HybridConnection(HybridConnectionInformation information)
@@ -53,8 +55,9 @@ namespace HybridConnectionManager.Service
             CommonSetup();
         }
 
-        public async Task Open(int timeoutSeconds = OPEN_TIMEOUT_SECONDS)
+        public async Task RefreshConnectionInformation()
         {
+            Console.WriteLine("Refresh Connection Information");
             var runtimeInfo = await _listener.GetRuntimeInformationAsync();
 
             if (runtimeInfo != null)
@@ -68,6 +71,10 @@ namespace HybridConnectionManager.Service
 
                 _hcInfo.EndpointHost = endpoint.Item1;
                 _hcInfo.EndpointPort = endpoint.Item2;
+                _hcInfo.CreatedOn = runtimeInfo.CreatedAt.ToString();
+                _hcInfo.LastUpdated = runtimeInfo.UpdatedAt.ToString();
+                _hcInfo.NumberOfListeners = runtimeInfo.ListenerCount;
+                _hcInfo.Status = IsOnline ? "Connected": "Disconnected";
 
                 _endpointHost = endpoint.Item1;
                 _endpointPort = endpoint.Item2;
@@ -76,7 +83,10 @@ namespace HybridConnectionManager.Service
             {
                 throw new InvalidOperationException("Unable to start relay without endpoint information.");
             }
+        }
 
+        public async Task Open(int timeoutSeconds = OPEN_TIMEOUT_SECONDS)
+        {
             await _listener.OpenAsync(TimeSpan.FromSeconds(timeoutSeconds));
             IsOpen = true;
             Console.WriteLine("Open");
@@ -167,6 +177,7 @@ namespace HybridConnectionManager.Service
         {
             Online?.Invoke(sender, e);
             // TODO log
+            RefreshConnectionInformation();
             Console.WriteLine("Listener is online");
         }
         private void ListenerOffline(object sender, EventArgs e)

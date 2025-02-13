@@ -36,35 +36,54 @@ namespace HybridConnectionManager.Service
             await Task.WhenAll(tasks);
         }
 
-        public async Task AddConnectionWithConnectionStringAsync(string connectionString)
+        public async Task<HybridConnectionInformation> AddWithConnectionString(string connectionString)
         {
-            var hybridConnection = new HybridConnection(connectionString);
-            var hcInfo = Util.GetInformationFromConnectionString(connectionString);
-            await hybridConnection.Open();
+            HybridConnectionInformation hcInfo = null;
 
-            _hybridConnections.Add(hcInfo.Namespace, hcInfo.Name, hybridConnection);
-        }
-
-        public HybridConnection FindConnection(string @namespace, string name){
-            if (_hybridConnections.ContainsKeys(@namespace, name))
+            try
             {
-                return _hybridConnections[@namespace, name];
+                var hybridConnection = new HybridConnection(connectionString);
+                await hybridConnection.Open();
+                hcInfo = hybridConnection.Information;
+                _hybridConnections.Add(hcInfo.Namespace, hcInfo.Name, hybridConnection);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
-            return null;
+            return hcInfo;
         }
 
-        public async Task RemoveConnection(string @namespace, string name)
+        public bool FindConnectionInformation(string @namespace, string name, out HybridConnectionInformation connectionInformation)
+        {
+            connectionInformation = null;
+            if (_hybridConnections.ContainsKeys(@namespace, name))
+            {
+                connectionInformation = _hybridConnections[@namespace, name].Information;
+                return true;
+            }
+            
+            return false;
+        }
+
+        public bool FindConnectionInformation(string connectionString, out HybridConnectionInformation connectionInformation)
+        {
+            HybridConnectionInformation hcInfo = Util.GetInformationFromConnectionString(connectionString);
+            return FindConnectionInformation(hcInfo.Namespace, hcInfo.Name, out connectionInformation);
+        }
+
+        public async Task<bool> RemoveConnection(string @namespace, string name)
         {
             if (!_hybridConnections.ContainsKeys(@namespace, name))
             {
-                return;
+                return false;
             }
 
             var connectionToRemove = _hybridConnections[@namespace, name];
             await connectionToRemove.Close();
 
-            _hybridConnections.Remove(@namespace, @name);
+            return _hybridConnections.Remove(@namespace, @name);
         }
 
 

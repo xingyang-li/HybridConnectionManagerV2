@@ -13,24 +13,13 @@ namespace HybridConnectionManager.Client
             _client = new HcMan.HcManClient(channel);
         }
 
-        public async Task<string> AddUsingConnectionString(string connectionString)
+        public async Task<HybridConnectionInformationResponse> AddUsingConnectionString(string connectionString)
         {
-            var response = new StringResponse { Content = String.Empty };
-            try
-            {
-                var request = new AddConnectionRequest { ConnectionString = connectionString };
-                response = await _client.AddUsingConnectionStringAsync(request);
-
-            }
-            catch (RpcException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return response.Content;
+            var request = new AddConnectionRequest { ConnectionString = connectionString };
+            return await _client.AddUsingConnectionStringAsync(request);
         }
 
-        public async Task<string> AddUsingHybridConnectionInfo(string @namespace, string name, string resourceGroup, string subscriptionId, string keyName, string keyValue)
+        public async Task<HybridConnectionInformationResponse> AddUsingHybridConnectionInfo(string @namespace, string name, string resourceGroup, string subscriptionId, string keyName, string keyValue)
         {
             var request = new AddConnectionRequest
             {
@@ -42,8 +31,7 @@ namespace HybridConnectionManager.Client
                 KeyValue = keyValue
             };
 
-            var response = await _client.AddUsingHybridConnectionInfoAsync(request);
-            return response.Content;
+            return await _client.AddUsingHybridConnectionInfoAsync(request);
         }
 
         public async Task<HybridConnectionInformationResponse> ShowConnection(string @namespace, string name)

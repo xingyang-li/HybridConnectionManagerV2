@@ -52,6 +52,26 @@ namespace HybridConnectionManager.Models
             get; set;
         }
 
+        public string Status
+        {
+            get; set;
+        }
+
+        public string CreatedOn
+        {
+            get; set;
+        }
+
+        public string LastUpdated
+        {
+            get; set;
+        }
+
+        public int NumberOfListeners
+        {
+            get; set;
+        }
+
         private static string GetNIndents(int n)
         {
             if (n < 0) throw new ArgumentOutOfRangeException("n", n, "n must be positive.");

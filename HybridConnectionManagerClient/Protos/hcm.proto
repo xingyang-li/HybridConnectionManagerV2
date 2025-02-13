@@ -4,9 +4,9 @@ syntax = "proto3";
 option csharp_namespace = "HcManProto";
 
 service HcMan {
-    rpc AddUsingAzureAccount (AddConnectionRequest) returns (StringResponse);
-    rpc AddUsingConnectionString (AddConnectionRequest) returns (StringResponse);
-    rpc AddUsingHybridConnectionInfo (AddConnectionRequest) returns (StringResponse);
+    rpc AddUsingAzureAccount (AddConnectionRequest) returns (HybridConnectionInformationResponse);
+    rpc AddUsingConnectionString (AddConnectionRequest) returns (HybridConnectionInformationResponse);
+    rpc AddUsingHybridConnectionInfo (AddConnectionRequest) returns (HybridConnectionInformationResponse);
     rpc ListConnection (ListConnectionsRequest) returns (StringResponse);
     rpc RemoveConnection (RemoveConnectionRequest) returns (StringResponse);
     rpc ShowConnection (ShowConnectionRequest) returns (HybridConnectionInformationResponse);
@@ -57,14 +57,14 @@ message ShowConnectionRequest {
 }
 
 message HybridConnectionInformationResponse {
-    string Namespace = 1;
-    string Name = 2;
-    string Uri = 3;
-    string EndpointHost = 6;
-    string EndpointPort = 7;
-    string Status = 8;
-    string NumberOfListeners = 9;
-    string ServiceBusEndpoint = 10;
+    bool Error = 1;
+    string ErrorMessage = 2;
+    string Namespace = 3;
+    string Name = 4;
+    string Endpoint = 5;
+    string Status = 6;
+    int32 NumberOfListeners = 7;
+    string ServiceBusEndpoint = 8;
 }
 
 message AuthRequest {

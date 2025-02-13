@@ -136,8 +136,6 @@ namespace HybridConnectionManager.Service
             string name = namePair[(namePair.IndexOf('=') + 1)..];
             endpoint += name;
 
-            Console.WriteLine(endpoint);
-
             return new HybridConnectionInformation()
             {
                 Namespace = nameSpace,
