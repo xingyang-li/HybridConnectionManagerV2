@@ -12,8 +12,13 @@
     <PackageReference Include="Azure.ResourceManager" Version="1.13.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.67.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Azure.Relay" Version="3.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HybridConnectionManagerClient\HybridConnectionManagerClient.csproj" />
   </ItemGroup>
 
   <ItemGroup>

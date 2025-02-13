@@ -9,7 +9,7 @@ using Azure.ResourceManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace HybridConnectionManagerService
+namespace HybridConnectionManager.Service
 {
     /// <summary>
     /// Message envelope that contains the common Azure resource manager properties and the resource provider specific content.

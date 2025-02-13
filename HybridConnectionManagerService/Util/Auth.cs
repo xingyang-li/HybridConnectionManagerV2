@@ -1,7 +1,7 @@
 ﻿using Azure.Core;
 using Azure.Identity;
 
-namespace HybridConnectionManagerService
+namespace HybridConnectionManager.Service
 {
     public class Auth
     {

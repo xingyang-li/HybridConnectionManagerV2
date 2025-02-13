@@ -5,7 +5,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HybridConnectionManagerService
+namespace HybridConnectionManager.Service
 {
     class Program
     {

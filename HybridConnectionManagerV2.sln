@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HybridConnectionManagerClient", "HybridConnectionManagerClient\HybridConnectionManagerClient.csproj", "{FBB1A0A6-1913-4789-971E-8CAF28DCEAA3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HybridConnectionManagerService", "HybridConnectionManagerService\HybridConnectionManagerService.csproj", "{072A965E-9CC9-4EA3-93CA-C0DC4FBC94F1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FBB1A0A6-1913-4789-971E-8CAF28DCEAA3} = {FBB1A0A6-1913-4789-971E-8CAF28DCEAA3}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
