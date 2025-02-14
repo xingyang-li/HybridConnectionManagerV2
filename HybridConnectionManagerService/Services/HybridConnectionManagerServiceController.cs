@@ -31,7 +31,7 @@ namespace HybridConnectionManager.Service
             }
         }
 
-        public override async Task<HybridConnectionInformationResponse> AddUsingConnectionString(AddConnectionRequest request, ServerCallContext context)
+        public override async Task<HybridConnectionInformationResponse> AddUsingConnectionString(HybridConnectionRequest request, ServerCallContext context)
         {
             if (HybridConnectionManager.FindConnectionInformation(request.ConnectionString, out HybridConnectionInformation _))
             {
@@ -66,7 +66,7 @@ namespace HybridConnectionManager.Service
             }
         }
 
-        public override async Task<StringResponse> RemoveConnection(RemoveConnectionRequest request, ServerCallContext context)
+        public override async Task<StringResponse> RemoveConnection(HybridConnectionRequest request, ServerCallContext context)
         {
             StringResponse response = new StringResponse();
 
@@ -84,7 +84,7 @@ namespace HybridConnectionManager.Service
             return response;
         }
 
-        public override async Task<HybridConnectionInformationResponse> ShowConnection(ShowConnectionRequest request, ServerCallContext context)
+        public override async Task<HybridConnectionInformationResponse> ShowConnection(HybridConnectionRequest request, ServerCallContext context)
         {
             if (HybridConnectionManager.FindConnectionInformation(request.Namespace, request.Name, out HybridConnectionInformation connectionInformation))
             {
@@ -104,6 +104,12 @@ namespace HybridConnectionManager.Service
                 Error = true,
                 ErrorMessage = "Cound not find hybrid connection"
             };
+        }
+
+        public override async Task<StringResponse> TestEndpointForConnection(EndpointRequest request, ServerCallContext context)
+        {
+            string responseStr = await Util.ConnectToEndpoint(request.Endpoint);
+            return new StringResponse { Content = responseStr };
         }
 
         public override async Task<StringResponse> AuthenticateUser(AuthRequest request, ServerCallContext context)

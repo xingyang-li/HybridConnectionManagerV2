@@ -4,10 +4,13 @@ using Azure.Identity;
 using Azure.ResourceManager;
 using Newtonsoft.Json;
 using System.CommandLine;
+using System.Text.RegularExpressions;
 
 public class Program
 {
     public static JsonSerializerSettings HybridConnectionJsonSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, ContractResolver = new IgnorePropertiesResolver(new[] { "Error", "ErrorMessage" }) };
+    public static string EndpointRegexString = "^([a-zA-Z0-9.-]+):(\\d{1,5})$";
+
     public static async Task<int> Main(string[] args)
     {
         // Options
@@ -24,6 +27,11 @@ public class Program
 
         // Arguments
         var connectionStringArg = new Argument<string>("connection-string", "Hybrid Connection Connection String")
+        {
+            Arity = ArgumentArity.ExactlyOne,
+        };
+
+        var endpointStringArg = new Argument<string>("endpoint", "host:port")
         {
             Arity = ArgumentArity.ExactlyOne,
         };
@@ -52,13 +60,20 @@ public class Program
         };
         show.SetHandler((string @namespace, string name) => ShowHandler(@namespace, name), requiredNamespaceOption, requiredNameOption);
 
+        var test = new Command("test", "Test the endpoint for a given Hybrid Connection")
+        {
+            endpointStringArg
+        };
+        test.SetHandler((string endpoint) => TestHandler(endpoint), endpointStringArg);
+
         // Root
         var rootCommand = new RootCommand("Hybrid Connection Manager V2 CLI")
         {
             login,
             add,
             remove,
-            show
+            show,
+            test
         };
 
         return await rootCommand.InvokeAsync(args);
@@ -108,5 +123,18 @@ public class Program
             var responseString = JsonConvert.SerializeObject(response, Formatting.Indented, HybridConnectionJsonSettings);
             Console.WriteLine(responseString);
         }
+    }
+
+    public static async Task TestHandler(string endpoint)
+    {
+        if (!Regex.IsMatch(endpoint, EndpointRegexString))
+        {
+            Console.WriteLine("Invalid endpoint format. Expected format: <host>:<port>");
+            return;
+        }
+
+        HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+        var response = await client.TestEndpointForConnection(endpoint);
+        Console.WriteLine(response);
     }
 }

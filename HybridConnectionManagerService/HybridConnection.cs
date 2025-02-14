@@ -159,7 +159,30 @@ namespace HybridConnectionManager.Service
             Console.WriteLine("ConnectToEndpointAndRelay");
             using (TcpClient client = new TcpClient())
             {
-                await client.ConnectAsync(_endpointHost, _endpointPort);
+                try
+                {
+                    await client.ConnectAsync(_endpointHost, _endpointPort);
+                }
+                catch (Exception ex)
+                {
+                    // TODO log
+                    Console.WriteLine("Failed to connect to endpoint");
+
+                    try
+                    {
+                        using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
+                        {
+                            Console.WriteLine("closing remote stream");
+                            await hcStream.CloseAsync(cts.Token);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.ToString());
+                    }
+
+                    return;
+                }
 
                 Task sendTask = Util.PipeStream(hcStream, client.GetStream());
                 Task receiveTask = Util.PipeStream(client.GetStream(), hcStream);

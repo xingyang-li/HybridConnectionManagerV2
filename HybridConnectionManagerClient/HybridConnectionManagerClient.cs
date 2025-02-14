@@ -15,13 +15,13 @@ namespace HybridConnectionManager.Client
 
         public async Task<HybridConnectionInformationResponse> AddUsingConnectionString(string connectionString)
         {
-            var request = new AddConnectionRequest { ConnectionString = connectionString };
+            var request = new HybridConnectionRequest { ConnectionString = connectionString };
             return await _client.AddUsingConnectionStringAsync(request);
         }
 
         public async Task<HybridConnectionInformationResponse> AddUsingHybridConnectionInfo(string @namespace, string name, string resourceGroup, string subscriptionId, string keyName, string keyValue)
         {
-            var request = new AddConnectionRequest
+            var request = new HybridConnectionRequest
             {
                 Namespace = @namespace,
                 Name = name,
@@ -36,22 +36,28 @@ namespace HybridConnectionManager.Client
 
         public async Task<HybridConnectionInformationResponse> ShowConnection(string @namespace, string name)
         {
-            var request = new ShowConnectionRequest { Namespace = @namespace, Name = name };
+            var request = new HybridConnectionRequest { Namespace = @namespace, Name = name };
             var response = await _client.ShowConnectionAsync(request);
             return response;
         }
 
         public async Task<string> ListConnections(string @namespace, string name)
         {
-            var request = new RemoveConnectionRequest { Namespace = @namespace, Name = name };
+            var request = new HybridConnectionRequest { Namespace = @namespace, Name = name };
             var response = await _client.RemoveConnectionAsync(request);
             return response.Content;
         }
 
         public async Task<string> RemoveConnection(string @namespace, string name)
         {
-            var request = new RemoveConnectionRequest { Namespace = @namespace, Name = name };
+            var request = new HybridConnectionRequest { Namespace = @namespace, Name = name };
             var response = await _client.RemoveConnectionAsync(request);
+            return response.Content;
+        }
+        public async Task<string> TestEndpointForConnection(string endpoint)
+        {
+            var request = new EndpointRequest { Endpoint = endpoint };
+            var response = await _client.TestEndpointForConnectionAsync(request);
             return response.Content;
         }
 

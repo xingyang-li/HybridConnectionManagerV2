@@ -4,16 +4,17 @@ syntax = "proto3";
 option csharp_namespace = "HcManProto";
 
 service HcMan {
-    rpc AddUsingAzureAccount (AddConnectionRequest) returns (HybridConnectionInformationResponse);
-    rpc AddUsingConnectionString (AddConnectionRequest) returns (HybridConnectionInformationResponse);
-    rpc AddUsingHybridConnectionInfo (AddConnectionRequest) returns (HybridConnectionInformationResponse);
+    rpc AddUsingAzureAccount (HybridConnectionRequest) returns (HybridConnectionInformationResponse);
+    rpc AddUsingConnectionString (HybridConnectionRequest) returns (HybridConnectionInformationResponse);
+    rpc AddUsingHybridConnectionInfo (HybridConnectionRequest) returns (HybridConnectionInformationResponse);
     rpc ListConnection (ListConnectionsRequest) returns (StringResponse);
-    rpc RemoveConnection (RemoveConnectionRequest) returns (StringResponse);
-    rpc ShowConnection (ShowConnectionRequest) returns (HybridConnectionInformationResponse);
+    rpc RemoveConnection (HybridConnectionRequest) returns (StringResponse);
+    rpc ShowConnection (HybridConnectionRequest) returns (HybridConnectionInformationResponse);
     rpc AuthenticateUser (AuthRequest) returns (StringResponse);
+    rpc TestEndpointForConnection (EndpointRequest) returns (StringResponse);
 }
 
-message AddConnectionRequest {
+message HybridConnectionRequest {
     bool Debug = 1;
     bool OnlyShowErrors = 2;
     bool Verbose = 3;
@@ -36,26 +37,6 @@ message ListConnectionsRequest {
     string Output = 5;
 }
 
-message RemoveConnectionRequest {
-    bool Debug = 1;
-    bool OnlyShowErrors = 2;
-    bool Verbose = 3;
-    string Query = 4;
-    string Output = 5;
-    string Namespace = 6;
-    string Name = 7;
-}
-
-message ShowConnectionRequest {
-    bool Debug = 1;
-    bool OnlyShowErrors = 2;
-    bool Verbose = 3;
-    string Query = 4;
-    string Output = 5;
-    string Namespace = 6;
-    string Name = 7;
-}
-
 message HybridConnectionInformationResponse {
     bool Error = 1;
     string ErrorMessage = 2;
@@ -65,6 +46,10 @@ message HybridConnectionInformationResponse {
     string Status = 6;
     int32 NumberOfListeners = 7;
     string ServiceBusEndpoint = 8;
+}
+
+message EndpointRequest{
+    string Endpoint = 1;
 }
 
 message AuthRequest {

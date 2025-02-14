@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
@@ -13,6 +14,8 @@ namespace HybridConnectionManager.Service
 {
     public static class Util
     {
+        public static string EndpointRegexString = "^([a-zA-Z0-9.-]+):(\\d{1,5})$";
+
         private const int BUFFER_LEN = 16384;
 
         /// <summary>
@@ -144,6 +147,25 @@ namespace HybridConnectionManager.Service
                 KeyValue = keyValue,
                 Uri = endpoint,
             };
+        }
+
+        public static async Task<string> ConnectToEndpoint(string endpoint)
+        {
+            string host = endpoint.Split(':')[0];
+            int port = int.Parse(endpoint.Split(':')[1]);
+
+            try
+            {
+                using (TcpClient client = new TcpClient())
+                {
+                    await client.ConnectAsync(host, port);
+                    return String.Format("Connection to {0}:{1} successful", host, port);
+                }
+            }
+            catch (Exception ex)
+            {
+                return String.Format("Connection to {0}:{1} failed with: {2}", host, port, ex.Message);
+            }
         }
     }
 }
