@@ -114,6 +114,7 @@ namespace HybridConnectionManager.Service
 
         public void Dispose()
         {
+            Console.WriteLine("Disposing");
             Close().Wait();
         }
 
@@ -135,6 +136,7 @@ namespace HybridConnectionManager.Service
             Console.WriteLine("AcceptAndRelay");
             while (!_isShuttingDown)
             {
+                Console.WriteLine("AcceptAndRelay while loop");
                 try
                 {
                     var hcStream = await _listener.AcceptConnectionAsync();
@@ -155,15 +157,26 @@ namespace HybridConnectionManager.Service
         private async void ConnectToEndpointAndRelay(HybridConnectionStream hcStream)
         {
             Console.WriteLine("ConnectToEndpointAndRelay");
-            using (hcStream)
+            using (TcpClient client = new TcpClient())
             {
-                using TcpClient client = new();
                 await client.ConnectAsync(_endpointHost, _endpointPort);
 
                 Task sendTask = Util.PipeStream(hcStream, client.GetStream());
                 Task receiveTask = Util.PipeStream(client.GetStream(), hcStream);
 
                 await Task.WhenAll(sendTask, receiveTask);
+            }
+
+            try
+            {
+                using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
+                {
+                    await hcStream.CloseAsync(cts.Token);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
         }
 
