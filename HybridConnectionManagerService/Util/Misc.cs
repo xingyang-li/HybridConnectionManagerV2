@@ -1,4 +1,5 @@
 ﻿using HybridConnectionManager.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +16,13 @@ namespace HybridConnectionManager.Service
     public static class Util
     {
         public static string EndpointRegexString = "^([a-zA-Z0-9.-]+):(\\d{1,5})$";
+
+        public static string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create),
+            "HybridConnectionManagerV2");
+
+        public static string AppDataFilePath = Path.Combine(AppDataPath, "connections.json");
+
+        private static object _fileLock = new object();
 
         private const int BUFFER_LEN = 16384;
 
@@ -166,6 +174,72 @@ namespace HybridConnectionManager.Service
             {
                 return String.Format("Connection to {0}:{1} failed with: {2}", host, port, ex.Message);
             }
+        }
+
+        public static List<HybridConnectionInformation> LoadConnectionsFromFilesystem()
+        {
+            List<HybridConnectionInformation> connections = new List<HybridConnectionInformation>();
+            try
+            {
+                string jsonText = string.Empty;
+                lock (_fileLock)
+                {
+                    jsonText = File.ReadAllText(AppDataFilePath);
+                }
+
+                if (!String.IsNullOrEmpty(jsonText))
+                {
+                    connections = JsonConvert.DeserializeObject<List<HybridConnectionInformation>>(jsonText);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not deserialize connections from file: " + e.Message);
+            }
+
+            return connections ?? new List<HybridConnectionInformation>();
+        }
+
+        public static void CreateAppDataFile()
+        {
+            try
+            {
+                lock (_fileLock)
+                {
+                    Directory.CreateDirectory(AppDataPath);
+                    File.WriteAllText(AppDataFilePath, "[]");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Could not create connections file: " + ex.Message);
+            }
+        }
+
+        public static void UpdateAppDataFile(List<HybridConnectionInformation> connectionInfos)
+        {
+            try
+            {
+                string jsonText = string.Empty;
+                if (connectionInfos == null || connectionInfos.Count == 0)
+                {
+                    jsonText = "[]";
+                }
+                else
+                {
+                    jsonText = JsonConvert.SerializeObject(connectionInfos, Formatting.Indented);
+                }
+
+                lock (_fileLock)
+                {
+                    File.WriteAllText(Util.AppDataFilePath, jsonText);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Could not update connections file: " + ex.Message);
+            }
+
         }
     }
 }

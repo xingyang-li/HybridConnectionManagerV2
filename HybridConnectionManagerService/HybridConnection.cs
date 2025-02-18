@@ -49,7 +49,6 @@ namespace HybridConnectionManager.Service
 
         public HybridConnection(string connectionString)
         {
-            // TODO: build a hcInfo
             _listener = new HybridConnectionListener(connectionString);
             _hcInfo = Util.GetInformationFromConnectionString(connectionString);
             CommonSetup();
@@ -57,7 +56,6 @@ namespace HybridConnectionManager.Service
 
         public async Task RefreshConnectionInformation()
         {
-            Console.WriteLine("Refresh Connection Information");
             var runtimeInfo = await _listener.GetRuntimeInformationAsync();
 
             if (runtimeInfo != null)
@@ -89,7 +87,6 @@ namespace HybridConnectionManager.Service
         {
             await _listener.OpenAsync(TimeSpan.FromSeconds(timeoutSeconds));
             IsOpen = true;
-            Console.WriteLine("Open");
             AcceptAndRelay();
         }
 
@@ -104,7 +101,7 @@ namespace HybridConnectionManager.Service
             {
                 IsOpen = false;
                 await _listener.CloseAsync(TimeSpan.FromSeconds(timeoutSeconds));
-                Console.WriteLine(String.Format("Closing connection with namespace: {0} name: {1}", _hcInfo.Namespace, _hcInfo.Name));
+                Console.WriteLine(String.Format("Closed connection with namespace: {0} name: {1}", _hcInfo.Namespace, _hcInfo.Name));
             }
             catch (Exception e)
             {
@@ -114,7 +111,6 @@ namespace HybridConnectionManager.Service
 
         public void Dispose()
         {
-            Console.WriteLine("Disposing");
             Close().Wait();
         }
 
@@ -133,10 +129,9 @@ namespace HybridConnectionManager.Service
 
         private async void AcceptAndRelay()
         {
-            Console.WriteLine("AcceptAndRelay");
             while (!_isShuttingDown)
             {
-                Console.WriteLine("AcceptAndRelay while loop");
+                Console.WriteLine("Listening to service bus..");
                 try
                 {
                     var hcStream = await _listener.AcceptConnectionAsync();
@@ -156,7 +151,7 @@ namespace HybridConnectionManager.Service
 
         private async void ConnectToEndpointAndRelay(HybridConnectionStream hcStream)
         {
-            Console.WriteLine("ConnectToEndpointAndRelay");
+            Console.WriteLine("Recieved and relaying buffer..");
             using (TcpClient client = new TcpClient())
             {
                 try
@@ -172,7 +167,6 @@ namespace HybridConnectionManager.Service
                     {
                         using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
                         {
-                            Console.WriteLine("closing remote stream");
                             await hcStream.CloseAsync(cts.Token);
                         }
                     }

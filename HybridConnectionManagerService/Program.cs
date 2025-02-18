@@ -11,6 +11,14 @@ namespace HybridConnectionManager.Service
     {
         public static void Main(string[] args)
         {
+            if (!File.Exists(Util.AppDataFilePath))
+            {
+                Util.CreateAppDataFile();
+            }
+
+            var connections = Util.LoadConnectionsFromFilesystem();
+
+            HybridConnectionManager.Instance.Initialize(connections);
 
             var builder = WebApplication.CreateBuilder(args);
 

@@ -24,7 +24,17 @@ namespace HybridConnectionManager.Service
             _hybridConnections = new TupleDictionary<string, string, HybridConnection>();
         }
 
-        public async Task Start()
+        public void Initialize(List<HybridConnectionInformation> connectionInfos)
+        {
+            foreach (var connectionInfo in connectionInfos)
+            {
+                _hybridConnections.Add(connectionInfo.Namespace, connectionInfo.Name, new HybridConnection(connectionInfo));
+            }
+
+            Task.Run(() => StartAll());
+        }
+
+        public async Task StartAll()
         {
             List<Task> tasks = new List<Task>();
 
@@ -46,6 +56,8 @@ namespace HybridConnectionManager.Service
                 await hybridConnection.Open();
                 hcInfo = hybridConnection.Information;
                 _hybridConnections.Add(hcInfo.Namespace, hcInfo.Name, hybridConnection);
+
+                UpdateConnectionsOnFileSystem();
             }
             catch (Exception ex)
             {
@@ -83,9 +95,24 @@ namespace HybridConnectionManager.Service
             var connectionToRemove = _hybridConnections[@namespace, name];
             await connectionToRemove.Close();
 
-            return _hybridConnections.Remove(@namespace, @name);
+            bool removed =  _hybridConnections.Remove(@namespace, @name);
+
+            UpdateConnectionsOnFileSystem();
+
+            return removed;
         }
 
+        public void UpdateConnectionsOnFileSystem()
+        {
+            List<HybridConnectionInformation> connectionInfos = new List<HybridConnectionInformation>();
+
+            foreach (var connection in _hybridConnections.Values)
+            {
+                connectionInfos.Add(connection.Information);
+            }
+
+            Util.UpdateAppDataFile(connectionInfos);
+        }
 
         public async Task AuthenticateToAzure()
         {

@@ -74,7 +74,7 @@ namespace HybridConnectionManager.Service
             
             if (success)
             {
-                response.Content = "Connection removed Successfully";
+                response.Content = "Connection removed successfully";
             }
             else
             {
