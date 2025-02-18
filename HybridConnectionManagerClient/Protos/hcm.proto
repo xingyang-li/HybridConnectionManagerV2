@@ -7,10 +7,10 @@ service HcMan {
     rpc AddUsingAzureAccount (HybridConnectionRequest) returns (HybridConnectionInformationResponse);
     rpc AddUsingConnectionString (HybridConnectionRequest) returns (HybridConnectionInformationResponse);
     rpc AddUsingHybridConnectionInfo (HybridConnectionRequest) returns (HybridConnectionInformationResponse);
-    rpc ListConnection (ListConnectionsRequest) returns (StringResponse);
+    rpc ListConnections (EmptyRequest) returns (HybridConnectionInformationListResponse);
     rpc RemoveConnection (HybridConnectionRequest) returns (StringResponse);
     rpc ShowConnection (HybridConnectionRequest) returns (HybridConnectionInformationResponse);
-    rpc AuthenticateUser (AuthRequest) returns (StringResponse);
+    rpc AuthenticateUser (EmptyRequest) returns (StringResponse);
     rpc TestEndpointForConnection (EndpointRequest) returns (StringResponse);
 }
 
@@ -48,11 +48,15 @@ message HybridConnectionInformationResponse {
     string ServiceBusEndpoint = 8;
 }
 
+message HybridConnectionInformationListResponse {
+    repeated HybridConnectionInformationResponse ConnectionInformations = 1;
+}
+
 message EndpointRequest{
     string Endpoint = 1;
 }
 
-message AuthRequest {
+message EmptyRequest {
 
 }
 

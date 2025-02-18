@@ -41,11 +41,11 @@ namespace HybridConnectionManager.Client
             return response;
         }
 
-        public async Task<string> ListConnections(string @namespace, string name)
+        public async Task<IEnumerable<HybridConnectionInformationResponse>> ListConnections()
         {
-            var request = new HybridConnectionRequest { Namespace = @namespace, Name = name };
-            var response = await _client.RemoveConnectionAsync(request);
-            return response.Content;
+            var request = new EmptyRequest();
+            var response = await _client.ListConnectionsAsync(request);
+            return response.ConnectionInformations;
         }
 
         public async Task<string> RemoveConnection(string @namespace, string name)
@@ -63,7 +63,7 @@ namespace HybridConnectionManager.Client
 
         public async Task<string> AuthenticateUser()
         {
-            var request = new AuthRequest();
+            var request = new EmptyRequest();
             var response = await _client.AuthenticateUserAsync(request);
             return response.Content;
         }

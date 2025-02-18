@@ -102,6 +102,16 @@ namespace HybridConnectionManager.Service
             return removed;
         }
 
+        public List<HybridConnectionInformation> GetAllConnectionInformations()
+        {
+            List<HybridConnectionInformation> connectionInfos = new List<HybridConnectionInformation>();
+            foreach (var connection in _hybridConnections.Values)
+            {
+                connectionInfos.Add(connection.Information);
+            }
+            return connectionInfos;
+        }
+
         public void UpdateConnectionsOnFileSystem()
         {
             List<HybridConnectionInformation> connectionInfos = new List<HybridConnectionInformation>();

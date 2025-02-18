@@ -60,6 +60,9 @@ public class Program
         };
         show.SetHandler((string @namespace, string name) => ShowHandler(@namespace, name), requiredNamespaceOption, requiredNameOption);
 
+        var list = new Command("list", "List all Hybrid Connections");
+        list.SetHandler(() => ListHandler());
+
         var test = new Command("test", "Test the endpoint for a given Hybrid Connection")
         {
             endpointStringArg
@@ -73,6 +76,7 @@ public class Program
             add,
             remove,
             show,
+            list,
             test
         };
 
@@ -123,6 +127,14 @@ public class Program
             var responseString = JsonConvert.SerializeObject(response, Formatting.Indented, HybridConnectionJsonSettings);
             Console.WriteLine(responseString);
         }
+    }
+
+    public static async Task ListHandler()
+    {
+        HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+        var response = await client.ListConnections();
+        var responseString = JsonConvert.SerializeObject(response, Formatting.Indented, HybridConnectionJsonSettings);
+        Console.WriteLine(responseString);
     }
 
     public static async Task TestHandler(string endpoint)

@@ -106,13 +106,34 @@ namespace HybridConnectionManager.Service
             };
         }
 
+        public override async Task<HybridConnectionInformationListResponse> ListConnections(EmptyRequest request, ServerCallContext context)
+        {
+            List<HybridConnectionInformationResponse> connectionInformationsResponse = new List<HybridConnectionInformationResponse>();
+            
+            var connectionInformations = HybridConnectionManager.GetAllConnectionInformations();
+            foreach (var connectionInformation in connectionInformations)
+            {
+                connectionInformationsResponse.Add(new HybridConnectionInformationResponse
+                {
+                    Namespace = connectionInformation.Namespace,
+                    Name = connectionInformation.Name,
+                    Endpoint = connectionInformation.EndpointHost + ":" + connectionInformation.EndpointPort,
+                    Status = connectionInformation.Status,
+                    NumberOfListeners = connectionInformation.NumberOfListeners,
+                    ServiceBusEndpoint = connectionInformation.Namespace + ".servicebus.windows.net",
+                });
+            }
+
+            return new HybridConnectionInformationListResponse { ConnectionInformations = { connectionInformationsResponse } };
+        }
+
         public override async Task<StringResponse> TestEndpointForConnection(EndpointRequest request, ServerCallContext context)
         {
             string responseStr = await Util.ConnectToEndpoint(request.Endpoint);
             return new StringResponse { Content = responseStr };
         }
 
-        public override async Task<StringResponse> AuthenticateUser(AuthRequest request, ServerCallContext context)
+        public override async Task<StringResponse> AuthenticateUser(EmptyRequest request, ServerCallContext context)
         {
             await HybridConnectionManager.AuthenticateToAzure();
             AccessToken accessToken = HybridConnectionManager.GetAuthToken();
