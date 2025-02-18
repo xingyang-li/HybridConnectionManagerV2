@@ -66,6 +66,50 @@ namespace HybridConnectionManager.Service
             }
         }
 
+        public override async Task<HybridConnectionInformationResponse> AddUsingParameters(HybridConnectionRequest request, ServerCallContext context)
+        {
+            if (HybridConnectionManager.FindConnectionInformation(request.Namespace, request.Name, out HybridConnectionInformation _))
+            {
+                return new HybridConnectionInformationResponse
+                {
+                    Error = true,
+                    ErrorMessage = "Connection already exists."
+                };
+            }
+
+            if (!HybridConnectionManager.IsValidToken())
+            {
+                return new HybridConnectionInformationResponse
+                {
+                    Error = true,
+                    ErrorMessage = "AccessToken is not set or expired. Please log in to Azure."
+                };
+            }
+
+            var connectionInformation = await HybridConnectionManager.AddWithParameters(request.SubscriptionId, request.ResourceGroup, request.Namespace, request.Name);
+
+            if (connectionInformation != null)
+            {
+                return new HybridConnectionInformationResponse
+                {
+                    Namespace = connectionInformation.Namespace,
+                    Name = connectionInformation.Name,
+                    Endpoint = connectionInformation.EndpointHost + ":" + connectionInformation.EndpointPort,
+                    Status = connectionInformation.Status,
+                    NumberOfListeners = connectionInformation.NumberOfListeners,
+                    ServiceBusEndpoint = connectionInformation.Namespace + ".servicebus.windows.net",
+                };
+            }
+            else
+            {
+                return new HybridConnectionInformationResponse
+                {
+                    Error = true,
+                    ErrorMessage = "Could not add connection."
+                };
+            }
+        }
+
         public override async Task<StringResponse> RemoveConnection(HybridConnectionRequest request, ServerCallContext context)
         {
             StringResponse response = new StringResponse();

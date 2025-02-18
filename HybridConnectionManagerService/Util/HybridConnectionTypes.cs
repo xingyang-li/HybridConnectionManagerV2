@@ -15,7 +15,7 @@ namespace HybridConnectionManager.Service
     /// Message envelope that contains the common Azure resource manager properties and the resource provider specific content.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ResponseMessageEnvelope<T>
+    public class AzureResponseEnvelope<T>
     {
         /// <summary>
         /// Resource Id. Typically ID is populated only for responses to GET requests. Caller is responsible for passing in this
@@ -58,5 +58,24 @@ namespace HybridConnectionManager.Service
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public T Properties { get; set; }
+    }
+
+    public class AzureListResponseEnvelope<T>
+    {
+        public List<AzureResponseEnvelope<T>> Value { get; set; }
+    }
+
+    public class AuthorizationRules
+    {
+        public List<string> Rights { get; set; }
+    }
+
+    public class AuthorizationRuleKeys
+    {
+        public string PrimaryConnectionString { get; set; }
+        public string SecondaryConnectionString { get; set; }
+        public string PrimaryKey { get; set; }
+        public string SecondaryKey { get; set; }
+        public string KeyName { get; set; }
     }
 }

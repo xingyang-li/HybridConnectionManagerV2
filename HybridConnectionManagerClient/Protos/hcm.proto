@@ -6,7 +6,7 @@ option csharp_namespace = "HcManProto";
 service HcMan {
     rpc AddUsingAzureAccount (HybridConnectionRequest) returns (HybridConnectionInformationResponse);
     rpc AddUsingConnectionString (HybridConnectionRequest) returns (HybridConnectionInformationResponse);
-    rpc AddUsingHybridConnectionInfo (HybridConnectionRequest) returns (HybridConnectionInformationResponse);
+    rpc AddUsingParameters (HybridConnectionRequest) returns (HybridConnectionInformationResponse);
     rpc ListConnections (EmptyRequest) returns (HybridConnectionInformationListResponse);
     rpc RemoveConnection (HybridConnectionRequest) returns (StringResponse);
     rpc ShowConnection (HybridConnectionRequest) returns (HybridConnectionInformationResponse);

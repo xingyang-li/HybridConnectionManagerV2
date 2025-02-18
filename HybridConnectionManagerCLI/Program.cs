@@ -2,9 +2,12 @@
 using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager;
+using Azure.ResourceManager.Relay;
 using Newtonsoft.Json;
 using System.CommandLine;
 using System.Text.RegularExpressions;
+using HcManProto;
+using Azure.ResourceManager.Resources;
 
 public class Program
 {
@@ -14,21 +17,48 @@ public class Program
     public static async Task<int> Main(string[] args)
     {
         // Options
+        var requiredSubscriptionOption = new Option<string>(new[] { "--subscription", "-s" })
+        {
+            IsRequired = true,
+            Description = "Hybrid Connection Subscription",
+        };
+        var requiredResourceGroupOption = new Option<string>(new[] { "--resource-group", "-rg" })
+        {
+            IsRequired = true,
+            Description = "Hybrid Connection Resource Group",
+        };
         var requiredNamespaceOption = new Option<string>(new[] { "--namespace", "-ns" })
         {
             IsRequired = true,
-            Description = "Namespace",
+            Description = "Hybrid Connection Namespace",
         };
         var requiredNameOption = new Option<string>(new[] { "--name", "-n" })
         {
             IsRequired = true,
-            Description = "Name",
+            Description = "Hybrid Connection Name",
+        };
+
+        var SubscriptionOption = new Option<string>(new[] { "--subscription", "-s" })
+        {
+            Description = "Hybrid Connection Subscription",
+        };
+        var ResourceGroupOption = new Option<string>(new[] { "--resource-group", "-rg" })
+        {
+            Description = "Hybrid Connection Resource Group",
+        };
+        var NamespaceOption = new Option<string>(new[] { "--namespace", "-ns" })
+        {
+            Description = "Hybrid Connection Namespace",
+        };
+        var NameOption = new Option<string>(new[] { "--name", "-n" })
+        {
+            Description = "Hybrid Connection Name",
         };
 
         // Arguments
         var connectionStringArg = new Argument<string>("connection-string", "Hybrid Connection Connection String")
         {
-            Arity = ArgumentArity.ExactlyOne,
+            Arity = ArgumentArity.ZeroOrOne,
         };
 
         var endpointStringArg = new Argument<string>("endpoint", "host:port")
@@ -42,9 +72,15 @@ public class Program
 
         var add  = new Command("add", "Add a new Hybrid Connection")
         {
-            connectionStringArg
+            connectionStringArg,
+            SubscriptionOption,
+            ResourceGroupOption,
+            NamespaceOption,
+            NameOption,
         };
-        add.SetHandler((string connectionString) => AddHandler(connectionString), connectionStringArg);
+
+        add.SetHandler((string connectionString, string subscription, string resourceGroup, string @namespace, string name) => AddHandler(connectionString, subscription, resourceGroup, @namespace, name), 
+            connectionStringArg, SubscriptionOption, ResourceGroupOption, NamespaceOption, NameOption);
 
         var remove = new Command("remove", "Remove a Hybrid Connection from the local machine")
         {
@@ -90,10 +126,114 @@ public class Program
         Console.WriteLine(response);
     }
 
-    public static async Task AddHandler(string connectionString)
+    public static async Task AddHandler(string connectionString, string subscription, string resourceGroup, string @namespace, string name)
     {
+        bool useConnectionString = true;
+        bool interactiveMode = false;
+
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            if (string.IsNullOrEmpty(subscription) && string.IsNullOrEmpty(resourceGroup) && string.IsNullOrEmpty(@namespace) && string.IsNullOrEmpty(name))
+            {
+                interactiveMode = true;
+            }
+            else if (string.IsNullOrEmpty(subscription) || string.IsNullOrEmpty(resourceGroup) || string.IsNullOrEmpty(@namespace) || string.IsNullOrEmpty(name)){
+                Console.WriteLine("Must specify either <connection-string> or ALL of { --subscription, --resource-group, --namespace, --name }");
+                return;
+            }
+            useConnectionString = false;
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(subscription) || !string.IsNullOrEmpty(resourceGroup) || !string.IsNullOrEmpty(@namespace) || !string.IsNullOrEmpty(name))
+            {
+                Console.WriteLine("Must specify either <connection-string> or ALL of { --subscription, --resource-group, --namespace, --name }");
+                return;
+            }
+        }
+
         HybridConnectionManagerClient client = new HybridConnectionManagerClient();
-        var response = await client.AddUsingConnectionString(connectionString);
+
+        if (interactiveMode)
+        {
+            Console.WriteLine("\n---Interactive Mode---");
+            Console.WriteLine("\nLogging in to Azure..\n");
+            var credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
+            {
+                ExcludeEnvironmentCredential = true,
+                ExcludeManagedIdentityCredential = true,
+                ExcludeSharedTokenCacheCredential = true,
+                ExcludeVisualStudioCredential = true,
+                ExcludeVisualStudioCodeCredential = true,
+                ExcludeAzureCliCredential = true,
+                ExcludeInteractiveBrowserCredential = false
+            });
+
+            ArmClient armClient = new ArmClient(credential);
+            var subscriptionsResourceCollection = armClient.GetSubscriptions();
+            int index = 0;
+            List<SubscriptionResource> subscriptionResourcesList = new List<SubscriptionResource>();
+            foreach (var subscriptionResource in subscriptionsResourceCollection)
+            {
+                Console.WriteLine(String.Format("[{0}] {1} ({2})", index, subscriptionResource.Data.DisplayName, subscriptionResource.Data.SubscriptionId));
+                index++;
+                subscriptionResourcesList.Add(subscriptionResource);
+            }
+            Console.Write("\nSelect a subscription [Id]: ");
+            var subscriptionIndex = Console.ReadLine();
+            Console.WriteLine();
+
+            if (!int.TryParse(subscriptionIndex, out int subIndex) || subIndex < 0 || subIndex >= subscriptionResourcesList.Count)
+            {
+                Console.WriteLine("Invalid choice.");
+                return;
+            }
+
+            var chosenSub = subscriptionResourcesList[subIndex];
+            subscription = chosenSub.Data.DisplayName;
+            var resourceGroupsCollection = chosenSub.GetResourceGroups();
+            index = 0;
+            List<RelayHybridConnectionResource> hybridConnectionResourcesList = new List<RelayHybridConnectionResource>();
+            foreach (var resourceGroupResource in resourceGroupsCollection)
+            {
+                var relayNamespacesCollection = resourceGroupResource.GetRelayNamespaces();
+                foreach (var relayNamespaceResource in relayNamespacesCollection)
+                {
+                    var hybridConnectionsCollection = relayNamespaceResource.GetRelayHybridConnections();
+                    foreach (var hybridConnectionResource in hybridConnectionsCollection)
+                    {
+                        Console.WriteLine(String.Format("[{0}] {1} {2} {3}", index, hybridConnectionResource.Data.Name, hybridConnectionResource.Data.Location, relayNamespaceResource.Data.Name, hybridConnectionResource.Data.UserMetadata.ToString()));
+                        index++;
+                        hybridConnectionResourcesList.Add(hybridConnectionResource);
+                    }
+                }
+            }
+
+            Console.Write("\nSelect a Hybrid Connection [Id]: ");
+            var hybridConnectionIndex = Console.ReadLine();
+            Console.WriteLine();
+
+            if (!int.TryParse(hybridConnectionIndex, out int hcIndex) || hcIndex < 0 || hcIndex >= hybridConnectionResourcesList.Count)
+            {
+                Console.WriteLine("Invalid choice.");
+                return;
+            }
+
+            var chosenHybridConnection = hybridConnectionResourcesList[hcIndex];
+            return;
+
+            // TODO: set either connection string or sub+rg+namespace+name params for gRPC api
+        }
+
+        var response = new HybridConnectionInformationResponse();
+        if (useConnectionString)
+        {
+            response = await client.AddUsingConnectionString(connectionString);
+        }
+        else
+        {
+            response = await client.AddUsingParameters(subscription, resourceGroup, @namespace, name);
+        }
 
         if (response.Error)
         {

@@ -19,19 +19,17 @@ namespace HybridConnectionManager.Client
             return await _client.AddUsingConnectionStringAsync(request);
         }
 
-        public async Task<HybridConnectionInformationResponse> AddUsingHybridConnectionInfo(string @namespace, string name, string resourceGroup, string subscriptionId, string keyName, string keyValue)
+        public async Task<HybridConnectionInformationResponse> AddUsingParameters(string subscription, string resourceGroup, string @namespace, string name)
         {
             var request = new HybridConnectionRequest
             {
+                SubscriptionId = subscription,
+                ResourceGroup = resourceGroup,
                 Namespace = @namespace,
                 Name = name,
-                SubscriptionId = subscriptionId,
-                ResourceGroup = resourceGroup,
-                KeyName = keyName,
-                KeyValue = keyValue
             };
 
-            return await _client.AddUsingHybridConnectionInfoAsync(request);
+            return await _client.AddUsingParametersAsync(request);
         }
 
         public async Task<HybridConnectionInformationResponse> ShowConnection(string @namespace, string name)

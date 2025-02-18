@@ -67,6 +67,16 @@ namespace HybridConnectionManager.Service
             return hcInfo;
         }
 
+        public async Task<HybridConnectionInformation> AddWithParameters(string subscription, string resourceGroup, string @namespace, string name)
+        {
+            // get hybrid connection from azure and get the access key for the connection
+            // construct hybrid connection object using HybridConnectionInfo (OR construct connectionstring)
+            //
+            string connectionString = await AzureHelper.GetConnectionStringFromAzure(AzureClient, subscription, resourceGroup, @namespace, name);
+
+            return await AddWithConnectionString(connectionString);
+        }
+
         public bool FindConnectionInformation(string @namespace, string name, out HybridConnectionInformation connectionInformation)
         {
             connectionInformation = null;
@@ -135,6 +145,11 @@ namespace HybridConnectionManager.Service
         public AccessToken GetAuthToken()
         {
             return AzureClient.GetToken();
+        }
+
+        public bool IsValidToken()
+        {
+            return AzureClient.GetToken().ExpiresOn > DateTime.UtcNow;
         }
     }
 }
