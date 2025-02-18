@@ -46,6 +46,8 @@ message HybridConnectionInformationResponse {
     string Status = 6;
     int32 NumberOfListeners = 7;
     string ServiceBusEndpoint = 8;
+    string CreatedOn = 9;
+    string LastUpdated = 10;
 }
 
 message HybridConnectionInformationListResponse {

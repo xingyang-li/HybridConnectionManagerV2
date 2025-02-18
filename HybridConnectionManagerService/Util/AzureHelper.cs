@@ -1,10 +1,4 @@
-﻿using Azure.Core;
-using Azure.Identity;
-using Azure.ResourceManager;
-using HybridConnectionManager.Models;
-using System.Text;
-
-namespace HybridConnectionManager.Service
+﻿namespace HybridConnectionManager.Service
 {
     public static class AzureHelper
     {

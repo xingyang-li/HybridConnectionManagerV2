@@ -2,21 +2,24 @@
 using Newtonsoft.Json;
 using System.Reflection;
 
-public class IgnorePropertiesResolver : DefaultContractResolver
+namespace HybridConnectionManager.CLI
 {
-    private readonly HashSet<string> ignoreProps;
-    public IgnorePropertiesResolver(IEnumerable<string> propNamesToIgnore)
+    public class IgnorePropertiesResolver : DefaultContractResolver
     {
-        this.ignoreProps = new HashSet<string>(propNamesToIgnore);
-    }
-
-    protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
-    {
-        JsonProperty property = base.CreateProperty(member, memberSerialization);
-        if (this.ignoreProps.Contains(property.PropertyName))
+        private readonly HashSet<string> ignoreProps;
+        public IgnorePropertiesResolver(IEnumerable<string> propNamesToIgnore)
         {
-            property.ShouldSerialize = _ => false;
+            this.ignoreProps = new HashSet<string>(propNamesToIgnore);
         }
-        return property;
+
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+        {
+            JsonProperty property = base.CreateProperty(member, memberSerialization);
+            if (this.ignoreProps.Contains(property.PropertyName))
+            {
+                property.ShouldSerialize = _ => false;
+            }
+            return property;
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Grpc.Core;
-using Grpc.Net.Client;
+﻿using Grpc.Net.Client;
 using HcManProto;
 
 namespace HybridConnectionManager.Client

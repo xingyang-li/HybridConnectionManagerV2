@@ -1,13 +1,4 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="ResponseMessageEnvelope.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-//------------------------------------------------------------------------------
-
-using System.Collections.Generic;
-using Azure.ResourceManager.Models;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace HybridConnectionManager.Service
 {
