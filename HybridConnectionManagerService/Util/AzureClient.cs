@@ -14,6 +14,8 @@ namespace HybridConnectionManager.Service
         public static string ManagementBaseUrl = "https://management.azure.com";
 
         private AccessToken _accessToken;
+        private object _tokenLock = new object();
+
         public AzureClient()
         {
             _httpClient = new HttpClient();
@@ -22,13 +24,19 @@ namespace HybridConnectionManager.Service
 
         public void SetToken(AccessToken accessToken)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Token);
-            _accessToken = accessToken;
+            lock (_tokenLock)
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Token);
+                _accessToken = accessToken;
+            }
         }
 
         public AccessToken GetToken()
         {
-            return _accessToken;
+            lock (_tokenLock)
+            {
+                return _accessToken;
+            }
         }
 
         public async Task<HttpResponseMessage> GetSubscriptions()

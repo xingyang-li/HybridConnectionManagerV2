@@ -17,6 +17,8 @@ namespace HybridConnectionManager.Service
 
         public static string AppDataFilePath = Path.Combine(AppDataPath, "connections.json");
 
+        public static string AppDataLogPath = Path.Combine(AppDataPath, "log.txt");
+
         private static object _fileLock = new object();
 
         private const int BUFFER_LEN = 16384;

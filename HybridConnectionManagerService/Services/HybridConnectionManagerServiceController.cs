@@ -2,18 +2,19 @@ using Azure.Core;
 using Grpc.Core;
 using HcManProto;
 using HybridConnectionManager.Models;
+using Serilog;
 
 namespace HybridConnectionManager.Service
 {
     public class HybridConnectionManagerServiceController : HcMan.HcManBase
     {
-        private readonly ILogger<HybridConnectionManagerServiceController> _logger;
-
         private static HybridConnectionManager _hybridConnectionManager;
 
-        public HybridConnectionManagerServiceController(ILogger<HybridConnectionManagerServiceController> logger)
+        private Serilog.ILogger _logger;
+
+        public HybridConnectionManagerServiceController()
         {
-            _logger = logger;
+            _logger = Log.Logger;
         }
 
         public static HybridConnectionManager HybridConnectionManager
@@ -31,6 +32,8 @@ namespace HybridConnectionManager.Service
 
         public override async Task<HybridConnectionInformationResponse> AddUsingConnectionString(HybridConnectionRequest request, ServerCallContext context)
         {
+            _logger.Information(string.Format("Attempting to add Hybrid Connection with connection string: {0}", request.ConnectionString));
+
             if (HybridConnectionManager.FindConnectionInformation(request.ConnectionString, out HybridConnectionInformation _))
             {
                 return new HybridConnectionInformationResponse
@@ -66,6 +69,8 @@ namespace HybridConnectionManager.Service
 
         public override async Task<HybridConnectionInformationResponse> AddUsingParameters(HybridConnectionRequest request, ServerCallContext context)
         {
+            _logger.Information(string.Format("Attempting to add Hybrid Connection with namespace: {0} and name {1}", request.Namespace, request.Name));
+
             if (HybridConnectionManager.FindConnectionInformation(request.Namespace, request.Name, out HybridConnectionInformation _))
             {
                 return new HybridConnectionInformationResponse
@@ -112,6 +117,8 @@ namespace HybridConnectionManager.Service
 
         public override async Task<StringResponse> RemoveConnection(HybridConnectionRequest request, ServerCallContext context)
         {
+            _logger.Information(string.Format("Attempting to remove Hybrid Connection with namespace: {0} and name {1}", request.Namespace, request.Name));
+
             StringResponse response = new StringResponse();
 
             var success = await HybridConnectionManager.RemoveConnection(request.Namespace, request.Name);

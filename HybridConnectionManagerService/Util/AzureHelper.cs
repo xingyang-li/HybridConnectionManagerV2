@@ -1,31 +1,37 @@
-﻿namespace HybridConnectionManager.Service
+﻿using Serilog;
+using System.Linq.Expressions;
+
+namespace HybridConnectionManager.Service
 {
     public static class AzureHelper
     {
         public async static Task<string> GetConnectionStringFromAzure(AzureClient azureClient, string subscription, string resourceGroup, string @namespace, string name)
         {
-            string suitableAuthorizationRuleId = await GetSuitableAuthorizationRuleId(azureClient, subscription, resourceGroup, @namespace, name);
-
-            if (suitableAuthorizationRuleId == null)
+            try
             {
+                string suitableAuthorizationRuleId = await GetSuitableAuthorizationRuleId(azureClient, subscription, resourceGroup, @namespace, name);
+
+                if (!TryParseAuthorizationRuleId(suitableAuthorizationRuleId, out string _, out name, out string ruleName))
+                {
+                    return null;
+                }
+
+                if (name == null)
+                {
+                    var keys = await azureClient.GetNamespaceAuthorizationRuleKeys(subscription, resourceGroup, @namespace, ruleName);
+                    return keys.PrimaryConnectionString;
+                }
+                else
+                {
+                    var keys = await azureClient.GetHybridConnectionAuthorizationRuleKeys(subscription, resourceGroup, @namespace, name, ruleName);
+                    return keys.PrimaryConnectionString;
+
+                }
+            }
+            catch (AzureClientException ex)
+            {
+                Log.Logger.Error("Could not get connection string for Hybrid Connection with namespace {0} and name {1} due to error: {2}", @namespace, name, ex.Content);
                 return null;
-            }
-
-            if (!TryParseAuthorizationRuleId(suitableAuthorizationRuleId, out string _, out name, out string ruleName))
-            {
-                return null;
-            }
-
-            if (name == null)
-            {
-                var keys = await azureClient.GetNamespaceAuthorizationRuleKeys(subscription, resourceGroup, @namespace, ruleName);
-                return keys.PrimaryConnectionString;
-            }
-            else
-            {
-                var keys = await azureClient.GetHybridConnectionAuthorizationRuleKeys(subscription, resourceGroup, @namespace, name, ruleName);
-                return keys.PrimaryConnectionString;
-
             }
         }
         
@@ -47,22 +53,16 @@
         {
             string suitableRuleId = null;
             AzureListResponseEnvelope<AuthorizationRules> azureListAuthRulesResponse = new AzureListResponseEnvelope<AuthorizationRules>();
-            try
+
+            if (name != null)
             {
-                if (name != null)
-                {
-                    azureListAuthRulesResponse = await azureClient.GetHybridConnectionAuthorizationRules(subscription, resourceGroup, @namespace, name);
-                }
-                else
-                {
-                    azureListAuthRulesResponse = await azureClient.GetNamespaceAuthorizationRules(subscription, resourceGroup, @namespace);
-                }
+                azureListAuthRulesResponse = await azureClient.GetHybridConnectionAuthorizationRules(subscription, resourceGroup, @namespace, name);
             }
-            catch (AzureClientException ex)
+            else
             {
-                Console.WriteLine(ex.Message);
-                return null;
+                azureListAuthRulesResponse = await azureClient.GetNamespaceAuthorizationRules(subscription, resourceGroup, @namespace);
             }
+            
 
             if (azureListAuthRulesResponse != null &&  azureListAuthRulesResponse.Value != null)
             {

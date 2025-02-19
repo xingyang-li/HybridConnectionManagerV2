@@ -28,7 +28,7 @@ namespace HybridConnectionManager.Service
             IsOpen = false;
             _isShuttingDown = false;
 
-            Task.Run(() => RefreshConnectionInformation()).GetAwaiter().GetResult();
+            RefreshConnectionInformation().Wait();
         }
 
         public HybridConnection(HybridConnectionInformation information)

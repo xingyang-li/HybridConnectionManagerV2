@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using HybridConnectionManager.Models;
+using Serilog;
 
 namespace HybridConnectionManager.Service
 {
@@ -9,7 +10,11 @@ namespace HybridConnectionManager.Service
 
         private TupleDictionary<string, string, HybridConnection> _hybridConnections;
 
+        private object _readLock = new object();
+
         private AzureClient AzureClient;
+
+        private Serilog.ILogger _logger;
 
         public static HybridConnectionManager Instance
         {
@@ -18,15 +23,20 @@ namespace HybridConnectionManager.Service
 
         public HybridConnectionManager()
         {
+            _logger = Log.Logger;
             AzureClient = new AzureClient();
             _hybridConnections = new TupleDictionary<string, string, HybridConnection>();
         }
 
         public void Initialize(List<HybridConnectionInformation> connectionInfos)
         {
-            foreach (var connectionInfo in connectionInfos)
+            _logger.Information("Starting Hybrid Connection Manager V2 Service with local connections.");
+            lock (_readLock)
             {
-                _hybridConnections.Add(connectionInfo.Namespace, connectionInfo.Name, new HybridConnection(connectionInfo));
+                foreach (var connectionInfo in connectionInfos)
+                {
+                    _hybridConnections.Add(connectionInfo.Namespace, connectionInfo.Name, new HybridConnection(connectionInfo));
+                }
             }
 
             Task.Run(() => StartAll());
@@ -36,9 +46,12 @@ namespace HybridConnectionManager.Service
         {
             List<Task> tasks = new List<Task>();
 
-            foreach (var hybridConnection in _hybridConnections.Values)
+            lock (_readLock)
             {
-                tasks.Add(hybridConnection.Open());
+                foreach (var hybridConnection in _hybridConnections.Values)
+                {
+                    tasks.Add(hybridConnection.Open());
+                }
             }
 
             await Task.WhenAll(tasks);
@@ -48,18 +61,27 @@ namespace HybridConnectionManager.Service
         {
             HybridConnectionInformation hcInfo = null;
 
+            if (String.IsNullOrEmpty(connectionString))
+            {
+                return hcInfo;
+            }
+
             try
             {
                 var hybridConnection = new HybridConnection(connectionString);
                 await hybridConnection.Open();
                 hcInfo = hybridConnection.Information;
-                _hybridConnections.Add(hcInfo.Namespace, hcInfo.Name, hybridConnection);
+
+                lock (_readLock)
+                {
+                    _hybridConnections.Add(hcInfo.Namespace, hcInfo.Name, hybridConnection);
+                }
 
                 UpdateConnectionsOnFileSystem();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.Error(ex.Message);
             }
 
             return hcInfo;
@@ -67,9 +89,6 @@ namespace HybridConnectionManager.Service
 
         public async Task<HybridConnectionInformation> AddWithParameters(string subscription, string resourceGroup, string @namespace, string name)
         {
-            // get hybrid connection from azure and get the access key for the connection
-            // construct hybrid connection object using HybridConnectionInfo (OR construct connectionstring)
-            //
             string connectionString = await AzureHelper.GetConnectionStringFromAzure(AzureClient, subscription, resourceGroup, @namespace, name);
 
             return await AddWithConnectionString(connectionString);
@@ -77,11 +96,14 @@ namespace HybridConnectionManager.Service
 
         public bool FindConnectionInformation(string @namespace, string name, out HybridConnectionInformation connectionInformation)
         {
-            connectionInformation = null;
-            if (_hybridConnections.ContainsKeys(@namespace, name))
+            lock (_readLock)
             {
-                connectionInformation = _hybridConnections[@namespace, name].Information;
-                return true;
+                connectionInformation = null;
+                if (_hybridConnections.ContainsKeys(@namespace, name))
+                {
+                    connectionInformation = _hybridConnections[@namespace, name].Information;
+                    return true;
+                }
             }
             
             return false;
@@ -95,15 +117,24 @@ namespace HybridConnectionManager.Service
 
         public async Task<bool> RemoveConnection(string @namespace, string name)
         {
-            if (!_hybridConnections.ContainsKeys(@namespace, name))
+            bool removed = false;
+            HybridConnection connectionToRemove = null;
+
+            lock (_readLock)
             {
-                return false;
+                if (!_hybridConnections.ContainsKeys(@namespace, name))
+                {
+                    return false;
+                }
+
+                connectionToRemove = _hybridConnections[@namespace, name];
+                removed = _hybridConnections.Remove(@namespace, @name);
             }
 
-            var connectionToRemove = _hybridConnections[@namespace, name];
-            await connectionToRemove.Close();
-
-            bool removed =  _hybridConnections.Remove(@namespace, @name);
+            if (connectionToRemove != null)
+            {
+                await connectionToRemove.Close();
+            }
 
             UpdateConnectionsOnFileSystem();
 
@@ -113,9 +144,13 @@ namespace HybridConnectionManager.Service
         public List<HybridConnectionInformation> GetAllConnectionInformations()
         {
             List<HybridConnectionInformation> connectionInfos = new List<HybridConnectionInformation>();
-            foreach (var connection in _hybridConnections.Values)
+
+            lock (_readLock)
             {
-                connectionInfos.Add(connection.Information);
+                foreach (var connection in _hybridConnections.Values)
+                {
+                    connectionInfos.Add(connection.Information);
+                }
             }
             return connectionInfos;
         }
@@ -124,9 +159,12 @@ namespace HybridConnectionManager.Service
         {
             List<HybridConnectionInformation> connectionInfos = new List<HybridConnectionInformation>();
 
-            foreach (var connection in _hybridConnections.Values)
+            lock (_readLock)
             {
-                connectionInfos.Add(connection.Information);
+                foreach (var connection in _hybridConnections.Values)
+                {
+                    connectionInfos.Add(connection.Information);
+                }
             }
 
             Util.UpdateAppDataFile(connectionInfos);

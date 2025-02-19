@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Logging;
+using Serilog;
+
 namespace HybridConnectionManager.Service
 {
     class Program
@@ -8,6 +11,10 @@ namespace HybridConnectionManager.Service
             {
                 Util.CreateAppDataFile();
             }
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File(Util.AppDataLogPath, rollingInterval: RollingInterval.Day)
+                .CreateLogger();
 
             var connections = Util.LoadConnectionsFromFilesystem();
 
