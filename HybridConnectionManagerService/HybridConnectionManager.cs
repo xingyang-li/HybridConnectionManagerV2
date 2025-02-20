@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using HybridConnectionManager.Models;
 using Serilog;
+using System.Threading.Tasks;
 
 namespace HybridConnectionManager.Service
 {
@@ -30,7 +31,6 @@ namespace HybridConnectionManager.Service
 
         public void Initialize(List<HybridConnectionInformation> connectionInfos)
         {
-            _logger.Information("Starting up Hybrid Connection Manager V2 Service with saved connections.");
             lock (_readLock)
             {
                 foreach (var connectionInfo in connectionInfos)
@@ -55,6 +55,17 @@ namespace HybridConnectionManager.Service
             }
 
             await Task.WhenAll(tasks);
+        }
+
+        public void Shutdown()
+        {
+            lock (_readLock)
+            {
+                foreach (var hybridConnection in _hybridConnections.Values)
+                {
+                    hybridConnection.Dispose();
+                }
+            }
         }
 
         public async Task<HybridConnectionInformation> AddWithConnectionString(string connectionString)

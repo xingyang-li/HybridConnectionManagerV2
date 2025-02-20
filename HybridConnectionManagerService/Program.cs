@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Core;
 
 namespace HybridConnectionManager.Service
 {
@@ -13,26 +14,22 @@ namespace HybridConnectionManager.Service
             }
 
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.File(Util.AppDataLogPath, rollingInterval: RollingInterval.Day)
-                .CreateLogger();
+            .WriteTo.File(Util.AppDataLogPath, rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
+            Log.Logger.Information("Starting up Hybrid Connection Manager V2 Service with saved connections.");
 
             var connections = Util.LoadConnectionsFromFilesystem();
 
             HybridConnectionManager.Instance.Initialize(connections);
 
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-            builder.WebHost.UseUrls("https://localhost:5001");
-            builder.Services.AddGrpc();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            app.MapGrpcService<HybridConnectionManagerServiceController>();
-            app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
-
-            app.Run();
+            CreateHostBuilder(args).Build().Run();
         }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.UseStartup<Startup>();
+        });
     }
 }

@@ -1,6 +1,7 @@
-﻿using System.Net.Sockets;
-using HybridConnectionManager.Models;
+﻿using HybridConnectionManager.Models;
 using Microsoft.Azure.Relay;
+using System.Net.Sockets;
+using Serilog;
 
 namespace HybridConnectionManager.Service
 {
@@ -16,6 +17,8 @@ namespace HybridConnectionManager.Service
         private string _endpointHost;
         private int _endpointPort;
         private bool _isShuttingDown;
+
+        private Serilog.ILogger _logger;
 
         private HybridConnectionInformation _hcInfo;
 
@@ -33,6 +36,7 @@ namespace HybridConnectionManager.Service
 
         public HybridConnection(HybridConnectionInformation information)
         {
+            _logger = Log.Logger;
             _hcInfo = information;
             _listener = new(
                 new(information.Uri),
@@ -43,6 +47,7 @@ namespace HybridConnectionManager.Service
 
         public HybridConnection(string connectionString)
         {
+            _logger = Log.Logger;
             _listener = new HybridConnectionListener(connectionString);
             _hcInfo = Util.GetInformationFromConnectionString(connectionString);
             CommonSetup();
@@ -79,6 +84,8 @@ namespace HybridConnectionManager.Service
 
         public async Task Open(int timeoutSeconds = OPEN_TIMEOUT_SECONDS)
         {
+            _logger.Information("Opening listener for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
+
             await _listener.OpenAsync(TimeSpan.FromSeconds(timeoutSeconds));
             IsOpen = true;
             AcceptAndRelay();
@@ -86,6 +93,8 @@ namespace HybridConnectionManager.Service
 
         public async Task Close(int timeoutSeconds = CLOSE_TIMEOUT_SECONDS)
         {
+            _logger.Information("Closing listener for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
+
             if (!IsOpen)
             {
                 throw new InvalidOperationException();
@@ -95,7 +104,6 @@ namespace HybridConnectionManager.Service
             {
                 IsOpen = false;
                 await _listener.CloseAsync(TimeSpan.FromSeconds(timeoutSeconds));
-                Console.WriteLine(String.Format("Closed connection with namespace: {0} name: {1}", _hcInfo.Namespace, _hcInfo.Name));
             }
             catch (Exception e)
             {
@@ -125,7 +133,6 @@ namespace HybridConnectionManager.Service
         {
             while (!_isShuttingDown)
             {
-                Console.WriteLine("Listening to service bus..");
                 try
                 {
                     var hcStream = await _listener.AcceptConnectionAsync();
@@ -145,7 +152,6 @@ namespace HybridConnectionManager.Service
 
         private async void ConnectToEndpointAndRelay(HybridConnectionStream hcStream)
         {
-            Console.WriteLine("Recieved and relaying buffer..");
             using (TcpClient client = new TcpClient())
             {
                 try
@@ -155,8 +161,6 @@ namespace HybridConnectionManager.Service
                 catch (Exception ex)
                 {
                     // TODO log
-                    Console.WriteLine("Failed to connect to endpoint");
-
                     try
                     {
                         using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
@@ -194,20 +198,21 @@ namespace HybridConnectionManager.Service
         private void ListenerConnecting(object sender, EventArgs e)
         {
             // TODO log somewhere?
-            Console.WriteLine("Listener is connecting");
+            _logger.Information("Listenering connecting for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
         }
 
         private void ListenerOnline(object sender, EventArgs e)
         {
             Online?.Invoke(sender, e);
             // TODO log
+            _logger.Information("Listener online for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
+
             RefreshConnectionInformation();
-            Console.WriteLine("Listener is online");
         }
         private void ListenerOffline(object sender, EventArgs e)
         {
             // TODO log
-            Console.WriteLine("Listener is offline");
+            _logger.Information("Listener offline for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
         }
 
         public HybridConnectionInformation Information
