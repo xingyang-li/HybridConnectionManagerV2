@@ -16,7 +16,9 @@ namespace HybridConnectionManager.CLI
     public static class CommandHelper
     {
         public static JsonSerializerSettings HybridConnectionJsonSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, ContractResolver = new IgnorePropertiesResolver(new[] { "Error", "ErrorMessage" }) };
-        public static string EndpointRegexString = "^([a-zA-Z0-9.-]+):(\\d{1,5})$";
+        public static string EndpointRegexPattern = "^([a-zA-Z0-9.-]+):(\\d{1,5})$";
+        public static string HcConnectionStringRegexPattern = @"^Endpoint=sb:\/\/[a-zA-Z0-9-]+\.servicebus\.windows\.net\/;SharedAccessKeyName=[a-zA-Z0-9-]+;SharedAccessKey=[a-zA-Z0-9+\/=]+;EntityPath=[a-zA-Z0-9-]+$";
+        public static string RootConnectionStringRegexPattern = @"^Endpoint=sb:\/\/[a-zA-Z0-9-]+\.servicebus\.windows\.net\/;SharedAccessKeyName=[a-zA-Z0-9-]+;SharedAccessKey=[a-zA-Z0-9+\/=]+$";
 
         public static async Task LoginHandler()
         {
@@ -48,6 +50,12 @@ namespace HybridConnectionManager.CLI
                 if (!string.IsNullOrEmpty(subscription) || !string.IsNullOrEmpty(resourceGroup) || !string.IsNullOrEmpty(@namespace) || !string.IsNullOrEmpty(name))
                 {
                     Console.WriteLine("Must specify either <connection-string> or ALL of { --subscription, --resource-group, --namespace, --name }");
+                    return;
+                }
+
+                if (!Regex.IsMatch(connectionString, HcConnectionStringRegexPattern) && !Regex.IsMatch(connectionString, RootConnectionStringRegexPattern))
+                {
+                    Console.WriteLine(String.Format("Connection string {0} is invalid. Connection string must be of form: Endpoint=sb://<namespace>.servicebus.windows.net/;SharedAccessKeyName=<keyName>;SharedAccessKey=<keyValue>;EntityPath=<name>", connectionString));
                     return;
                 }
             }
@@ -120,9 +128,9 @@ namespace HybridConnectionManager.CLI
 
         public static async Task TestHandler(string endpoint)
         {
-            if (!Regex.IsMatch(endpoint, EndpointRegexString))
+            if (!Regex.IsMatch(endpoint, EndpointRegexPattern))
             {
-                Console.WriteLine("Invalid endpoint format. Expected format: <host>:<port>");
+                Console.WriteLine(String.Format("Endpoint {0} is invalid. Endpoint must be of form: <host>:<port>", endpoint));
                 return;
             }
 

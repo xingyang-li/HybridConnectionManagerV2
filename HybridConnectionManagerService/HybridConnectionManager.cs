@@ -30,7 +30,7 @@ namespace HybridConnectionManager.Service
 
         public void Initialize(List<HybridConnectionInformation> connectionInfos)
         {
-            _logger.Information("Starting Hybrid Connection Manager V2 Service with local connections.");
+            _logger.Information("Starting up Hybrid Connection Manager V2 Service with saved connections.");
             lock (_readLock)
             {
                 foreach (var connectionInfo in connectionInfos)
@@ -174,8 +174,7 @@ namespace HybridConnectionManager.Service
         {
             var token = await Auth.GetAuthTokenFromAzure();
             AzureClient.SetToken(token);
-
-            var subscriptions = AzureClient.GetSubscriptions();
+            _logger.Information(String.Format("Authenticated user to Azure with token expiring on {0}", token.ExpiresOn));
         }
 
         public AccessToken GetAuthToken()
