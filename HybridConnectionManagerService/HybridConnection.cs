@@ -2,6 +2,7 @@
 using Microsoft.Azure.Relay;
 using System.Net.Sockets;
 using Serilog;
+using Microsoft.VisualBasic;
 
 namespace HybridConnectionManager.Service
 {
@@ -53,9 +54,32 @@ namespace HybridConnectionManager.Service
             CommonSetup();
         }
 
+        public void RefreshConnection()
+        {
+            if (_hcInfo != null && !String.IsNullOrEmpty(_hcInfo.KeyName) && !String.IsNullOrEmpty(_hcInfo.KeyValue))
+            {
+                _listener = new(
+                    new(_hcInfo.Uri),
+                    TokenProvider.CreateSharedAccessSignatureTokenProvider(_hcInfo.KeyName, _hcInfo.KeyValue));
+
+                CommonSetup();
+            }
+        }
+
         public async Task RefreshConnectionInformation()
         {
-            var runtimeInfo = await _listener.GetRuntimeInformationAsync();
+            HybridConnectionRuntimeInformation runtimeInfo = null;
+
+            try
+            {
+                runtimeInfo = await _listener.GetRuntimeInformationAsync();
+            }
+            catch (EndpointNotFoundException ex)
+            {
+                _hcInfo.Status = "NotFound";
+                _logger.Error("Unable to retrieve runtime details for connection {0}/{1} as it does not exist anymore.", _hcInfo.Namespace, _hcInfo.Name);
+                return;
+            }
 
             if (runtimeInfo != null)
             {
@@ -84,6 +108,11 @@ namespace HybridConnectionManager.Service
 
         public async Task Open(int timeoutSeconds = OPEN_TIMEOUT_SECONDS)
         {
+            if (!String.IsNullOrEmpty(_hcInfo.Status) && _hcInfo.Status == "NotFound")
+            {
+                return;
+            }
+
             _logger.Information("Opening listener for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
 
             await _listener.OpenAsync(TimeSpan.FromSeconds(timeoutSeconds));
@@ -93,12 +122,13 @@ namespace HybridConnectionManager.Service
 
         public async Task Close(int timeoutSeconds = CLOSE_TIMEOUT_SECONDS)
         {
-            _logger.Information("Closing listener for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
-
             if (!IsOpen)
             {
-                throw new InvalidOperationException();
+                return;
             }
+
+            _logger.Information("Closing listener for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
+
             _isShuttingDown = true;
             try
             {
@@ -207,7 +237,7 @@ namespace HybridConnectionManager.Service
             // TODO log
             _logger.Information("Listener online for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
 
-            RefreshConnectionInformation();
+            RefreshConnectionInformation().GetAwaiter().GetResult();
         }
         private void ListenerOffline(object sender, EventArgs e)
         {

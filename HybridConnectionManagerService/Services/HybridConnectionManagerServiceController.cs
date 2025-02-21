@@ -34,13 +34,17 @@ namespace HybridConnectionManager.Service
         {
             _logger.Information(string.Format("Attempting to add Hybrid Connection with connection string: {0}", request.ConnectionString));
 
-            if (HybridConnectionManager.FindConnectionInformation(request.ConnectionString, out HybridConnectionInformation _))
+            if (HybridConnectionManager.FindConnectionInformation(request.ConnectionString, out HybridConnectionInformation hcInfo))
             {
-                return new HybridConnectionInformationResponse
+                // Allow for overwriting dead connection
+                if (hcInfo.Status != "NotFound")
                 {
-                    Error = true,
-                    ErrorMessage = "Connection already exists."
-                };
+                    return new HybridConnectionInformationResponse
+                    {
+                        Error = true,
+                        ErrorMessage = "Connection already exists."
+                    };
+                }
             }
 
             var connectionInformation = await HybridConnectionManager.AddWithConnectionString(request.ConnectionString);
@@ -71,13 +75,17 @@ namespace HybridConnectionManager.Service
         {
             _logger.Information(string.Format("Attempting to add Hybrid Connection with namespace: {0} and name {1}", request.Namespace, request.Name));
 
-            if (HybridConnectionManager.FindConnectionInformation(request.Namespace, request.Name, out HybridConnectionInformation _))
+            if (HybridConnectionManager.FindConnectionInformation(request.Namespace, request.Name, out HybridConnectionInformation hcInfo))
             {
-                return new HybridConnectionInformationResponse
+                // Allow for overwriting dead connection
+                if (hcInfo.Status != "NotFound")
                 {
-                    Error = true,
-                    ErrorMessage = "Connection already exists."
-                };
+                    return new HybridConnectionInformationResponse
+                    {
+                        Error = true,
+                        ErrorMessage = "Connection already exists."
+                    };
+                }
             }
 
             if (!HybridConnectionManager.IsValidToken())

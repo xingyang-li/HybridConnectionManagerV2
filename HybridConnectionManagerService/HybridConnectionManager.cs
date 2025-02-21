@@ -35,7 +35,8 @@ namespace HybridConnectionManager.Service
             {
                 foreach (var connectionInfo in connectionInfos)
                 {
-                    _hybridConnections.Add(connectionInfo.Namespace, connectionInfo.Name, new HybridConnection(connectionInfo));
+                    var hybridConnection = new HybridConnection(connectionInfo);
+                    _hybridConnections.Add(connectionInfo.Namespace, connectionInfo.Name, hybridConnection);
                 }
             }
 
@@ -85,7 +86,7 @@ namespace HybridConnectionManager.Service
 
                 lock (_readLock)
                 {
-                    _hybridConnections.Add(hcInfo.Namespace, hcInfo.Name, hybridConnection);
+                    _hybridConnections[hcInfo.Namespace, hcInfo.Name] = hybridConnection;
                 }
 
                 UpdateConnectionsOnFileSystem();

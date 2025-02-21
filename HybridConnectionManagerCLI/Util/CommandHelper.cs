@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Runtime.Serialization;
+using Grpc.Core;
 
 namespace HybridConnectionManager.CLI
 {
@@ -22,121 +23,169 @@ namespace HybridConnectionManager.CLI
 
         public static async Task LoginHandler()
         {
-            HybridConnectionManagerClient client = new HybridConnectionManagerClient();
-            var response = await client.AuthenticateUser();
-            Console.WriteLine(response);
+            try
+            {
+                HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+                var response = await client.AuthenticateUser();
+                Console.WriteLine(response);
+            }
+            catch (RpcException ex)
+            {
+                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
+                return;
+            }
         }
 
         public static async Task AddHandler(string connectionString, string subscription, string resourceGroup, string @namespace, string name)
         {
-            bool useConnectionString = true;
-            bool interactiveMode = false;
-
-            if (string.IsNullOrEmpty(connectionString))
+            try
             {
-                if (string.IsNullOrEmpty(subscription) && string.IsNullOrEmpty(resourceGroup) && string.IsNullOrEmpty(@namespace) && string.IsNullOrEmpty(name))
-                {
-                    interactiveMode = true;
-                }
-                else if (string.IsNullOrEmpty(subscription) || string.IsNullOrEmpty(resourceGroup) || string.IsNullOrEmpty(@namespace) || string.IsNullOrEmpty(name))
-                {
-                    Console.WriteLine("Must specify either <connection-string> or ALL of { --subscription, --resource-group, --namespace, --name }");
-                    return;
-                }
-                useConnectionString = false;
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(subscription) || !string.IsNullOrEmpty(resourceGroup) || !string.IsNullOrEmpty(@namespace) || !string.IsNullOrEmpty(name))
-                {
-                    Console.WriteLine("Must specify either <connection-string> or ALL of { --subscription, --resource-group, --namespace, --name }");
-                    return;
-                }
+                bool useConnectionString = true;
+                bool interactiveMode = false;
 
-                if (!Regex.IsMatch(connectionString, HcConnectionStringRegexPattern) && !Regex.IsMatch(connectionString, RootConnectionStringRegexPattern))
+                if (string.IsNullOrEmpty(connectionString))
                 {
-                    Console.WriteLine(String.Format("Connection string {0} is invalid. Connection string must be of form: Endpoint=sb://<namespace>.servicebus.windows.net/;SharedAccessKeyName=<keyName>;SharedAccessKey=<keyValue>;EntityPath=<name>", connectionString));
-                    return;
+                    if (string.IsNullOrEmpty(subscription) && string.IsNullOrEmpty(resourceGroup) && string.IsNullOrEmpty(@namespace) && string.IsNullOrEmpty(name))
+                    {
+                        interactiveMode = true;
+                    }
+                    else if (string.IsNullOrEmpty(subscription) || string.IsNullOrEmpty(resourceGroup) || string.IsNullOrEmpty(@namespace) || string.IsNullOrEmpty(name))
+                    {
+                        Console.WriteLine("Must specify either <connection-string> or ALL of { --subscription, --resource-group, --namespace, --name }");
+                        return;
+                    }
+                    useConnectionString = false;
                 }
-            }
-
-            HybridConnectionManagerClient client = new HybridConnectionManagerClient();
-
-            if (interactiveMode)
-            {
-                if (!StartInteractiveMode(out subscription, out resourceGroup, out @namespace, out name))
+                else
                 {
-                    return;
+                    if (!string.IsNullOrEmpty(subscription) || !string.IsNullOrEmpty(resourceGroup) || !string.IsNullOrEmpty(@namespace) || !string.IsNullOrEmpty(name))
+                    {
+                        Console.WriteLine("Must specify either <connection-string> or ALL of { --subscription, --resource-group, --namespace, --name }");
+                        return;
+                    }
+
+                    if (!Regex.IsMatch(connectionString, HcConnectionStringRegexPattern) && !Regex.IsMatch(connectionString, RootConnectionStringRegexPattern))
+                    {
+                        Console.WriteLine(String.Format("Connection string {0} is invalid. Connection string must be of form: Endpoint=sb://<namespace>.servicebus.windows.net/;SharedAccessKeyName=<keyName>;SharedAccessKey=<keyValue>;EntityPath=<name>", connectionString));
+                        return;
+                    }
                 }
 
-                useConnectionString = false;
-                await client.AuthenticateUser();
-            }
+                HybridConnectionManagerClient client = new HybridConnectionManagerClient();
 
-            var response = new HybridConnectionInformationResponse();
-            if (useConnectionString)
-            {
-                response = await client.AddUsingConnectionString(connectionString);
-            }
-            else
-            {
-                response = await client.AddUsingParameters(subscription, resourceGroup, @namespace, name);
-            }
+                if (interactiveMode)
+                {
+                    if (!StartInteractiveMode(out subscription, out resourceGroup, out @namespace, out name))
+                    {
+                        return;
+                    }
 
-            if (response.Error)
-            {
-                Console.WriteLine(response.ErrorMessage);
+                    useConnectionString = false;
+                    await client.AuthenticateUser();
+                }
+
+                var response = new HybridConnectionInformationResponse();
+                if (useConnectionString)
+                {
+                    response = await client.AddUsingConnectionString(connectionString);
+                }
+                else
+                {
+                    response = await client.AddUsingParameters(subscription, resourceGroup, @namespace, name);
+                }
+
+                if (response.Error)
+                {
+                    Console.WriteLine(response.ErrorMessage);
+                }
+                else
+                {
+                    var responseString = JsonConvert.SerializeObject(response, Formatting.Indented, HybridConnectionJsonSettings);
+                    Console.WriteLine(responseString);
+                    Console.WriteLine("Connection added successfully");
+                }
             }
-            else
+            catch (RpcException ex)
             {
-                var responseString = JsonConvert.SerializeObject(response, Formatting.Indented, HybridConnectionJsonSettings);
-                Console.WriteLine(responseString);
-                Console.WriteLine("Connection added successfully");
+                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
+                return;
             }
         }
 
         public static async Task RemoveHandler(string @namespace, string name)
         {
-            HybridConnectionManagerClient client = new HybridConnectionManagerClient();
-            var response = await client.RemoveConnection(@namespace, name);
-            Console.WriteLine(response);
+            try
+            {
+                HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+                var response = await client.RemoveConnection(@namespace, name);
+                Console.WriteLine(response);
+            }
+            catch (RpcException ex)
+            {
+                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
+                return;
+            }
         }
 
         public static async Task ShowHandler(string @namespace, string name)
         {
-            HybridConnectionManagerClient client = new HybridConnectionManagerClient();
-            var response = await client.ShowConnection(@namespace, name);
+            try
+            {
+                HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+                var response = await client.ShowConnection(@namespace, name);
 
-            if (response.Error)
-            {
-                Console.WriteLine(response.ErrorMessage);
+                if (response.Error)
+                {
+                    Console.WriteLine(response.ErrorMessage);
+                }
+                else
+                {
+                    var responseString = JsonConvert.SerializeObject(response, Formatting.Indented, HybridConnectionJsonSettings);
+                    Console.WriteLine(responseString);
+                }
             }
-            else
+            catch (RpcException ex)
             {
-                var responseString = JsonConvert.SerializeObject(response, Formatting.Indented, HybridConnectionJsonSettings);
-                Console.WriteLine(responseString);
+                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
+                return;
             }
         }
 
         public static async Task ListHandler()
         {
-            HybridConnectionManagerClient client = new HybridConnectionManagerClient();
-            var response = await client.ListConnections();
-            var responseString = JsonConvert.SerializeObject(response, Formatting.Indented, HybridConnectionJsonSettings);
-            Console.WriteLine(responseString);
+            try
+            {
+                HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+                var response = await client.ListConnections();
+                var responseString = JsonConvert.SerializeObject(response, Formatting.Indented, HybridConnectionJsonSettings);
+                Console.WriteLine(responseString);
+            }
+            catch (RpcException ex)
+            {
+                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
+                return;
+            }
         }
 
         public static async Task TestHandler(string endpoint)
         {
-            if (!Regex.IsMatch(endpoint, EndpointRegexPattern))
+            try
             {
-                Console.WriteLine(String.Format("Endpoint {0} is invalid. Endpoint must be of form: <host>:<port>", endpoint));
+                if (!Regex.IsMatch(endpoint, EndpointRegexPattern))
+                {
+                    Console.WriteLine(String.Format("Endpoint {0} is invalid. Endpoint must be of form: <host>:<port>", endpoint));
+                    return;
+                }
+
+                HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+                var response = await client.TestEndpointForConnection(endpoint);
+                Console.WriteLine(response);
+            }
+            catch (RpcException ex)
+            {
+                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
                 return;
             }
-
-            HybridConnectionManagerClient client = new HybridConnectionManagerClient();
-            var response = await client.TestEndpointForConnection(endpoint);
-            Console.WriteLine(response);
         }
 
         public static bool StartInteractiveMode(out string subscription, out string resourceGroup, out string @namespace, out string name)
@@ -177,7 +226,6 @@ namespace HybridConnectionManager.CLI
 
             Console.Write("\nSelect a subscription [Id]: ");
             var subscriptionIndex = Console.ReadLine();
-            Console.WriteLine();
 
             if (!int.TryParse(subscriptionIndex, out int subIndex) || subIndex < 0 || subIndex >= subscriptionResourcesList.Count)
             {
@@ -186,11 +234,15 @@ namespace HybridConnectionManager.CLI
             }
 
             var chosenSub = subscriptionResourcesList[subIndex];
+
+            Console.WriteLine(string.Format("\nRetrieving Hybrid Connections for {0}..\n", chosenSub.Data.DisplayName));
+
             var resourceGroupsCollection = chosenSub.GetResourceGroups();
             index = 0;
-            Console.WriteLine("Id    Name        Region         Namespace       Endpoint");
-            Console.WriteLine("---   -----       ------         ---------       --------");
 
+            StringWriter stringWriter = new StringWriter();
+            stringWriter.WriteLine("Id    Name        Region         Namespace       Endpoint");
+            stringWriter.WriteLine("---   -----       ------         ---------       --------");
 
             foreach (var resourceGroupResource in resourceGroupsCollection)
             {
@@ -201,12 +253,21 @@ namespace HybridConnectionManager.CLI
                     foreach (var hybridConnectionResource in hybridConnectionsCollection)
                     {
                         Tuple<string, int> endpoint = GetEndpointFromUserMetadata(hybridConnectionResource.Data.UserMetadata);
-                        Console.WriteLine(String.Format("[{0}]   {1}   {2}   {3}  {4}:{5}", index, hybridConnectionResource.Data.Name, hybridConnectionResource.Data.Location, relayNamespaceResource.Data.Name, endpoint.Item1, endpoint.Item2));
+                        stringWriter.WriteLine(String.Format("[{0}]   {1}   {2}   {3}  {4}:{5}", index, hybridConnectionResource.Data.Name, hybridConnectionResource.Data.Location, relayNamespaceResource.Data.Name, endpoint.Item1, endpoint.Item2));
                         index++;
                         hybridConnectionResourcesList.Add(hybridConnectionResource);
                     }
                 }
             }
+
+            if (hybridConnectionResourcesList.Count == 0)
+            {
+                Console.WriteLine("No Hybrid Connection resources exist for this subscription. Exiting..");
+                return false;
+            }
+
+            string result = stringWriter.ToString();
+            Console.WriteLine(stringWriter);
 
             Console.Write("\nSelect a Hybrid Connection [Id]: ");
             var hybridConnectionIndex = Console.ReadLine();
