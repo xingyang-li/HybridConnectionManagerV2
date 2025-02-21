@@ -80,6 +80,12 @@ namespace HybridConnectionManager.Service
                 _logger.Error("Unable to retrieve runtime details for connection {0}/{1} as it does not exist anymore.", _hcInfo.Namespace, _hcInfo.Name);
                 return;
             }
+            catch (AuthorizationFailedException ex)
+            {
+                _hcInfo.Status = "NotFound";
+                _logger.Error("Local Authorization Claim for connection {0}/{1} failed.", _hcInfo.Namespace, _hcInfo.Name);
+                return;
+            }
 
             if (runtimeInfo != null)
             {
@@ -227,21 +233,23 @@ namespace HybridConnectionManager.Service
 
         private void ListenerConnecting(object sender, EventArgs e)
         {
-            // TODO log somewhere?
-            _logger.Information("Listenering connecting for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
+            _logger.Information("Listener connecting for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
         }
 
         private void ListenerOnline(object sender, EventArgs e)
         {
             Online?.Invoke(sender, e);
-            // TODO log
             _logger.Information("Listener online for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
 
             RefreshConnectionInformation().GetAwaiter().GetResult();
         }
         private void ListenerOffline(object sender, EventArgs e)
         {
-            // TODO log
+            if (!_isShuttingDown)
+            {
+                RefreshConnectionInformation().GetAwaiter().GetResult();
+            }
+
             _logger.Information("Listener offline for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
         }
 
