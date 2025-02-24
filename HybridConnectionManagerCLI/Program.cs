@@ -58,7 +58,7 @@ namespace HybridConnectionManager.CLI
 
             // Commands + Handlers
             var login = new Command("login", "Login to Azure");
-            login.SetHandler(() => CommandHelper.LoginHandler());
+            login.SetHandler(() => CommandHandlers.LoginHandler());
 
             var add = new Command("add", "Add a new Hybrid Connection")
             {
@@ -69,7 +69,7 @@ namespace HybridConnectionManager.CLI
                 NameOption,
             };
 
-            add.SetHandler((string connectionString, string subscription, string resourceGroup, string @namespace, string name) => CommandHelper.AddHandler(connectionString, subscription, resourceGroup, @namespace, name),
+            add.SetHandler((string connectionString, string subscription, string resourceGroup, string @namespace, string name) => CommandHandlers.AddHandler(connectionString, subscription, resourceGroup, @namespace, name),
                 connectionStringArg, SubscriptionOption, ResourceGroupOption, NamespaceOption, NameOption);
 
             var remove = new Command("remove", "Remove a Hybrid Connection from the local machine")
@@ -77,23 +77,23 @@ namespace HybridConnectionManager.CLI
                 requiredNamespaceOption,
                 requiredNameOption
             };
-            remove.SetHandler((string @namespace, string name) => CommandHelper.RemoveHandler(@namespace, name), requiredNamespaceOption, requiredNameOption);
+            remove.SetHandler((string @namespace, string name) => CommandHandlers.RemoveHandler(@namespace, name), requiredNamespaceOption, requiredNameOption);
 
             var show = new Command("show", "Show a Hybrid Connection")
             {
                 requiredNamespaceOption,
                 requiredNameOption
             };
-            show.SetHandler((string @namespace, string name) => CommandHelper.ShowHandler(@namespace, name), requiredNamespaceOption, requiredNameOption);
+            show.SetHandler((string @namespace, string name) => CommandHandlers.ShowHandler(@namespace, name), requiredNamespaceOption, requiredNameOption);
 
             var list = new Command("list", "List all Hybrid Connections");
-            list.SetHandler(() => CommandHelper.ListHandler());
+            list.SetHandler(() => CommandHandlers.ListHandler());
 
             var test = new Command("test", "Test the endpoint for a given Hybrid Connection")
             {
                 endpointStringArg
             };
-            test.SetHandler((string endpoint) => CommandHelper.TestHandler(endpoint), endpointStringArg);
+            test.SetHandler((string endpoint) => CommandHandlers.TestHandler(endpoint), endpointStringArg);
 
             // Root
             var rootCommand = new RootCommand("Hybrid Connection Manager V2 CLI")

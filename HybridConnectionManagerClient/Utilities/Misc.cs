@@ -1,12 +1,11 @@
-﻿using HybridConnectionManager.Library;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace HybridConnectionManager.Service
+namespace HybridConnectionManager.Library
 {
     public static class Util
     {

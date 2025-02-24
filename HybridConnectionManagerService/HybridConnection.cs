@@ -1,8 +1,7 @@
-﻿using HybridConnectionManager.Models;
+﻿using HybridConnectionManager.Library;
 using Microsoft.Azure.Relay;
 using System.Net.Sockets;
 using Serilog;
-using Microsoft.VisualBasic;
 
 namespace HybridConnectionManager.Service
 {
@@ -32,7 +31,7 @@ namespace HybridConnectionManager.Service
             IsOpen = false;
             _isShuttingDown = false;
 
-            RefreshConnectionInformation().Wait();
+            RefreshConnectionInformation().GetAwaiter().GetResult();
         }
 
         public HybridConnection(HybridConnectionInformation information)
@@ -243,6 +242,7 @@ namespace HybridConnectionManager.Service
 
             RefreshConnectionInformation().GetAwaiter().GetResult();
         }
+
         private void ListenerOffline(object sender, EventArgs e)
         {
             if (!_isShuttingDown)

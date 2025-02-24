@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace HybridConnectionManager.Models
+namespace HybridConnectionManager.Library
 {
     public class HybridConnectionInformation
     {

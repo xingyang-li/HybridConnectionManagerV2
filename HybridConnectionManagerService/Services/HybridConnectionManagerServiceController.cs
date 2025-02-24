@@ -1,7 +1,7 @@
 using Azure.Core;
 using Grpc.Core;
 using HcManProto;
-using HybridConnectionManager.Models;
+using HybridConnectionManager.Library;
 using Serilog;
 
 namespace HybridConnectionManager.Service
@@ -59,6 +59,8 @@ namespace HybridConnectionManager.Service
                     Status = connectionInformation.Status,
                     NumberOfListeners = connectionInformation.NumberOfListeners,
                     ServiceBusEndpoint = connectionInformation.Namespace + ".servicebus.windows.net",
+                    CreatedOn = connectionInformation.CreatedOn,
+                    LastUpdated = connectionInformation.LastUpdated,
                 };
             }
             else

@@ -1,7 +1,6 @@
 ﻿using Azure.Core;
-using HybridConnectionManager.Models;
+using HybridConnectionManager.Library;
 using Serilog;
-using System.Threading.Tasks;
 
 namespace HybridConnectionManager.Service
 {
@@ -82,6 +81,7 @@ namespace HybridConnectionManager.Service
             {
                 var hybridConnection = new HybridConnection(connectionString);
                 await hybridConnection.Open();
+                Thread.Sleep(1000);
                 hcInfo = hybridConnection.Information;
 
                 lock (_readLock)

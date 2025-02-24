@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HybridConnectionManagerClient\HybridConnectionManagerClient.csproj" />
+    <ProjectReference Include="..\HybridConnectionManagerClient\HybridConnectionManagerLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Reflection;
 
-namespace HybridConnectionManager.CLI
+namespace HybridConnectionManager.Library
 {
     public class IgnorePropertiesResolver : DefaultContractResolver
     {

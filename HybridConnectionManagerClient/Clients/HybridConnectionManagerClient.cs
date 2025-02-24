@@ -1,7 +1,7 @@
 ﻿using Grpc.Net.Client;
 using HcManProto;
 
-namespace HybridConnectionManager.Client
+namespace HybridConnectionManager.Library
 {
     public class HybridConnectionManagerClient
     {

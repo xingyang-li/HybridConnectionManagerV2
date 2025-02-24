@@ -3,26 +3,29 @@ using Azure.ResourceManager.Relay;
 using Azure.ResourceManager.Resources;
 using Azure.ResourceManager;
 using HcManProto;
-using HybridConnectionManager.Client;
+using HybridConnectionManager.Library;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Runtime.Serialization;
 using Grpc.Core;
+using Azure.Core;
 
 namespace HybridConnectionManager.CLI
 {
-    public static class CommandHelper
+    public static class CommandHandlers
     {
         public static JsonSerializerSettings HybridConnectionJsonSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, ContractResolver = new IgnorePropertiesResolver(new[] { "Error", "ErrorMessage" }) };
         public static string EndpointRegexPattern = "^([a-zA-Z0-9.-]+):(\\d{1,5})$";
         public static string HcConnectionStringRegexPattern = @"^Endpoint=sb:\/\/[a-zA-Z0-9-]+\.servicebus\.windows\.net\/;SharedAccessKeyName=[a-zA-Z0-9-]+;SharedAccessKey=[a-zA-Z0-9+\/=]+;EntityPath=[a-zA-Z0-9-]+$";
         public static string RootConnectionStringRegexPattern = @"^Endpoint=sb:\/\/[a-zA-Z0-9-]+\.servicebus\.windows\.net\/;SharedAccessKeyName=[a-zA-Z0-9-]+;SharedAccessKey=[a-zA-Z0-9+\/=]+$";
 
+        public static MSALProvider MSALProvider = new MSALProvider();
+
         public static async Task LoginHandler()
         {
+            /*
             try
             {
                 HybridConnectionManagerClient client = new HybridConnectionManagerClient();
@@ -33,14 +36,26 @@ namespace HybridConnectionManager.CLI
             {
                 Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
                 return;
-            }
+            }*/
+
+            /*
+            var result = await MSALProvider.GetTokenAsync();
+            Console.WriteLine($"Access Token: {result}");
+            */
+
+            var credential = MSALProvider.TokenCredential;
+
+            var tokenRequestContext = new TokenRequestContext(new[] { "https://management.azure.com/.default" });
+            var token = await credential.GetTokenAsync(tokenRequestContext);
+            Console.WriteLine($"Access Token retrieved successfully. Expires on: {token.ExpiresOn}");
+
         }
 
         public static async Task AddHandler(string connectionString, string subscription, string resourceGroup, string @namespace, string name)
         {
             try
             {
-                bool useConnectionString = true;
+                bool connectionStringSupplied = true;
                 bool interactiveMode = false;
 
                 if (string.IsNullOrEmpty(connectionString))
@@ -54,7 +69,7 @@ namespace HybridConnectionManager.CLI
                         Console.WriteLine("Must specify either <connection-string> or ALL of { --subscription, --resource-group, --namespace, --name }");
                         return;
                     }
-                    useConnectionString = false;
+                    connectionStringSupplied = false;
                 }
                 else
                 {
@@ -72,27 +87,34 @@ namespace HybridConnectionManager.CLI
                 }
 
                 HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+                RelayArmClient relayArmClient = null;
+
+                //string accessToken = MSALProvider.GetTokenAsync().Result;
+                //var credential = new BearerTokenCredential(accessToken);
+
+                // TODO: figure out auth, using default azure credential for now
+                var credential = MSALProvider.TokenCredential;
 
                 if (interactiveMode)
                 {
-                    if (!StartInteractiveMode(out subscription, out resourceGroup, out @namespace, out name))
+                    Console.WriteLine("\nInteractive Mode");
+                    Console.WriteLine("-----------------");
+                    Console.WriteLine("\nLogging in to Azure..\n");
+
+                    relayArmClient = new RelayArmClient(credential);
+                    if (!StartInteractiveMode(relayArmClient, out connectionString))
                     {
                         return;
                     }
-
-                    useConnectionString = false;
-                    await client.AuthenticateUser();
                 }
 
-                var response = new HybridConnectionInformationResponse();
-                if (useConnectionString)
+                if (!connectionStringSupplied && !interactiveMode)
                 {
-                    response = await client.AddUsingConnectionString(connectionString);
+                    relayArmClient = new RelayArmClient(credential);
+                    connectionString = relayArmClient.GetHybridConnectionPrimaryConnectionString(subscription, resourceGroup, @namespace, name);
                 }
-                else
-                {
-                    response = await client.AddUsingParameters(subscription, resourceGroup, @namespace, name);
-                }
+
+                var response = await client.AddUsingConnectionString(connectionString);
 
                 if (response.Error)
                 {
@@ -188,34 +210,15 @@ namespace HybridConnectionManager.CLI
             }
         }
 
-        public static bool StartInteractiveMode(out string subscription, out string resourceGroup, out string @namespace, out string name)
+        public static bool StartInteractiveMode(RelayArmClient relayArmClient, out string connectionString)
         {
             List<SubscriptionResource> subscriptionResourcesList = new List<SubscriptionResource>();
             List<RelayHybridConnectionResource> hybridConnectionResourcesList = new List<RelayHybridConnectionResource>();
             int index = 0;
 
-            subscription = null;
-            resourceGroup = null;
-            @namespace = null;
-            name = null;
+            connectionString = null;
 
-            Console.WriteLine("\nInteractive Mode");
-            Console.WriteLine("-----------------");
-            Console.WriteLine("\nLogging in to Azure..\n");
-
-            var credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
-            {
-                ExcludeEnvironmentCredential = true,
-                ExcludeManagedIdentityCredential = true,
-                ExcludeSharedTokenCacheCredential = true,
-                ExcludeVisualStudioCredential = true,
-                ExcludeVisualStudioCodeCredential = true,
-                ExcludeAzureCliCredential = true,
-                ExcludeInteractiveBrowserCredential = false
-            });
-
-            ArmClient armClient = new ArmClient(credential);
-            var subscriptionsResourceCollection = armClient.GetSubscriptions();
+            var subscriptionsResourceCollection = relayArmClient.GetSubscriptions();
 
             foreach (var subscriptionResource in subscriptionsResourceCollection)
             {
@@ -282,24 +285,11 @@ namespace HybridConnectionManager.CLI
             var chosenHybridConnection = hybridConnectionResourcesList[hcIndex];
             var hybridConnectionId = chosenHybridConnection.Data.Id;
 
-            ParseHybridConnectionId(hybridConnectionId, out subscription, out resourceGroup, out @namespace, out name);
+            connectionString = relayArmClient.GetHybridConnectionPrimaryConnectionString(hybridConnectionId);
 
             return true;
         }
 
-        public static void ParseHybridConnectionId(string armId, out string subscription, out string resourceGroup, out string @namespace, out string name)
-        {
-            subscription = null;
-            resourceGroup = null;
-            @namespace = null;
-            name = null;
-
-            var uriElements = armId.Split('/');
-            subscription = uriElements[2];
-            resourceGroup = uriElements[4];
-            @namespace = uriElements[8];
-            name = uriElements[10];
-        }
 
         // TODO: below is duplicated helper code
         [DataContract]
