@@ -1,0 +1,165 @@
+﻿@model IEnumerable<HybridConnectionModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Object List</title>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Hybrid Connections</h2>
+
+        <button id="refreshButton" class="btn btn-primary mb-3" onclick="refreshContent()">
+            <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+
+        <div id="contentArea">
+            @if (Model != null && Model.Any())
+            {
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="selectAll" />
+                            </td>
+                            <th>Name</th>
+                            <th>Connection Status</th>
+                            <th>Namespace</th>
+                            <th>Endpoint</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="item-row" style="cursor: pointer;"
+                                data-id="@item.Name"
+                                data-namespace="@item.Namespace"
+                                data-name="@item.Name"
+                                data-endpoint="@item.Endpoint"
+                                data-status="@item.Status"
+                                data-created-on="@item.CreatedOn"
+                                data-last-updated="@item.LastUpdated">
+                                <td onclick="event.stopPropagation()">
+                                    <input type="checkbox" name="selectedIds" />
+                                </td>
+                                <td>@item.Name</td>
+                                <td>@item.Status</td>
+                                <td>@item.Namespace</td>
+                                <td>@item.Endpoint</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No items found.</p>
+            }
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalLabel">Item Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> <span id="modal-name"></span></p>
+                                <!-- Add more fields as needed -->
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Created On:</strong> <span id="modal-created-on"></span></p>
+                                <p><strong>Last Updated:</strong> <span id="modal-last-updated"></span></p>
+                                <p><strong>Status:</strong> <span id="modal-status"></span></p>
+                                <p><strong>Namespace:</strong> <span id="modal-namespace"></span></p>
+                                <!-- Add more fields as needed -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentItem = null;
+
+            document.querySelectorAll('.item-row').forEach(row => {
+            row.addEventListener('click', function() {
+                const details = {
+                    namespace: this.dataset.namespace,
+                    name: this.dataset.name,
+                    endpoint: this.dataset.endpoint,
+                    status: this.dataset.status,
+                    createdOn: this.dataset.createdOn,
+                    lastUpdated: this.dataset.lastUpdated
+                };
+                showDetails(details);
+            });
+        });
+
+        document.getElementById('selectAll').addEventListener('change', function() {
+            var checkboxes = document.getElementsByName('selectedIds');
+            for(var checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+            }
+        });
+
+        function refreshContent() {
+            $("#refreshButton").prop("disabled", true);
+
+            $.ajax({
+                url: '@Url.Action("GetUpdatedData", "List")', // Replace with your actual controller and action
+                type: 'GET',
+                success: function (result) {
+                    $("#contentArea").html(result);
+                },
+                error: function (error) {
+                    console.error('Error refreshing content:', error);
+                    alert('Error refreshing content. Please try again.');
+                },
+                complete: function () {
+                    $("#refreshButton").prop("disabled", false);
+                }
+            });
+        }
+
+        function showDetails(item) {
+            currentItem = item;
+
+            // Update modal content
+            document.getElementById('modal-name').textContent = item.name;
+
+            // If you have these additional fields in your model:
+            document.getElementById('modal-created-on').textContent = formatDate(item.createdOn);
+            document.getElementById('modal-last-updated').textContent = formatDate(item.lastUpdated);
+            document.getElementById('modal-status').textContent = item.status;
+            document.getElementById('modal-namespace').textContent = item.namespace;
+
+
+            // Show the modal
+            var myModal = new bootstrap.Modal(document.getElementById('detailsModal'));
+            myModal.show();
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleString();
+        }
+
+    </script>
+</body>
+</html>

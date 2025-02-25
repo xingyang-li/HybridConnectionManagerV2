@@ -1,0 +1,43 @@
+﻿@model IEnumerable<HybridConnectionModel>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <td>
+                    <input type="checkbox" id="selectAll" />
+                </td>
+                <th>Name</th>
+                <th>Connection Status</th>
+                <th>Namespace</th>
+                <th>Endpoint</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="item-row" style="cursor: pointer;"
+                    data-id="@item.Name"
+                    data-namespace="@item.Namespace"
+                    data-name="@item.Name"
+                    data-endpoint="@item.Endpoint"
+                    data-status="@item.Status"
+                    data-created-on="@item.CreatedOn"
+                    data-last-updated="@item.LastUpdated">
+                    <td onclick="event.stopPropagation()">
+                        <input type="checkbox" name="selectedIds" />
+                    </td>
+                    <td>@item.Name</td>
+                    <td>@item.Status</td>
+                    <td>@item.Namespace</td>
+                    <td>@item.Endpoint</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No items found.</p>
+}

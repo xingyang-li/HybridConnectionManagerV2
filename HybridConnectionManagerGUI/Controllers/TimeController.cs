@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HybridConnectionManager.Library;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace HybridConnectionManagerGUI.Controllers
 {
