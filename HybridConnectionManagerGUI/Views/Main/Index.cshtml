@@ -9,12 +9,23 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h2>Hybrid Connections</h2>
+    <div class="container pt-4">
+        <div class="d-flex align-items-center mb-4">
+            <!-- Added for title section with margin bottom -->
+            <h2>Hybrid Connections</h2>
+        </div>
 
-        <button id="refreshButton" class="btn btn-primary mb-3" onclick="refreshContent()">
-            <i class="fas fa-sync-alt"></i> Refresh
-        </button>
+        <div class="mb-3">
+            <button id="newButton" class="btn btn-success me-2" onclick="showNewConnectionModal()">
+                <i class="fas fa-plus"></i> New
+            </button>
+            <button id="refreshButton" class="btn btn-primary me-2" onclick="refreshContent()">
+                <i class="fas fa-arrows-rotate"></i> Refresh
+            </button>
+            <button id="removeButton" class="btn btn-danger" onclick="removeSelectedConnections()" disabled>
+                <i class="fas fa-trash"></i> Remove
+            </button>
+        </div>
 
         <div id="contentArea">
             @if (Model != null && Model.Any())
@@ -140,9 +151,12 @@
     </div>
 
     <script>
-        let currentItem = null;
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCheckboxListeners();
+            updateRemoveButton();
+        });
 
-            document.querySelectorAll('.item-row').forEach(row => {
+        document.querySelectorAll('.item-row').forEach(row => {
             row.addEventListener('click', function() {
                 const details = {
                     namespace: this.dataset.namespace,
@@ -162,6 +176,36 @@
                 checkbox.checked = this.checked;
             }
         });
+
+        function updateRemoveButton() {
+            const selectedCount = document.querySelectorAll('input[name="selectedIds"]:checked').length;
+            const removeButton = document.getElementById('removeButton');
+            removeButton.disabled = selectedCount === 0;
+        }
+
+        // Update the checkbox event listeners
+        function initializeCheckboxListeners() {
+            // Listen for "Select All" checkbox changes
+            const selectAllCheckbox = document.getElementById('selectAll');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function() {
+                    const checkboxes = document.getElementsByName('selectedIds');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                    updateRemoveButton();
+                });
+            }
+
+            // Listen for individual checkbox changes
+            const individualCheckboxes = document.getElementsByName('selectedIds');
+            individualCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function(e) {
+                    e.stopPropagation(); // Prevent row click when clicking checkbox
+                    updateRemoveButton();
+                });
+            });
+        }
 
         function refreshContent() {
             $("#refreshButton").prop("disabled", true);

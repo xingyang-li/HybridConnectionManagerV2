@@ -43,6 +43,11 @@ else
 }
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeCheckboxListeners();
+        updateRemoveButton();
+    });
+
     document.querySelectorAll('.item-row').forEach(row => {
         row.addEventListener('click', function() {
             const details = {
@@ -64,4 +69,33 @@ else
         }
     });
 
+    function updateRemoveButton() {
+        const selectedCount = document.querySelectorAll('input[name="selectedIds"]:checked').length;
+        const removeButton = document.getElementById('removeButton');
+        removeButton.disabled = selectedCount === 0;
+    }
+
+    // Update the checkbox event listeners
+    function initializeCheckboxListeners() {
+        // Listen for "Select All" checkbox changes
+        const selectAllCheckbox = document.getElementById('selectAll');
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', function() {
+                const checkboxes = document.getElementsByName('selectedIds');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+                updateRemoveButton();
+            });
+        }
+
+        // Listen for individual checkbox changes
+        const individualCheckboxes = document.getElementsByName('selectedIds');
+        individualCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function(e) {
+                e.stopPropagation(); // Prevent row click when clicking checkbox
+                updateRemoveButton();
+            });
+        });
+    }
 </script>
