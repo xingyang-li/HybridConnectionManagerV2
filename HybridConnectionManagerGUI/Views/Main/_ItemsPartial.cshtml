@@ -41,3 +41,27 @@ else
 {
     <p>No items found.</p>
 }
+
+<script>
+    document.querySelectorAll('.item-row').forEach(row => {
+        row.addEventListener('click', function() {
+            const details = {
+                namespace: this.dataset.namespace,
+                name: this.dataset.name,
+                endpoint: this.dataset.endpoint,
+                status: this.dataset.status,
+                createdOn: this.dataset.createdOn,
+                lastUpdated: this.dataset.lastUpdated
+            };
+            showDetails(details);
+        });
+    });
+
+    document.getElementById('selectAll').addEventListener('change', function() {
+        var checkboxes = document.getElementsByName('selectedIds');
+        for(var checkbox of checkboxes) {
+            checkbox.checked = this.checked;
+        }
+    });
+
+</script>

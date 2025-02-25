@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HybridConnectionManagerGUI.Controllers
 {
-    public class ListController : Controller
+    public class MainController : Controller
     {
         public IActionResult Index()
         {
