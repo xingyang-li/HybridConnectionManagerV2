@@ -71,19 +71,65 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>Name:</strong> <span id="modal-name"></span></p>
-                                <!-- Add more fields as needed -->
-                            </div>
-                            <div class="col-md-6">
-                                <p><strong>Created On:</strong> <span id="modal-created-on"></span></p>
-                                <p><strong>Last Updated:</strong> <span id="modal-last-updated"></span></p>
-                                <p><strong>Status:</strong> <span id="modal-status"></span></p>
-                                <p><strong>Namespace:</strong> <span id="modal-namespace"></span></p>
-                                <!-- Add more fields as needed -->
-                            </div>
-                        </div>
+                        <style>
+                            /* Custom table styling for modal */
+                            .details-table {
+                                width: 100%;
+                            }
+                            .details-table th,
+                            .details-table td {
+                                padding: 8px;
+                                border: none; /* Remove all borders */
+                            }
+                            /* Only add border between thead and tbody */
+                            .details-table thead {
+                                border-bottom: 2px solid #dee2e6;
+                            }
+
+                            .details-table tbody tr:hover {
+                                background-color: #e9ecef;
+                                transition: background-color 0.05s ease-in-out;
+                                cursor: pointer;
+                            }
+                            /* Ensure even rows maintain distinct hover state */
+                            .details-table tbody tr:nth-child(even):hover {
+                                background-color: #e9ecef;
+                            }
+                        </style>
+                        <table class="details-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%">Name</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Name</td>
+                                    <td id="modal-name"></td>
+                                </tr>
+                                <tr>
+                                    <td>Namespace</td>
+                                    <td id="modal-namespace"></td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td id="modal-status"></td>
+                                </tr>
+                                <tr>
+                                    <td>Endpoint</td>
+                                    <td id="modal-endpoint"></td>
+                                </tr>
+                                <tr>
+                                    <td>Created On</td>
+                                    <td id="modal-created-on"></td>
+                                </tr>
+                                <tr>
+                                    <td>Last Updated</td>
+                                    <td id="modal-last-updated"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -147,7 +193,7 @@
             document.getElementById('modal-last-updated').textContent = formatDate(item.lastUpdated);
             document.getElementById('modal-status').textContent = item.status;
             document.getElementById('modal-namespace').textContent = item.namespace;
-
+            document.getElementById('modal-endpoint').textContent = item.endpoint;
 
             // Show the modal
             var myModal = new bootstrap.Modal(document.getElementById('detailsModal'));
