@@ -19,6 +19,21 @@ namespace HybridConnectionManagerGUI.Controllers
             return PartialView("_ItemsPartial", hybridConnections); // Return a partial view with just the table contents
         }
 
+        [HttpPost]
+        public JsonResult Remove([FromBody] HybridConnectionsModel model)
+        {
+            try
+            {
+                RemoveHybridConnections(model);
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
         public List<HybridConnectionModel> GetHybridConnections()
         {
             HybridConnectionManagerClient client = new HybridConnectionManagerClient();
@@ -44,6 +59,16 @@ namespace HybridConnectionManagerGUI.Controllers
             catch (Exception ex)
             {
                 return new List<HybridConnectionModel>();
+            }
+        }
+
+        public void RemoveHybridConnections(HybridConnectionsModel model)
+        {
+            HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+
+            foreach (var connection in model.Connections)
+            {
+                var hybridConnectionsResponse = client.RemoveConnection(connection.Namespace, connection.Name).Result;
             }
         }
     }

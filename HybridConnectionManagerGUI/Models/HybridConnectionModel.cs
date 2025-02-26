@@ -32,4 +32,9 @@
             get; set;
         }
     }
+
+    public class HybridConnectionsModel
+    {
+        public List<HybridConnectionModel> Connections { get; set; }
+    }
 }

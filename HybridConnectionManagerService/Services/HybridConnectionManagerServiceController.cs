@@ -75,7 +75,7 @@ namespace HybridConnectionManager.Service
 
         public override async Task<HybridConnectionInformationResponse> AddUsingParameters(HybridConnectionRequest request, ServerCallContext context)
         {
-            _logger.Information(string.Format("Attempting to add Hybrid Connection with namespace: {0} and name {1}", request.Namespace, request.Name));
+            _logger.Information(string.Format("Attempting to add Hybrid Connection {0}/{1}", request.Namespace, request.Name));
 
             if (HybridConnectionManager.FindConnectionInformation(request.Namespace, request.Name, out HybridConnectionInformation hcInfo))
             {
@@ -127,7 +127,7 @@ namespace HybridConnectionManager.Service
 
         public override async Task<StringResponse> RemoveConnection(HybridConnectionRequest request, ServerCallContext context)
         {
-            _logger.Information(string.Format("Attempting to remove Hybrid Connection with namespace: {0} and name {1}", request.Namespace, request.Name));
+            _logger.Information(string.Format("Attempting to remove Hybrid Connection {0}/{1}", request.Namespace, request.Name));
 
             StringResponse response = new StringResponse();
 

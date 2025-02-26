@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<HybridConnectionModel>
 
-@if (Model != null && Model.Any())
+@if (Model != null)
 {
     <table class="table table-hover">
         <thead>
@@ -18,7 +18,6 @@
             @foreach (var item in Model)
             {
                 <tr class="item-row" style="cursor: pointer;"
-                    data-id="@item.Name"
                     data-namespace="@item.Namespace"
                     data-name="@item.Name"
                     data-endpoint="@item.Endpoint"
@@ -26,7 +25,10 @@
                     data-created-on="@item.CreatedOn"
                     data-last-updated="@item.LastUpdated">
                     <td onclick="event.stopPropagation()">
-                        <input type="checkbox" name="selectedIds" />
+                        <input type="checkbox" name="selectedIds"
+                               value="@item.Name"
+                               data-namespace="@item.Namespace"
+                               data-name="@item.Name" />
                     </td>
                     <td>@item.Name</td>
                     <td>@item.Status</td>
@@ -37,65 +39,8 @@
         </tbody>
     </table>
 }
-else
+
+@if (!Model.Any())
 {
     <p>No items found.</p>
 }
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        initializeCheckboxListeners();
-        updateRemoveButton();
-    });
-
-    document.querySelectorAll('.item-row').forEach(row => {
-        row.addEventListener('click', function() {
-            const details = {
-                namespace: this.dataset.namespace,
-                name: this.dataset.name,
-                endpoint: this.dataset.endpoint,
-                status: this.dataset.status,
-                createdOn: this.dataset.createdOn,
-                lastUpdated: this.dataset.lastUpdated
-            };
-            showDetails(details);
-        });
-    });
-
-    document.getElementById('selectAll').addEventListener('change', function() {
-        var checkboxes = document.getElementsByName('selectedIds');
-        for(var checkbox of checkboxes) {
-            checkbox.checked = this.checked;
-        }
-    });
-
-    function updateRemoveButton() {
-        const selectedCount = document.querySelectorAll('input[name="selectedIds"]:checked').length;
-        const removeButton = document.getElementById('removeButton');
-        removeButton.disabled = selectedCount === 0;
-    }
-
-    // Update the checkbox event listeners
-    function initializeCheckboxListeners() {
-        // Listen for "Select All" checkbox changes
-        const selectAllCheckbox = document.getElementById('selectAll');
-        if (selectAllCheckbox) {
-            selectAllCheckbox.addEventListener('change', function() {
-                const checkboxes = document.getElementsByName('selectedIds');
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = this.checked;
-                });
-                updateRemoveButton();
-            });
-        }
-
-        // Listen for individual checkbox changes
-        const individualCheckboxes = document.getElementsByName('selectedIds');
-        individualCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function(e) {
-                e.stopPropagation(); // Prevent row click when clicking checkbox
-                updateRemoveButton();
-            });
-        });
-    }
-</script>
