@@ -188,6 +188,12 @@
                                        required
                                        autocomplete="off">
                             </div>
+                            <div id="alternativeForm" style="display: none;">
+                                <label class="form-label">Available Subscriptions</label>
+                                <select class="form-select" id="subscriptionSelect">
+                                    <option selected>Select a subscription...</option>
+                                </select>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -209,19 +215,45 @@
             // Add event listener for the save button
             document.getElementById('saveNewConnection').addEventListener('click', saveNewConnection);
 
-            const connectionTypeRadios = document.getElementsByName('connectionType');
-                connectionTypeRadios.forEach(radio => {
-                    radio.addEventListener('change', function() {
+        const connectionTypeRadios = document.getElementsByName('connectionType');
+            connectionTypeRadios.forEach(radio => {
+                radio.addEventListener('change', async function() {
                     const connectionStringForm = document.getElementById('connectionStringForm');
                     const connectionStringInput = document.getElementById('connectionStringInput');
+                    const alternativeForm = document.getElementById('alternativeForm');
 
                     if (this.value === 'connectionStringType') {
-                        connectionStringForm.style.opacity = '1';
+                        connectionStringForm.style.display = 'block';
+                        alternativeForm.style.display = 'none';
                         connectionStringInput.disabled = false;
                     } else {
-                        connectionStringForm.style.opacity = '0.5';
+                        connectionStringForm.style.display = 'none';
+                        alternativeForm.style.display = 'block';
                         connectionStringInput.disabled = true;
-                        connectionStringInput.value = ''; // Clear the input when disabled
+                        connectionStringInput.value = '';
+
+                        try {
+                            const response = await fetch('/Main/GetSubscriptions');
+                            if (!response.ok) {
+                                throw new Error('Failed to fetch subscriptions');
+                            }
+                            const subscriptions = await response.json();
+
+                            const subscriptionSelect = document.getElementById('subscriptionSelect');
+                            // Clear existing options except the first one
+                            while (subscriptionSelect.options.length > 1) {
+                                subscriptionSelect.remove(1);
+                            }
+
+                            // Add new options
+                            subscriptions.forEach(subscription => {
+                                const option = new Option(subscription, subscription);
+                                subscriptionSelect.add(option);
+                            });
+                        } catch (error) {
+                            console.error('Error fetching subscriptions:', error);
+                            alert('Error loading subscriptions. Please try again.');
+                        }
                     }
                 });
             });
