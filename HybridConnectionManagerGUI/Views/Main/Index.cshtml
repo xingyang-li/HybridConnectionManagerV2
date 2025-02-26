@@ -41,7 +41,7 @@
             <div class="azure-button-separator"></div>
             <button id="removeButton" class="btn-azure-white-danger" onclick="removeSelectedConnections()" disabled>
                 <i class="fas fa-trash-alt"></i>
-                Delete
+                Remove
             </button>
         </div>
 
@@ -51,9 +51,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <td>
-                                <input type="checkbox" id="selectAll" />
-                            </td>
+                            <td></td>
                             <th>Name</th>
                             <th>Connection Status</th>
                             <th>Namespace</th>
@@ -210,14 +208,11 @@
                             </div>
 
                             <div id="newConnectionsTable" style="display: none;">
-                                <div class="mb-2">Azure Connections</div>
                                 <div class="table-responsive">
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th style="width: 40px;">
-                                                    <input type="checkbox" class="form-check-input" id="selectAllConnections">
-                                                </th>
+                                                <th style="width: 40px;"></th>
                                                 <th>Name</th>
                                                 <th>Namespace</th>
                                                 <th>Endpoint</th>
@@ -332,9 +327,6 @@
                                 newConnectionsTableBody.appendChild(row);
                             });
 
-                            // Reset select all checkbox
-                            selectAllCheckbox.checked = false;
-
                             // Initialize checkbox handlers
                             initializeNewConnectionCheckboxes();
 
@@ -357,23 +349,10 @@
         });
 
         function initializeNewConnectionCheckboxes() {
-            const selectAllCheckbox = document.getElementById('selectAllConnections');
-            const newConnectionCheckboxes = document.getElementsByName('connectionCheckbox');
-
-            // Select all checkbox handler
-            selectAllCheckbox.addEventListener('change', function() {
-                Array.from(newConnectionCheckboxes).forEach(checkbox => {
-                    checkbox.checked = this.checked;
-                });
-                updateSaveButtonState();
-            });
-
             // Individual checkbox handlers
+            const newConnectionCheckboxes = document.getElementsByName('connectionCheckbox');
             Array.from(newConnectionCheckboxes).forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
-                    // Update select all checkbox state
-                    selectAllCheckbox.checked = Array.from(newConnectionCheckboxes)
-                        .every(cb => cb.checked);
                     updateSaveButtonState();
                 });
             });
@@ -413,20 +392,7 @@
             removeButton.disabled = selectedCount === 0;
         }
 
-        // Update the checkbox event listeners
         function initializeCheckboxListeners() {
-            // Listen for "Select All" checkbox changes
-            const selectAllCheckbox = document.getElementById('selectAll');
-            if (selectAllCheckbox) {
-                selectAllCheckbox.addEventListener('change', function() {
-                    const checkboxes = document.getElementsByName('selectedIds');
-                    checkboxes.forEach(checkbox => {
-                        checkbox.checked = this.checked;
-                    });
-                    updateRemoveButton();
-                });
-            }
-
             // Listen for individual checkbox changes
             const individualCheckboxes = document.getElementsByName('selectedIds');
             individualCheckboxes.forEach(checkbox => {
@@ -598,7 +564,7 @@
                             refreshContent();
                             const count = selectedItems.length;
                             showNotification(
-                                `Successfully removed ${count} ${count === 1 ? 'connection' : 'connections'}`,
+                                `Successfully added ${count} ${count === 1 ? 'connection' : 'connections'}`,
                                 'success'
                             );
                         } else {
