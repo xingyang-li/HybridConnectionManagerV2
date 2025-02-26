@@ -195,7 +195,7 @@
                             <div class="form-check mb-3">
                                 <input class="form-check-input" type="radio" name="connectionType" id="alternativeRadio" value="alternativeType">
                                 <label class="form-check-label" for="alternativeRadio">
-                                    Use Alternative Method
+                                    Select with Azure
                                 </label>
                             </div>
                             <div id="connectionStringForm">
@@ -207,10 +207,12 @@
                                        autocomplete="off">
                             </div>
                             <div id="alternativeForm" style="display: none;">
-                                <label class="form-label">Available Subscriptions</label>
-                                <select class="form-select" id="subscriptionSelect">
-                                    <option selected>Select a subscription...</option>
-                                </select>
+                                <div class="mb-4"> 
+                                    <label class="form-label">Available Subscriptions</label>
+                                    <select class="form-select" id="subscriptionSelect">
+                                        <option selected>Select a subscription...</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div id="newConnectionsTable" style="display: none;">
@@ -229,6 +231,14 @@
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                            <div id="loadingSpinner" class="loading-spinner-container" style="display: none;">
+                                <div class="loading-spinner"></div>
+                                <span class="loading-text">Loading hybrid connections...</span>
+                            </div>
+                            <div id="noConnectionsMessage" class="alert alert-info mt-4 mb-4 text-center" style="display: none;">
+                                <i class="fas fa-info-circle me-2"></i>
+                                No hybrid connections were found for this subscription.
                             </div>
                         </div>
                     </form>
@@ -294,11 +304,15 @@
                     const connectionStringInput = document.getElementById('connectionStringInput');
                     const alternativeForm = document.getElementById('alternativeForm');
                     const newConnectionsTable = document.getElementById('newConnectionsTable');
+                    const noConnectionsMessage = document.getElementById('noConnectionsMessage');
+                    const loadingSpinner = document.getElementById('loadingSpinner');
 
                     if (this.value === 'connectionStringType') {
                         connectionStringForm.style.display = 'block';
                         alternativeForm.style.display = 'none';
                         connectionStringInput.disabled = false;
+                        noConnectionsMessage.style.display = 'none';
+                        loadingSpinner.style.display = 'none';
                     } else {
                         connectionStringForm.style.display = 'none';
                         alternativeForm.style.display = 'block';
@@ -339,10 +353,16 @@
                     const newConnectionsTable = document.getElementById('newConnectionsTable');
                     const newConnectionsTableBody = document.getElementById('newConnectionsTableBody');
                     const selectAllCheckbox = document.getElementById('selectAllConnections');
+                    const loadingSpinner = document.getElementById('loadingSpinner');
+                    const noConnectionsMessage = document.getElementById('noConnectionsMessage');
 
                     if (this.value) {
 
                         try {
+                            newConnectionsTable.style.display = 'none';
+                            loadingSpinner.style.display = 'flex';
+                            noConnectionsMessage.style.display = 'none';
+
                             // Fetch resource groups for selected subscription
                             const response = await fetch(`/Main/GetHybridConnectionsForSubscription?subscriptionId=${encodeURIComponent(this.value)}`);
                             if (!response.ok) {
@@ -350,36 +370,46 @@
                             }
                             const connections = await response.json();
 
-                            newConnectionsTable.style.display = 'block';
-                            // Clear existing table rows
                             newConnectionsTableBody.innerHTML = '';
+                            loadingSpinner.style.display = 'none';
 
-                            // Add new rows for each resource group
-                            connections.forEach(connection => {
-                                const row = document.createElement('tr');
-                                row.innerHTML = `
-                                    <td>
-                                        <input type="checkbox" class="form-check-input new-connection-checkbox" id="connectionCheckbox" name="connectionCheckbox"
-                                               value="${connection.connectionString}">
-                                    </td>
-                                    <td>${connection.name}</td>
-                                    <td>${connection.namespace}</td>
-                                    <td>${connection.endpoint}</td>
-                                `;
-                                newConnectionsTableBody.appendChild(row);
-                            });
+                            if (connections && connections.length > 0) {
+                                connections.forEach(connection => {
+                                    const row = document.createElement('tr');
+                                    row.innerHTML = `
+                                        <td>
+                                            <input type="checkbox" class="form-check-input new-connection-checkbox" id="connectionCheckbox" name="connectionCheckbox"
+                                                   value="${connection.connectionString}">
+                                        </td>
+                                        <td>${connection.name}</td>
+                                        <td>${connection.namespace}</td>
+                                        <td>${connection.endpoint}</td>
+                                    `;
+                                    newConnectionsTableBody.appendChild(row);
+                                });
 
-                            // Initialize checkbox handlers
-                            initializeNewConnectionCheckboxes();
+                                // Initialize checkbox handlers
+                                initializeNewConnectionCheckboxes();
+                                // Show table and hide no connections message
+                                newConnectionsTable.style.display = 'block';
+                                noConnectionsMessage.style.display = 'none';
+                            } else {
+                                noConnectionsMessage.style.display = 'block';
+                                newConnectionsTable.style.display = 'none';
+                            }
 
                         } catch (error) {
                             console.error('Error fetching connections:', error);
                             alert('Error loading connections for subscription. Please try again.');
                             newConnectionsTable.style.display = 'none';
+                            loadingSpinner.style.display = 'none';
+                            noConnectionsMessage.style.display = 'none';
                         }
                     } else {
                         // Hide the table when no subscription is selected
                         newConnectionsTable.style.display = 'none';
+                        loadingSpinner.style.display = 'none';
+                        noConnectionsMessage.style.display = 'none';
                     }
                 });
             });
@@ -592,13 +622,17 @@
             const alternativeForm = document.getElementById('alternativeForm');
             const newConnectionsTable = document.getElementById('newConnectionsTable');
             const connectionStringRadio = document.getElementById("connectionStringRadio");
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const noConnectionsMessage = document.getElementById('noConnectionsMessage');
 
             newConnectionForm.reset();
+            loadingSpinner.style.display = 'none';
             connectionStringForm.style.display = 'block';
             newConnectionsTable.style.display = 'none';
             connectionStringRadio.checked = true;
             alternativeForm.style.display = 'none';
             connectionStringInput.disabled = false;
+            noConnectionsMessage.style.display = 'none';
 
             // Show the modal
             newConnectionModal.show();
