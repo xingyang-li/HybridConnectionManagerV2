@@ -3,11 +3,14 @@ using HybridConnectionManagerGUI.Models;
 using HybridConnectionManager.Library;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
+using Azure.Core;
+using Azure.ResourceManager.Relay;
 
 namespace HybridConnectionManagerGUI.Controllers
 {
     public class MainController : Controller
     {
+        private RelayArmClient _client;
         public IActionResult Index()
         {
             var hybridConnections = GetHybridConnections();
@@ -45,15 +48,52 @@ namespace HybridConnectionManagerGUI.Controllers
             return AddHybridConnection(model);
         }
 
-        public List<string> GetSubscriptions()
+        [HttpPost]
+        public JsonResult AddMultiple([FromBody] HybridConnectionsModel model)
         {
-            List<string> subscriptions = new List<string>();
+            foreach (var connection in model.Connections)
+            {
+                if (!Regex.IsMatch(connection.ConnectionString, Util.HcConnectionStringRegexPattern))
+                {
+                    return Json(new { success = false, Message = "Please use a valid connection string." });
+                }
+                AddHybridConnection(connection);
+            }
+            return Json(new { success = true });
+        }
+
+        public List<HybridConnectionModel> GetHybridConnectionsForSubscription(string subscriptionId)
+        {
+            List<HybridConnectionModel> hybridConnectionsList = new List<HybridConnectionModel>();
+            var subscriptionResource = _client.GetSubscriptionResource(new ResourceIdentifier($"/subscriptions/{subscriptionId}"));
+            var hybridConnections = subscriptionResource.GetResourceGroups().SelectMany(rg => rg.GetRelayNamespaces().SelectMany(ns => ns.GetRelayHybridConnections()));
+            foreach (var hybridConnection in hybridConnections)
+            {
+                string endpoint = Util.GetEndpointStringFromUserMetadata(hybridConnection.Data.UserMetadata);
+                string connectionString = _client.GetHybridConnectionPrimaryConnectionString(hybridConnection.Data.Id);
+                var connection = new HybridConnectionModel
+                {
+                    Namespace = hybridConnection.Data.Name,
+                    Name = hybridConnection.Data.Name,
+                    Endpoint = endpoint,
+                    ConnectionString = connectionString,
+                };
+
+                hybridConnectionsList.Add(connection);
+            }
+
+            return hybridConnectionsList;
+        }
+
+        public List<Subscription> GetSubscriptions()
+        {
+            List<Subscription> subscriptions = new List<Subscription>();
             var credential = MSALProvider.TokenCredential;
-            RelayArmClient relayArmClient = new RelayArmClient(credential);
-            var subscriptionsCollection = relayArmClient.GetSubscriptions();
+            _client = new RelayArmClient(credential);
+            var subscriptionsCollection = _client.GetSubscriptions();
             foreach (var subscriptionResource in subscriptionsCollection)
             {
-                subscriptions.Add(subscriptionResource.Data.DisplayName);
+                subscriptions.Add(new Subscription { DisplayName = subscriptionResource.Data.DisplayName, SubscriptionId = subscriptionResource.Data.SubscriptionId});
             }
 
             return subscriptions;

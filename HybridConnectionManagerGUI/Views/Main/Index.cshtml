@@ -194,6 +194,27 @@
                                     <option selected>Select a subscription...</option>
                                 </select>
                             </div>
+
+                            <div id="newConnectionsTable" style="display: none;">
+                                <div class="mb-2">Azure Connections</div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40px;">
+                                                    <input type="checkbox" class="form-check-input" id="selectAllConnections">
+                                                </th>
+                                                <th>Name</th>
+                                                <th>Namespace</th>
+                                                <th>Endpoint</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="newConnectionsTableBody">
+                                            <!-- Resource groups will be dynamically added here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -215,12 +236,13 @@
             // Add event listener for the save button
             document.getElementById('saveNewConnection').addEventListener('click', saveNewConnection);
 
-        const connectionTypeRadios = document.getElementsByName('connectionType');
+            const connectionTypeRadios = document.getElementsByName('connectionType');
             connectionTypeRadios.forEach(radio => {
                 radio.addEventListener('change', async function() {
                     const connectionStringForm = document.getElementById('connectionStringForm');
                     const connectionStringInput = document.getElementById('connectionStringInput');
                     const alternativeForm = document.getElementById('alternativeForm');
+                    const newConnectionsTable = document.getElementById('newConnectionsTable');
 
                     if (this.value === 'connectionStringType') {
                         connectionStringForm.style.display = 'block';
@@ -247,13 +269,70 @@
 
                             // Add new options
                             subscriptions.forEach(subscription => {
-                                const option = new Option(subscription, subscription);
+                                const option = new Option(subscription.displayName, subscription.subscriptionId);
                                 subscriptionSelect.add(option);
                             });
+
+                            // Reset new connnections table
+                            newConnectionsTable.style.display = 'none';
+                            document.getElementById('newConnectionsTableBody').innerHTML = '';
+
                         } catch (error) {
                             console.error('Error fetching subscriptions:', error);
                             alert('Error loading subscriptions. Please try again.');
                         }
+                    }
+                });
+
+                document.getElementById('subscriptionSelect').addEventListener('change', async function() {
+                    const newConnectionsTable = document.getElementById('newConnectionsTable');
+                    const newConnectionsTableBody = document.getElementById('newConnectionsTableBody');
+                    const selectAllCheckbox = document.getElementById('selectAllConnections');
+
+                    if (this.value) {
+                        // Show the table when a subscription is selected
+                        newConnectionsTable.style.display = 'block';
+
+                        try {
+                            // Fetch resource groups for selected subscription
+                            const response = await fetch(`/Main/GetHybridConnectionsForSubscription?subscriptionId=${encodeURIComponent(this.value)}`);
+                            if (!response.ok) {
+                                throw new Error('Failed to fetch connections for subscription');
+                            }
+                            const connections = await response.json();
+
+                            // Clear existing table rows
+                            newConnectionsTableBody.innerHTML = '';
+
+                            // Add new rows for each resource group
+                            connections.forEach(connection => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>
+                                        <input type="checkbox" class="form-check-input new-connection-checkbox"
+                                               value="${connection.connectionString}">
+                                    </td>
+                                    <td>${connection.name}</td>
+                                    <td>${connection.namespace}</td>
+                                    <td>${connection.endpoint}</td>
+                                `;
+                                newConnectionsTableBody.appendChild(row);
+                            });
+
+                            // Reset select all checkbox
+                            selectAllCheckbox.checked = false;
+
+                            // Initialize checkbox handlers
+                            initializeNewConnectionCheckboxes();
+
+                        } catch (error) {
+                            console.error('Error fetching connections:', error);
+                            alert('Error loading connections for subscription. Please try again.');
+                            newConnectionsTable.style.display = 'none';
+                        }
+                    } else {
+                        // Hide the table when no subscription is selected
+                        newConnectionsTable.style.display = 'none';
                     }
                 });
             });
@@ -263,6 +342,37 @@
             initializeCheckboxListeners();
             updateRemoveButton();
         });
+
+        function initializeNewConnectionsCheckboxes() {
+            const selectAllCheckbox = document.getElementById('selectAllResourceGroups');
+            const newConnectionCheckboxes = document.getElementsByClassName('new-connection-checkbox');
+
+            // Select all checkbox handler
+            selectAllCheckbox.addEventListener('change', function() {
+                Array.from(newConnectionCheckboxes).forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+                updateSaveButtonState();
+            });
+
+            // Individual checkbox handlers
+            Array.from(newConnectionCheckboxes).forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    // Update select all checkbox state
+                    selectAllCheckbox.checked = Array.from(newConnectionCheckboxes)
+                        .every(cb => cb.checked);
+                    updateSaveButtonState();
+                });
+            });
+        }
+
+        function updateSaveButtonState() {
+            const saveButton = document.getElementById('saveNewConnection');
+            const hasSelectedConnections = Array.from(document.getElementsByClassName('new-connection-checkbox'))
+                .some(cb => cb.checked);
+
+            saveButton.disabled = !hasSelectedConnections;
+        }
 
         function initializeAllListeners(){
 
@@ -420,8 +530,50 @@
                 });
             }
             else {
-            // Handle alternative connection method here
-            alert('Alternative connection method not yet implemented');
+                const selectedSubscription = document.getElementById('subscriptionSelect').value;
+                const selectedConnections = Array.from(document.getElementsByClassName('new-connection-checkbox'))
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.value);
+
+                if (!selectedSubscription) {
+                    alert('Please select a subscription');
+                    return;
+                }
+                if (selectedConnections.length === 0) {
+                    alert('Please select at least one connection to add');
+                    return;
+                }
+
+                const saveButton = document.getElementById('saveNewConnection');
+                saveButton.disabled = true;
+                saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+
+                const data = {
+                    connections = selectedConnections,
+                };
+
+                $.ajax({
+                    url: '@Url.Action("AddMultiple", "Main")',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function(result) {
+                        if (result.success) {
+                            newConnectionModal.hide();
+                            refreshContent();
+                        } else {
+                            alert('Error creating connection: ' + result.message);
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error creating connection:', error);
+                        alert('Error creating connection. Please try again.');
+                    },
+                    complete: function() {
+                        saveButton.disabled = false;
+                        saveButton.innerHTML = 'Create';
+                    }
+                });
             }
         }
 

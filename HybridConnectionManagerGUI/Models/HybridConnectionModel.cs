@@ -42,4 +42,11 @@
     {
         public List<HybridConnectionModel> Connections { get; set; }
     }
+
+    public class Subscription
+    {
+        public string DisplayName { get; set; }
+
+        public string SubscriptionId { get; set; }
+    }
 }
