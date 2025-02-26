@@ -169,7 +169,11 @@
                     <form id="newConnectionForm">
                         <div class="mb-3">
                             <label for="Connection String" class="form-label">Connection String</label>
-                            <input type="text" class="form-control" id="connectionString" required>
+                            <input type="text"
+                                   class="form-control"
+                                   id="connectionString"
+                                   required
+                                   autocomplete="off">
                         </div>
                     </form>
                 </div>
@@ -305,6 +309,10 @@
             document.getElementById('newConnectionForm').reset();
             // Show the modal
             newConnectionModal.show();
+
+            setTimeout(() => {
+                document.getElementById('connectionString').focus();
+            }, 100);
         }
 
         function saveNewConnection() {

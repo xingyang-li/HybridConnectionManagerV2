@@ -36,7 +36,15 @@ if (HybridSupport.IsElectronActive)
         {
             Width = 1200,
             Height = 800,
-            Show = false
+            Show = false,
+            WebPreferences = new ElectronNET.API.Entities.WebPreferences
+            {
+                NodeIntegration = true,
+                ContextIsolation = false,
+                DevTools = true, // Enable DevTools for debugging
+                EnableRemoteModule = true,
+                WebSecurity = false // Note: Only disable this if you trust your content
+            }
         });
 
         window.OnReadyToShow += () => window.Show();
