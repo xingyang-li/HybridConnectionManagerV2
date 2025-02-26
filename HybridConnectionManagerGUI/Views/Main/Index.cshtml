@@ -27,6 +27,7 @@
 
         <div class="d-flex align-items-center mb-4">
             <!-- Added for title section with margin bottom -->
+            <img src="~/images/HybridConnectionIcon.png" alt="Hybrid Connection Icon" class="hybrid-connection-icon me-2" />
             <h2>Hybrid Connections</h2>
         </div>
 
@@ -107,6 +108,17 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
+                        <div class="mb-3">
+                            <button type="button" class="btn-azure-white" onclick="openInAzurePortal()" id="openInPortalButton">
+                                <i class="fas fa-external-link-alt me-1"></i>
+                                Open in Azure Portal
+                            </button>
+                            <div class="azure-button-separator"></div>
+                            <button id="detailRemoveButton" class="btn-azure-white-danger" onclick="removeCurrentConnection()">
+                                <i class="fas fa-trash-alt"></i>
+                                Remove
+                            </button>
+                        </div>
                         <style>
                             /* Custom table styling for modal */
                             .details-table {
@@ -289,6 +301,7 @@
     <script>
         let newConnectionModal;
         let logsModal;
+        let detailModal;
 
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize the Bootstrap modal
@@ -313,6 +326,7 @@
                         connectionStringInput.disabled = false;
                         noConnectionsMessage.style.display = 'none';
                         loadingSpinner.style.display = 'none';
+                        newConnectionsTable.style.display = 'none';
                     } else {
                         connectionStringForm.style.display = 'none';
                         alternativeForm.style.display = 'block';
@@ -614,6 +628,37 @@
             });
         }
 
+        function removeCurrentConnection() {
+            // Using the currentItem that's already set in showDetails()
+            if (currentItem) {
+                if (!confirm('Are you sure you want to remove this connection?')) return;
+                $.ajax({
+                    url: '@Url.Action("Remove", "Main")',
+                    type: 'POST',
+                    data: JSON.stringify({ connections: [{namespace: currentItem.namespace, name: currentItem.name}] }),
+                    contentType: 'application/json',
+                    success: function(result) {
+                        if (result.success) {
+                            detailModal.hide();
+                            showNotification(
+                                `Successfully removed ${currentItem.namespace}/${currentItem.name}`,
+                                'success'
+                            );
+                            refreshContent();
+                        } else {
+                            alert('Error removing connection: ' + result.message);
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error removing connection:', error);
+                        alert('Error removing connection. Please try again.');
+                    }
+                });
+            } else {
+                showNotification('Unable to delete connection', 'error');
+            }
+        }
+
         function openNewConnectionModal() {
             // Clear the form
             const newConnectionForm = document.getElementById('newConnectionForm');
@@ -754,14 +799,29 @@
             document.getElementById('modal-endpoint').textContent = item.endpoint;
 
             // Show the modal
-            var myModal = new bootstrap.Modal(document.getElementById('detailsModal'));
-            myModal.show();
+            detailModal = new bootstrap.Modal(document.getElementById('detailsModal'));
+            detailModal.show();
         }
 
         function formatDate(dateString) {
             if (!dateString) return '';
             const date = new Date(dateString);
             return date.toLocaleString();
+        }
+
+        function getAzurePortalUrl(namespace, name) {
+            return "https://portal.azure.com/#" + "@@" + "/resource/providers/Microsoft.Relay/namespaces/" + encodeURIComponent(namespace) + "/hybridConnections/" + encodeURIComponent(name);
+        }
+
+        function openInAzurePortal() {
+            // Using the currentItem that's already set in showDetails()
+            if (currentItem && currentItem.namespace && currentItem.name) {
+                const portalUrl = getAzurePortalUrl(currentItem.namespace, currentItem.name);
+                window.open(portalUrl, '_blank');
+            } else {
+                console.error('Missing connection details for Azure Portal URL');
+                showNotification('Unable to open Azure Portal: Missing connection details', 'error');
+            }
         }
 
         function showNotification(message, type = 'success') {

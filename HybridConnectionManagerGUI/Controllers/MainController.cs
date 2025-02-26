@@ -4,6 +4,7 @@ using HybridConnectionManager.Library;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 using Azure.Core;
+using Azure.ResourceManager;
 using Azure.ResourceManager.Relay;
 
 namespace HybridConnectionManagerGUI.Controllers
@@ -69,23 +70,26 @@ namespace HybridConnectionManagerGUI.Controllers
             var credential = MSALProvider.TokenCredential;
             _client = new RelayArmClient(credential);
             var subscriptionResource = _client.GetSubscriptionResource(new ResourceIdentifier($"/subscriptions/{subscriptionId}"));
-            var hybridConnections = subscriptionResource.GetResourceGroups().SelectMany(rg => rg.GetRelayNamespaces().SelectMany(ns => ns.GetRelayHybridConnections()));
-            Console.WriteLine(hybridConnections.Count());
+            var hybridConnections = subscriptionResource.GetRelayNamespaces().SelectMany(ns => ns.GetRelayHybridConnections());
             foreach (var hybridConnection in hybridConnections)
             {
-                string endpoint = Util.GetEndpointStringFromUserMetadata(hybridConnection.Data.UserMetadata);
-                string connectionString = _client.GetHybridConnectionPrimaryConnectionString(hybridConnection.Data.Id);
-                var connection = new HybridConnectionModel
+                if (!String.IsNullOrEmpty(hybridConnection.Data.UserMetadata))
                 {
-                    Namespace = hybridConnection.Data.Name,
-                    Name = hybridConnection.Data.Name,
-                    Endpoint = endpoint,
-                    ConnectionString = connectionString,
-                };
+                    string endpoint = Util.GetEndpointStringFromUserMetadata(hybridConnection.Data.UserMetadata);
+                    if (!String.IsNullOrEmpty(endpoint))
+                    {
+                        string connectionString = _client.GetHybridConnectionPrimaryConnectionString(hybridConnection.Data.Id);
+                        var connection = new HybridConnectionModel
+                        {
+                            Namespace = hybridConnection.Data.Name,
+                            Name = hybridConnection.Data.Name,
+                            Endpoint = endpoint,
+                            ConnectionString = connectionString
+                        };
 
-                Console.WriteLine(hybridConnection.Data.Name);
-
-                hybridConnectionsList.Add(connection);
+                        hybridConnectionsList.Add(connection);
+                    }
+                }
             }
 
             return hybridConnectionsList;
