@@ -16,9 +16,11 @@ namespace HybridConnectionManager.Library
         public static string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create),
             "HybridConnectionManagerV2");
 
+        public static string AppDataLogDir = Path.Combine(AppDataPath, "Logs");
+
         public static string AppDataFilePath = Path.Combine(AppDataPath, "connections.json");
 
-        public static string AppDataLogPath = Path.Combine(AppDataPath, "log.txt");
+        public static string AppDataLogFileTemplate = Path.Combine(AppDataLogDir, "log_.txt");
 
         private static object _fileLock = new object();
 
@@ -238,6 +240,24 @@ namespace HybridConnectionManager.Library
                 Console.WriteLine("Could not update connections file: " + ex.Message);
             }
 
+        }
+
+        public static void SetupFileDependencies()
+        {
+            if (!Directory.Exists(Util.AppDataPath))
+            {
+                Directory.CreateDirectory(Util.AppDataPath);
+            }
+
+            if (!Directory.Exists(Util.AppDataLogDir))
+            {
+                Directory.CreateDirectory(Util.AppDataLogDir);
+            }
+
+            if (!File.Exists(Util.AppDataFilePath))
+            {
+                Util.CreateAppDataFile();
+            }
         }
     }
 }

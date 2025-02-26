@@ -1,3 +1,4 @@
+using HybridConnectionManager.Library;
 using Serilog;
 
 namespace HybridConnectionManager.Service
@@ -6,13 +7,10 @@ namespace HybridConnectionManager.Service
     {
         public static void Main(string[] args)
         {
-            if (!File.Exists(Util.AppDataFilePath))
-            {
-                Util.CreateAppDataFile();
-            }
+            Util.SetupFileDependencies();
 
             Log.Logger = new LoggerConfiguration()
-            .WriteTo.File(Util.AppDataLogPath, rollingInterval: RollingInterval.Day)
+            .WriteTo.File(Util.AppDataLogFileTemplate, rollingInterval: RollingInterval.Day)
             .CreateLogger();
 
             Log.Logger.Information("Starting up Hybrid Connection Manager V2 Service with saved connections.");

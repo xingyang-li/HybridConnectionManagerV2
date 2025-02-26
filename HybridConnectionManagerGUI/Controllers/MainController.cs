@@ -155,5 +155,11 @@ namespace HybridConnectionManagerGUI.Controllers
 
             return Json(new { success = true });
         }
+
+        public List<string> GetLogFiles()
+        {
+            if (!Directory.Exists(Util.AppDataLogDir)) {  return new List<string>(); }
+            return Directory.GetFiles(Util.AppDataLogDir).ToList();
+        }
     }
 }

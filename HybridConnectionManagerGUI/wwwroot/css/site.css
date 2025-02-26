@@ -376,3 +376,33 @@ html, body {
 .notification-banner.fade-out {
     animation: fadeOut 0.3s ease-out forwards;
 }
+
+.log-content {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 1rem;
+    max-height: 500px;
+    overflow-y: auto;
+    font-family: Consolas, Monaco, 'Courier New', monospace;
+    font-size: 0.875rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+    .log-content::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .log-content::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .log-content::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+        .log-content::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
