@@ -10,7 +10,7 @@ namespace HybridConnectionManager.Service
             Util.SetupFileDependencies();
 
             Log.Logger = new LoggerConfiguration()
-            .WriteTo.File(Util.AppDataLogFileTemplate, rollingInterval: RollingInterval.Day)
+            .WriteTo.File(Util.AppDataLogFileTemplate, rollingInterval: RollingInterval.Day, shared: true)
             .CreateLogger();
 
             Log.Logger.Information("Starting up Hybrid Connection Manager V2 Service with saved connections.");

@@ -7,6 +7,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <div class="container pt-4">
@@ -96,7 +97,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!--Connection Details Modal -->
     <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -405,24 +406,69 @@
 
         function openLogsModal() {
             // Load log files when opening the modal
+            document.querySelector('.log-content-container').style.display = 'none';
+            document.getElementById('logContent').textContent = '';
             loadLogFiles();
             logsModal.show();
         }
 
-        function loadLogFiles() {
+        async function loadLogFiles() {
             const select = document.getElementById('logFileSelect');
             select.innerHTML = '<option value="" selected>Loading...</option>';
 
-            const response = await fetch('/Main/GetLogFiles');
-            if (!response.ok) {
-                throw new Error('Failed to fetch subscriptions');
+            try {
+                const response = await fetch('/Main/GetLogFiles');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch log files');
+                }
+                const fileNames = await response.json();
+
+                // Reset select with default option
+                select.innerHTML = '<option value="" selected>Choose a log file...</option>';
+
+                // Add file options
+                fileNames.forEach(fileName => {
+                    const option = new Option(fileName);
+                    select.add(option);
+                });
+            } catch (error) {
+                console.error('Error loading log files:', error);
+                select.innerHTML = '<option value="" selected>Error loading files...</option>';
             }
-            const fileNames = await response.json();
-            forEach(fileName => {
-                const option = new Option(fileName);
-                const logFileSelect = document.getElementById('logFileSelect');
-                logFileSelect.add(option);
-            });
+        }
+
+        async function loadLogContent(fileName) {
+            const contentContainer = document.querySelector('.log-content-container');
+            const logContent = document.getElementById('logContent');
+
+            try {
+                const response = await fetch(`/Main/GetLogContent?fileName=${encodeURIComponent(fileName)}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch log content');
+                }
+                const content = await response.text();
+
+                contentContainer.style.display = 'block';
+                logContent.textContent = content;
+            } catch (error) {
+                console.error('Error loading log content:', error);
+                logContent.textContent = 'Error loading log content. Please try again.';
+            }
+        }
+
+        function copyLogContents() {
+            const logContent = document.getElementById('logContent');
+            if (!logContent) return;
+
+            const text = logContent.textContent;
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    showNotification('Log content copied to clipboard', 'success');
+                })
+                .catch(err => {
+                    console.error('Failed to copy log content:', err);
+                    showNotification('Failed to copy log content', 'error');
+                });
         }
 
         function initializeNewConnectionCheckboxes() {

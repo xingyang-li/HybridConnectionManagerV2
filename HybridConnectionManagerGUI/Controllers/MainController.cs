@@ -161,5 +161,12 @@ namespace HybridConnectionManagerGUI.Controllers
             if (!Directory.Exists(Util.AppDataLogDir)) {  return new List<string>(); }
             return Directory.GetFiles(Util.AppDataLogDir).ToList();
         }
+
+        public string GetLogContent(string fileName)
+        {
+            using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using var reader = new StreamReader(stream);
+            return reader.ReadToEndAsync().Result;
+        }
     }
 }
