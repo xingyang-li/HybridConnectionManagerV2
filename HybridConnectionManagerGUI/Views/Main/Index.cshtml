@@ -63,7 +63,7 @@
                                         data-name="@item.Name" />
                                 </td>
                                 <td>@item.Name</td>
-                                <td>@item.Status</td>
+                                <td class="@(item.Status == "Connected" ? "status-connected" : "status-disconnected")">@item.Status</td>
                                 <td>@item.Namespace</td>
                                 <td>@item.Endpoint</td>
                             </tr>
@@ -168,12 +168,26 @@
                 <div class="modal-body">
                     <form id="newConnectionForm">
                         <div class="mb-3">
-                            <label for="Connection String" class="form-label">Connection String</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="connectionString"
-                                   required
-                                   autocomplete="off">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="connectionType" id="connectionStringRadio" value="connectionStringType" checked>
+                                <label class="form-check-label" for="connectionStringRadio">
+                                    Use Connection String
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="connectionType" id="alternativeRadio" value="alternativeType">
+                                <label class="form-check-label" for="alternativeRadio">
+                                    Use Alternative Method
+                                </label>
+                            </div>
+                            <div id="connectionStringForm">
+                                <label for="Connection String" class="form-label">Connection String</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="connectionStringInput"
+                                       required
+                                       autocomplete="off">
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -194,6 +208,23 @@
 
             // Add event listener for the save button
             document.getElementById('saveNewConnection').addEventListener('click', saveNewConnection);
+
+            const connectionTypeRadios = document.getElementsByName('connectionType');
+                connectionTypeRadios.forEach(radio => {
+                    radio.addEventListener('change', function() {
+                    const connectionStringForm = document.getElementById('connectionStringForm');
+                    const connectionStringInput = document.getElementById('connectionStringInput');
+
+                    if (this.value === 'connectionStringType') {
+                        connectionStringForm.style.opacity = '1';
+                        connectionStringInput.disabled = false;
+                    } else {
+                        connectionStringForm.style.opacity = '0.5';
+                        connectionStringInput.disabled = true;
+                        connectionStringInput.value = ''; // Clear the input when disabled
+                    }
+                });
+            });
         });
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -311,47 +342,55 @@
             newConnectionModal.show();
 
             setTimeout(() => {
-                document.getElementById('connectionString').focus();
+                document.getElementById('connectionStringInput').focus();
             }, 100);
         }
 
         function saveNewConnection() {
             const form = document.getElementById('newConnectionForm');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
+            const connectionType = document.querySelector('input[name="connectionType"]:checked').value;
 
-            const saveButton = document.getElementById('saveNewConnection');
-            saveButton.disabled = true;
-            saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
-
-            const data = {
-                connectionString: document.getElementById('connectionString').value
-            };
-
-            $.ajax({
-                url: '@Url.Action("Add", "Main")',
-                type: 'POST',
-                data: JSON.stringify(data),
-                contentType: 'application/json',
-                success: function(result) {
-                    if (result.success) {
-                        newConnectionModal.hide();
-                        refreshContent();
-                    } else {
-                        alert('Error creating connection: ' + result.message);
-                    }
-                },
-                error: function(error) {
-                    console.error('Error creating connection:', error);
-                    alert('Error creating connection. Please try again.');
-                },
-                complete: function() {
-                    saveButton.disabled = false;
-                    saveButton.innerHTML = 'Create';
+            if (connectionType === 'connectionStringType') {
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
                 }
-            });
+
+                const saveButton = document.getElementById('saveNewConnection');
+                saveButton.disabled = true;
+                saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+
+                const data = {
+                    connectionString: document.getElementById('connectionStringInput').value
+                };
+
+                $.ajax({
+                    url: '@Url.Action("Add", "Main")',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function(result) {
+                        if (result.success) {
+                            newConnectionModal.hide();
+                            refreshContent();
+                        } else {
+                            alert('Error creating connection: ' + result.message);
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error creating connection:', error);
+                        alert('Error creating connection. Please try again.');
+                    },
+                    complete: function() {
+                        saveButton.disabled = false;
+                        saveButton.innerHTML = 'Create';
+                    }
+                });
+            }
+            else {
+            // Handle alternative connection method here
+            alert('Alternative connection method not yet implemented');
+            }
         }
 
         function showDetails(item) {

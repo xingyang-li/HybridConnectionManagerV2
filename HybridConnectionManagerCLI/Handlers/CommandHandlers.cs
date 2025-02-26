@@ -1,16 +1,13 @@
-﻿using Azure.Identity;
+﻿using Azure.Core;
 using Azure.ResourceManager.Relay;
 using Azure.ResourceManager.Resources;
-using Azure.ResourceManager;
-using HcManProto;
+using Grpc.Core;
 using HybridConnectionManager.Library;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Runtime.Serialization;
-using Grpc.Core;
-using Azure.Core;
 
 namespace HybridConnectionManager.CLI
 {
@@ -44,7 +41,6 @@ namespace HybridConnectionManager.CLI
             var tokenRequestContext = new TokenRequestContext(new[] { "https://management.azure.com/.default" });
             var token = await credential.GetTokenAsync(tokenRequestContext);
             Console.WriteLine($"Access Token retrieved successfully. Expires on: {token.ExpiresOn}");
-
         }
 
         public static async Task AddHandler(string connectionString, string subscription, string resourceGroup, string @namespace, string name)

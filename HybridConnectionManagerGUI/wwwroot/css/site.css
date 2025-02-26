@@ -268,3 +268,13 @@ html, body {
     font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
     font-size: 13px;
 }
+
+.status-connected {
+    color: #198754 !important; /* Bootstrap's success green color */
+    font-weight: 500 !important;
+}
+
+.status-disconnected {
+    color: #dc3545 !important; /* Bootstrap's danger red color */
+    font-weight: 500 !important;
+}

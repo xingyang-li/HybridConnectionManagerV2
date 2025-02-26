@@ -45,6 +45,20 @@ namespace HybridConnectionManagerGUI.Controllers
             return AddHybridConnection(model);
         }
 
+        public List<string> GetSubscriptions()
+        {
+            List<string> subscriptions = new List<string>();
+            var credential = MSALProvider.TokenCredential;
+            RelayArmClient relayArmClient = new RelayArmClient(credential);
+            var subscriptionsCollection = relayArmClient.GetSubscriptions();
+            foreach (var subscriptionResource in subscriptionsCollection)
+            {
+                subscriptions.Add(subscriptionResource.Data.DisplayName);
+            }
+
+            return subscriptions;
+        }
+
         public List<HybridConnectionModel> GetHybridConnections()
         {
             HybridConnectionManagerClient client = new HybridConnectionManagerClient();

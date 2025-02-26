@@ -31,7 +31,7 @@
                                data-name="@item.Name" />
                     </td>
                     <td>@item.Name</td>
-                    <td>@item.Status</td>
+                    <td class="@(item.Status == "Connected" ? "status-connected" : "status-disconnected")">@item.Status</td>
                     <td>@item.Namespace</td>
                     <td>@item.Endpoint</td>
                 </tr>
