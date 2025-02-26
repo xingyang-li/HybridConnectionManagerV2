@@ -53,6 +53,7 @@ namespace HybridConnectionManagerGUI.Controllers
         {
             foreach (var connection in model.Connections)
             {
+                Console.WriteLine(connection.ConnectionString);
                 if (!Regex.IsMatch(connection.ConnectionString, Util.HcConnectionStringRegexPattern))
                 {
                     return Json(new { success = false, Message = "Please use a valid connection string." });
@@ -65,8 +66,11 @@ namespace HybridConnectionManagerGUI.Controllers
         public List<HybridConnectionModel> GetHybridConnectionsForSubscription(string subscriptionId)
         {
             List<HybridConnectionModel> hybridConnectionsList = new List<HybridConnectionModel>();
+            var credential = MSALProvider.TokenCredential;
+            _client = new RelayArmClient(credential);
             var subscriptionResource = _client.GetSubscriptionResource(new ResourceIdentifier($"/subscriptions/{subscriptionId}"));
             var hybridConnections = subscriptionResource.GetResourceGroups().SelectMany(rg => rg.GetRelayNamespaces().SelectMany(ns => ns.GetRelayHybridConnections()));
+            Console.WriteLine(hybridConnections.Count());
             foreach (var hybridConnection in hybridConnections)
             {
                 string endpoint = Util.GetEndpointStringFromUserMetadata(hybridConnection.Data.UserMetadata);
@@ -78,6 +82,8 @@ namespace HybridConnectionManagerGUI.Controllers
                     Endpoint = endpoint,
                     ConnectionString = connectionString,
                 };
+
+                Console.WriteLine(hybridConnection.Data.Name);
 
                 hybridConnectionsList.Add(connection);
             }

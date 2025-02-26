@@ -290,8 +290,6 @@
                     const selectAllCheckbox = document.getElementById('selectAllConnections');
 
                     if (this.value) {
-                        // Show the table when a subscription is selected
-                        newConnectionsTable.style.display = 'block';
 
                         try {
                             // Fetch resource groups for selected subscription
@@ -301,6 +299,7 @@
                             }
                             const connections = await response.json();
 
+                            newConnectionsTable.style.display = 'block';
                             // Clear existing table rows
                             newConnectionsTableBody.innerHTML = '';
 
@@ -309,7 +308,7 @@
                                 const row = document.createElement('tr');
                                 row.innerHTML = `
                                     <td>
-                                        <input type="checkbox" class="form-check-input new-connection-checkbox"
+                                        <input type="checkbox" class="form-check-input new-connection-checkbox" id="connectionCheckbox" name="connectionCheckbox"
                                                value="${connection.connectionString}">
                                     </td>
                                     <td>${connection.name}</td>
@@ -343,9 +342,9 @@
             updateRemoveButton();
         });
 
-        function initializeNewConnectionsCheckboxes() {
-            const selectAllCheckbox = document.getElementById('selectAllResourceGroups');
-            const newConnectionCheckboxes = document.getElementsByClassName('new-connection-checkbox');
+        function initializeNewConnectionCheckboxes() {
+            const selectAllCheckbox = document.getElementById('selectAllConnections');
+            const newConnectionCheckboxes = document.getElementsByName('connectionCheckbox');
 
             // Select all checkbox handler
             selectAllCheckbox.addEventListener('change', function() {
@@ -368,7 +367,7 @@
 
         function updateSaveButtonState() {
             const saveButton = document.getElementById('saveNewConnection');
-            const hasSelectedConnections = Array.from(document.getElementsByClassName('new-connection-checkbox'))
+            const hasSelectedConnections = Array.from(document.getElementsByName('connectionCheckbox'))
                 .some(cb => cb.checked);
 
             saveButton.disabled = !hasSelectedConnections;
@@ -479,7 +478,20 @@
 
         function openNewConnectionModal() {
             // Clear the form
-            document.getElementById('newConnectionForm').reset();
+            const newConnectionForm = document.getElementById('newConnectionForm');
+            const connectionStringForm = document.getElementById('connectionStringForm');
+            const connectionStringInput = document.getElementById('connectionStringInput');
+            const alternativeForm = document.getElementById('alternativeForm');
+            const newConnectionsTable = document.getElementById('newConnectionsTable');
+            const connectionStringRadio = document.getElementById("connectionStringRadio");
+
+            newConnectionForm.reset();
+            connectionStringForm.style.display = 'block';
+            newConnectionsTable.style.display = 'none';
+            connectionStringRadio.checked = true;
+            alternativeForm.style.display = 'none';
+            connectionStringInput.disabled = false;
+
             // Show the modal
             newConnectionModal.show();
 
@@ -531,25 +543,25 @@
             }
             else {
                 const selectedSubscription = document.getElementById('subscriptionSelect').value;
-                const selectedConnections = Array.from(document.getElementsByClassName('new-connection-checkbox'))
-                    .filter(cb => cb.checked)
-                    .map(cb => cb.value);
+                const selectedBoxes = document.querySelectorAll('input[name="connectionCheckbox"]:checked');
 
                 if (!selectedSubscription) {
                     alert('Please select a subscription');
                     return;
                 }
-                if (selectedConnections.length === 0) {
-                    alert('Please select at least one connection to add');
-                    return;
-                }
+
+                if (selectedBoxes.length === 0) return;
+
+                const selectedItems = Array.from(selectedBoxes).map(checkbox => ({
+                    connectionString: checkbox.value
+                }));
 
                 const saveButton = document.getElementById('saveNewConnection');
                 saveButton.disabled = true;
                 saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
 
                 const data = {
-                    connections = selectedConnections,
+                    connections: selectedItems,
                 };
 
                 $.ajax({
