@@ -278,3 +278,101 @@ html, body {
     color: #dc3545 !important; /* Bootstrap's danger red color */
     font-weight: 500 !important;
 }
+
+/* Azure-style notifications */
+.notification-container {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    width: auto;
+    min-width: 320px;
+    max-width: 80%;
+}
+
+.notification-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 2px;
+    box-shadow: 0 6.4px 14.4px 0 rgba(0,0,0,.132), 0 1.2px 3.6px 0 rgba(0,0,0,.108);
+    animation: slideDown 0.3s ease-out;
+}
+
+.notification-banner.success {
+    background-color: #dff6dd;
+    border: 1px solid #c2ecc0;
+}
+
+.notification-banner.error {
+    background-color: #fde7e9;
+    border: 1px solid #fad0d4;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.notification-icon {
+    display: flex;
+    align-items: center;
+}
+
+.notification-banner.success .notification-icon {
+    color: #0b7a05;
+}
+
+.notification-banner.error .notification-icon {
+    color: #a4262c;
+}
+
+.notification-message {
+    color: #242424;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    padding: 4px;
+    margin-left: 16px;
+    cursor: pointer;
+    color: #605e5c;
+    display: flex;
+    align-items: center;
+}
+
+.notification-close:hover {
+    color: #323130;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.notification-banner.fade-out {
+    animation: fadeOut 0.3s ease-out forwards;
+}

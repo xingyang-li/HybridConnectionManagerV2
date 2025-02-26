@@ -10,6 +10,20 @@
 </head>
 <body>
     <div class="container pt-4">
+        <div class="notification-container">
+            <div id="notificationBanner" class="notification-banner" style="display: none;" role="alert">
+                <div class="notification-content">
+                    <div class="notification-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <span id="notificationMessage" class="notification-message"></span>
+                </div>
+                <button type="button" class="notification-close" onclick="hideNotification()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
         <div class="d-flex align-items-center mb-4">
             <!-- Added for title section with margin bottom -->
             <h2>Hybrid Connections</h2>
@@ -464,6 +478,11 @@
                 contentType: 'application/json',
                 success: function(result) {
                     if (result.success) {
+                        const count = selectedItems.length;
+                        showNotification(
+                            `Successfully removed ${count} ${count === 1 ? 'connection' : 'connections'}`,
+                            'success'
+                        );
                         refreshContent();
                     } else {
                         alert('Error removing connections: ' + result.message);
@@ -527,6 +546,10 @@
                         if (result.success) {
                             newConnectionModal.hide();
                             refreshContent();
+                            showNotification(
+                                'Successfully added new connection',
+                                'success'
+                            );
                         } else {
                             alert('Error creating connection: ' + result.message);
                         }
@@ -573,6 +596,11 @@
                         if (result.success) {
                             newConnectionModal.hide();
                             refreshContent();
+                            const count = selectedItems.length;
+                            showNotification(
+                                `Successfully removed ${count} ${count === 1 ? 'connection' : 'connections'}`,
+                                'success'
+                            );
                         } else {
                             alert('Error creating connection: ' + result.message);
                         }
@@ -611,6 +639,55 @@
             if (!dateString) return '';
             const date = new Date(dateString);
             return date.toLocaleString();
+        }
+
+        function showNotification(message, type = 'success') {
+            const banner = document.getElementById('notificationBanner');
+            const messageElement = document.getElementById('notificationMessage');
+            const iconElement = banner.querySelector('.notification-icon i');
+
+            // Reset classes
+            banner.className = 'notification-banner';
+            banner.classList.add(type);
+
+            // Update icon based on type
+            if (type === 'success') {
+                iconElement.className = 'fas fa-check-circle';
+            } else if (type === 'error') {
+                iconElement.className = 'fas fa-exclamation-circle';
+            }
+
+            // Set message
+            messageElement.textContent = message;
+
+            // Show banner with animation
+            banner.style.display = 'flex';
+
+            // Auto hide after 5 seconds
+            const hideTimer = setTimeout(() => {
+                hideNotification();
+            }, 5000);
+
+            // Store timer ID on the banner element
+            banner.dataset.hideTimer = hideTimer;
+        }
+
+        function hideNotification() {
+            const banner = document.getElementById('notificationBanner');
+
+            // Clear any existing hide timer
+            if (banner.dataset.hideTimer) {
+                clearTimeout(parseInt(banner.dataset.hideTimer));
+            }
+
+            // Add fade-out animation
+            banner.classList.add('fade-out');
+
+            // Hide after animation completes
+            setTimeout(() => {
+                banner.style.display = 'none';
+                banner.classList.remove('fade-out');
+            }, 300);
         }
 
         initializeAllListeners();
