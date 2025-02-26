@@ -155,19 +155,15 @@
 
     <script>
 
+        document.addEventListener('DOMContentLoaded', function() {
+        initializeCheckboxListeners();
+        updateRemoveButton();
+        });
+
         function initializeAllListeners(){
 
-            document.getElementById('selectAll').addEventListener('change', function() {
-                var checkboxes = document.getElementsByName('selectedIds');
-                for(var checkbox of checkboxes) {
-                    checkbox.checked = this.checked;
-                }
-            });
-
-            document.addEventListener('DOMContentLoaded', function() {
-                initializeCheckboxListeners();
-                updateRemoveButton();
-            });
+            initializeCheckboxListeners();
+            updateRemoveButton();
 
             document.querySelectorAll('.item-row').forEach(row => {
                 row.addEventListener('click', function() {
@@ -222,7 +218,10 @@
                 type: 'GET',
                 success: function (result) {
                     $("#contentArea").html(result);
-                    initializeAllListeners();
+                    setTimeout(() => {
+                        initializeAllListeners();
+                        updateRemoveButton(); // Explicitly update remove button state
+                    }, 0);
                 },
                 error: function (error) {
                     console.error('Error refreshing content:', error);
