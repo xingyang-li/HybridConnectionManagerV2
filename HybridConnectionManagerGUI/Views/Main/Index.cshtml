@@ -15,15 +15,19 @@
             <h2>Hybrid Connections</h2>
         </div>
 
-        <div class="mb-3">
-            <button id="newButton" class="btn btn-success me-2" onclick="showNewConnectionModal()">
-                <i class="fas fa-plus"></i> New
+        <div class="azure-button-container">
+            <button id="newButton" class="btn-azure-primary" onclick="openNewConnectionModal()">
+                <i class="fas fa-plus"></i>
+                New
             </button>
-            <button id="refreshButton" class="btn btn-primary me-2" onclick="refreshContent()">
-                <i class="fas fa-arrows-rotate"></i> Refresh
+            <button id="refreshButton" class="btn-azure-white" onclick="refreshContent()">
+                <i class="fas fa-sync-alt"></i>
+                Refresh
             </button>
-            <button id="removeButton" class="btn btn-danger" onclick="removeSelectedConnections()" disabled>
-                <i class="fas fa-trash"></i> Remove
+            <div class="azure-button-separator"></div>
+            <button id="removeButton" class="btn-azure-white-danger" onclick="removeSelectedConnections()" disabled>
+                <i class="fas fa-trash-alt"></i>
+                Delete
             </button>
         </div>
 
@@ -153,11 +157,44 @@
         </div>
     </div>
 
+    <!-- New Connection Modal -->
+    <div class="modal fade" id="newConnectionModal" tabindex="-1" aria-labelledby="newConnectionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newConnectionModalLabel">New Hybrid Connection</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newConnectionForm">
+                        <div class="mb-3">
+                            <label for="Connection String" class="form-label">Connection String</label>
+                            <input type="text" class="form-control" id="connectionString" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-azure-white" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-azure-primary" id="saveNewConnection">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        let newConnectionModal;
 
         document.addEventListener('DOMContentLoaded', function() {
-        initializeCheckboxListeners();
-        updateRemoveButton();
+            // Initialize the Bootstrap modal
+            newConnectionModal = new bootstrap.Modal(document.getElementById('newConnectionModal'));
+
+            // Add event listener for the save button
+            document.getElementById('saveNewConnection').addEventListener('click', saveNewConnection);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCheckboxListeners();
+            updateRemoveButton();
         });
 
         function initializeAllListeners(){
@@ -259,6 +296,52 @@
                 error: function(error) {
                     console.error('Error removing connections:', error);
                     alert('Error removing connections. Please try again.');
+                }
+            });
+        }
+
+        function openNewConnectionModal() {
+            // Clear the form
+            document.getElementById('newConnectionForm').reset();
+            // Show the modal
+            newConnectionModal.show();
+        }
+
+        function saveNewConnection() {
+            const form = document.getElementById('newConnectionForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const saveButton = document.getElementById('saveNewConnection');
+            saveButton.disabled = true;
+            saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+
+            const data = {
+                connectionString: document.getElementById('connectionString').value
+            };
+
+            $.ajax({
+                url: '@Url.Action("Add", "Main")',
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function(result) {
+                    if (result.success) {
+                        newConnectionModal.hide();
+                        refreshContent();
+                    } else {
+                        alert('Error creating connection: ' + result.message);
+                    }
+                },
+                error: function(error) {
+                    console.error('Error creating connection:', error);
+                    alert('Error creating connection. Please try again.');
+                },
+                complete: function() {
+                    saveButton.disabled = false;
+                    saveButton.innerHTML = 'Create';
                 }
             });
         }

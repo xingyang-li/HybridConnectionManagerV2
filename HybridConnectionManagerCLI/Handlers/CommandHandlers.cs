@@ -17,10 +17,6 @@ namespace HybridConnectionManager.CLI
     public static class CommandHandlers
     {
         public static JsonSerializerSettings HybridConnectionJsonSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, ContractResolver = new IgnorePropertiesResolver(new[] { "Error", "ErrorMessage" }) };
-        public static string EndpointRegexPattern = "^([a-zA-Z0-9.-]+):(\\d{1,5})$";
-        public static string HcConnectionStringRegexPattern = @"^Endpoint=sb:\/\/[a-zA-Z0-9-]+\.servicebus\.windows\.net\/;SharedAccessKeyName=[a-zA-Z0-9-]+;SharedAccessKey=[a-zA-Z0-9+\/=]+;EntityPath=[a-zA-Z0-9-]+$";
-        public static string RootConnectionStringRegexPattern = @"^Endpoint=sb:\/\/[a-zA-Z0-9-]+\.servicebus\.windows\.net\/;SharedAccessKeyName=[a-zA-Z0-9-]+;SharedAccessKey=[a-zA-Z0-9+\/=]+$";
-
         public static MSALProvider MSALProvider = new MSALProvider();
 
         public static async Task LoginHandler()
@@ -79,7 +75,7 @@ namespace HybridConnectionManager.CLI
                         return;
                     }
 
-                    if (!Regex.IsMatch(connectionString, HcConnectionStringRegexPattern) && !Regex.IsMatch(connectionString, RootConnectionStringRegexPattern))
+                    if (!Regex.IsMatch(connectionString, Util.HcConnectionStringRegexPattern) && !Regex.IsMatch(connectionString, Util.RootConnectionStringRegexPattern))
                     {
                         Console.WriteLine(String.Format("Connection string {0} is invalid. Connection string must be of form: Endpoint=sb://<namespace>.servicebus.windows.net/;SharedAccessKeyName=<keyName>;SharedAccessKey=<keyValue>;EntityPath=<name>", connectionString));
                         return;
@@ -193,7 +189,7 @@ namespace HybridConnectionManager.CLI
         {
             try
             {
-                if (!Regex.IsMatch(endpoint, EndpointRegexPattern))
+                if (!Regex.IsMatch(endpoint, Util.EndpointRegexPattern))
                 {
                     Console.WriteLine(String.Format("Endpoint {0} is invalid. Endpoint must be of form: <host>:<port>", endpoint));
                     return;

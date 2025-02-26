@@ -44,7 +44,7 @@ body {
 }
 
 pre {
-    font-family: 'Consolas', monospace;
+    font-family: 'Segoe UI', monospace;
     font-size: 14px;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -56,4 +56,215 @@ pre {
     width: 100%;
     white-space: nowrap;
     line-height: 60px;
+}
+
+/* Azure-style primary button */
+.btn-azure-primary {
+    position: relative;
+    padding: 6px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: #ffffff;
+    background-color: #0078d4;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.btn-azure-primary:hover:not(:disabled) {
+    background-color: #106ebe;
+    text-decoration: none;
+}
+
+.btn-azure-primary:active:not(:disabled) {
+    background-color: #005a9e;
+}
+
+.btn-azure-primary:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0078d4;
+}
+
+.btn-azure-primary:disabled {
+    background-color: #f3f2f1;
+    color: #a19f9d;
+    cursor: not-allowed;
+}
+
+/* Azure-style borderless white button for refresh */
+.btn-azure-white {
+    position: relative;
+    padding: 6px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: #0078d4;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.btn-azure-white:hover:not(:disabled) {
+    background-color: #f0f6fb;
+    color: #106ebe;
+    border-color: #106ebe;
+    text-decoration: none;
+}
+
+.btn-azure-white:active:not(:disabled) {
+    background-color: #e1eef7;
+    color: #005a9e;
+    border-color: #005a9e;
+}
+
+.btn-azure-white:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0078d4;
+}
+
+.btn-azure-white:disabled {
+    background-color: transparent;
+    color: #a19f9d;
+    border-color: transparent;
+    cursor: not-allowed;
+}
+
+/* Azure-style borderless white button for delete/remove */
+.btn-azure-white-danger {
+    position: relative;
+    padding: 6px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: #d93025;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.btn-azure-white-danger:hover:not(:disabled) {
+    background-color: #fdf2f1;
+    color: #b3261e;
+    border-color: #b3261e;
+    text-decoration: none;
+}
+
+.btn-azure-white-danger:active:not(:disabled) {
+    background-color: #fce8e6;
+    color: #8f1d18;
+    border-color: #8f1d18;
+}
+
+.btn-azure-white-danger:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #d93025;
+}
+
+.btn-azure-white-danger:disabled {
+    background-color: transparent;
+    color: #a19f9d;
+    border-color: transparent;
+    cursor: not-allowed;
+}
+
+/* Common styles for both button types */
+.btn-azure-white i,
+.btn-azure-white-danger i {
+    margin-right: 8px;
+}
+
+/* Button container for proper spacing */
+.azure-button-container {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.azure-button-container {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e1e1e1; /* Azure's subtle border color */
+    width: 100%; /* Make the border span the full width */
+}
+
+.azure-button-separator {
+    width: 1px;
+    height: 24px; /* Match button height */
+    background-color: #e1e1e1; /* Azure's subtle separator color */
+    margin: 0 8px; /* Add equal spacing on both sides */
+    align-self: center;
+}
+
+/* Base font settings for the entire application */
+html, body {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #323130; /* Azure's default text color */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Update button typography */
+.btn-azure-primary,
+.btn-azure-white,
+.btn-azure-white-danger {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    font-size: 13px; /* Azure uses slightly smaller font for buttons */
+    font-weight: 600;
+    line-height: 20px;
+}
+
+/* Table typography */
+.table {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    font-size: 13px;
+}
+
+    .table th {
+        font-weight: 600;
+        color: #323130;
+    }
+
+    .table td {
+        font-weight: 400;
+        color: #323130;
+    }
+
+/* Modal typography */
+.modal-title {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    color: #323130;
+}
+
+.modal-body {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #323130;
+}
+
+/* Form control typography */
+.form-control {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    font-size: 13px;
+}
+
+/* Checkbox labels */
+.form-check-label {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    font-size: 13px;
 }

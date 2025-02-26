@@ -2,6 +2,7 @@
 using HybridConnectionManagerGUI.Models;
 using HybridConnectionManager.Library;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace HybridConnectionManagerGUI.Controllers
 {
@@ -32,6 +33,16 @@ namespace HybridConnectionManagerGUI.Controllers
             {
                 return Json(new { success = false, message = ex.Message });
             }
+        }
+
+        [HttpPost]
+        public JsonResult Add([FromBody] HybridConnectionModel model)
+        {
+            if (!Regex.IsMatch(model.ConnectionString, Util.HcConnectionStringRegexPattern))
+            {
+                return Json(new { success = false, Message = "Please use a valid connection string." });
+            }
+            return AddHybridConnection(model);
         }
 
         public List<HybridConnectionModel> GetHybridConnections()
@@ -70,6 +81,19 @@ namespace HybridConnectionManagerGUI.Controllers
             {
                 var hybridConnectionsResponse = client.RemoveConnection(connection.Namespace, connection.Name).Result;
             }
+        }
+
+        public JsonResult AddHybridConnection(HybridConnectionModel model)
+        {
+            HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+            var response = client.AddUsingConnectionString(model.ConnectionString).Result;
+
+            if (response.Error)
+            {
+                return Json( new { success = false, message = response.ErrorMessage });
+            }
+
+            return Json(new { success = true });
         }
     }
 }
