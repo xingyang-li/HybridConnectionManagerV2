@@ -120,7 +120,7 @@ namespace HybridConnectionManager.Service
 
             await _listener.OpenAsync(TimeSpan.FromSeconds(timeoutSeconds));
             IsOpen = true;
-            AcceptAndRelay();
+            Task.Factory.StartNew(() => AcceptAndRelay());
         }
 
         public async Task Close(int timeoutSeconds = CLOSE_TIMEOUT_SECONDS)
@@ -160,7 +160,7 @@ namespace HybridConnectionManager.Service
             get; private set;
         }
 
-        private async void AcceptAndRelay()
+        private async Task AcceptAndRelay()
         {
             while (!_isShuttingDown)
             {
@@ -171,7 +171,7 @@ namespace HybridConnectionManager.Service
                     {
                         continue;
                     }
-                    ConnectToEndpointAndRelay(hcStream);
+                    Task.Factory.StartNew(() => ConnectToEndpointAndRelay(hcStream));
                 }
                 catch (Exception e)
                 {
@@ -181,7 +181,7 @@ namespace HybridConnectionManager.Service
             }
         }
 
-        private async void ConnectToEndpointAndRelay(HybridConnectionStream hcStream)
+        private async Task ConnectToEndpointAndRelay(HybridConnectionStream hcStream)
         {
             using (TcpClient client = new TcpClient())
             {
@@ -196,7 +196,6 @@ namespace HybridConnectionManager.Service
                 }
                 catch (Exception ex)
                 {
-                    // TODO log
                     try
                     {
                         using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
