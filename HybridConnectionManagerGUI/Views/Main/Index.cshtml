@@ -63,7 +63,7 @@
                         <tr>
                             <td></td>
                             <th>Name</th>
-                            <th>Connection Status</th>
+                            <th>Status</th>
                             <th>Namespace</th>
                             <th>Endpoint</th>
                         </tr>
@@ -273,10 +273,69 @@
         </div>
     </div>
 
+    <!-- Alert Modal -->
+    <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog details-modal-custom">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alertModalTitle">Alert</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex align-items-center">
+                        <div class="azure-alert-icon me-3">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <span id="alertMessage">Message text here</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-azure-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered position-relative azureConfirmModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalTitle">Confirm Action</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex align-items-center">
+                        <div class="azure-confirm-icon me-3">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <span id="confirmMessage">Are you sure you want to proceed?</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-azure-white" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-azure-primary" id="confirmButton">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let newConnectionModal;
         let logsModal;
         let detailModal;
+        let alertModal;
+        let confirmModal;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the Azure Confirm Modal
+            confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the Azure Alert Modal
+            alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+        });
 
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize the Bootstrap modal
@@ -591,67 +650,112 @@
             const selectedBoxes = document.querySelectorAll('input[name="selectedIds"]:checked');
             if (selectedBoxes.length === 0) return;
 
-            if (!confirm('Are you sure you want to remove the selected connections?')) return;
+            const count = selectedBoxes.length;
+            const confirmMessage = `Are you sure you want to remove ${count} ${count === 1 ? 'connection' : 'connections'}?`;
 
-            const selectedItems = Array.from(selectedBoxes).map(checkbox => ({
-                namespace: checkbox.dataset.namespace,
-                name: checkbox.dataset.name
-            }));
+            showAzureConfirm(confirmMessage, "Confirm Removal")
+                .then(confirmed => {
+                    if (!confirmed) return;
 
-            $.ajax({
-                url: '@Url.Action("Remove", "Main")',
-                type: 'POST',
-                data: JSON.stringify({ connections: selectedItems }),
-                contentType: 'application/json',
-                success: function(result) {
-                    if (result.success) {
-                        const count = selectedItems.length;
-                        showNotification(
-                            `Successfully removed ${count} ${count === 1 ? 'connection' : 'connections'}`,
-                            'success'
-                        );
-                        refreshContent();
-                    } else {
-                        alert('Error removing connections: ' + result.message);
-                    }
-                },
-                error: function(error) {
-                    console.error('Error removing connections:', error);
-                    alert('Error removing connections. Please try again.');
-                }
-            });
+                    const selectedItems = Array.from(selectedBoxes).map(checkbox => ({
+                        namespace: checkbox.dataset.namespace,
+                        name: checkbox.dataset.name
+                    }));
+
+                    $.ajax({
+                        url: '@Url.Action("Remove", "Main")',
+                        type: 'POST',
+                        data: JSON.stringify({ connections: selectedItems }),
+                        contentType: 'application/json',
+                        success: function(result) {
+                            if (result.success) {
+                                const count = selectedItems.length;
+                                showNotification(
+                                    `Successfully removed ${count} ${count === 1 ? 'connection' : 'connections'}`,
+                                    'success'
+                                );
+                                refreshContent();
+                            } else {
+                                showNotification('Error removing connections: ' + result.message, 'error');
+                            }
+                        },
+                        error: function(error) {
+                            console.error('Error removing connections:', error);
+                            showNotification('Error removing connections. Please try again.', 'error');
+                        }
+                    });
+                });
         }
 
         function removeCurrentConnection() {
             // Using the currentItem that's already set in showDetails()
             if (currentItem) {
-                if (!confirm('Are you sure you want to remove this connection?')) return;
-                $.ajax({
-                    url: '@Url.Action("Remove", "Main")',
-                    type: 'POST',
-                    data: JSON.stringify({ connections: [{namespace: currentItem.namespace, name: currentItem.name}] }),
-                    contentType: 'application/json',
-                    success: function(result) {
-                        if (result.success) {
-                            detailModal.hide();
-                            showNotification(
-                                `Successfully removed ${currentItem.namespace}/${currentItem.name}`,
-                                'success'
-                            );
-                            refreshContent();
-                        } else {
-                            alert('Error removing connection: ' + result.message);
-                        }
-                    },
-                    error: function(error) {
-                        console.error('Error removing connection:', error);
-                        alert('Error removing connection. Please try again.');
-                    }
-                });
+                const confirmMessage = `Are you sure you want to remove this connection?`;
+
+                showAzureConfirm(confirmMessage, "Confirm Removal")
+                    .then(confirmed => {
+                        if (!confirmed) return;
+
+                        $.ajax({
+                            url: '@Url.Action("Remove", "Main")',
+                            type: 'POST',
+                            data: JSON.stringify({ connections: [{namespace: currentItem.namespace, name: currentItem.name}] }),
+                            contentType: 'application/json',
+                            success: function(result) {
+                                if (result.success) {
+                                    detailModal.hide();
+                                    showNotification(
+                                        `Successfully removed ${currentItem.namespace}/${currentItem.name}`,
+                                        'success'
+                                    );
+                                    refreshContent();
+                                } else {
+                                    showNotification('Error removing connection: ' + result.message, 'error');
+                                }
+                            },
+                            error: function(error) {
+                                console.error('Error removing connection:', error);
+                                showNotification('Error removing connection. Please try again.', 'error');
+                            }
+                        });
+                    });
             } else {
                 showNotification('Unable to delete connection', 'error');
             }
         }
+
+        function showAzureConfirm(message, title = "Confirm Action") {
+            return new Promise((resolve) => {
+                const messageElement = document.getElementById('confirmMessage');
+                const titleElement = document.getElementById('confirmModalTitle');
+                const confirmButton = document.getElementById('confirmButton');
+
+                messageElement.textContent = message;
+                titleElement.textContent = title;
+
+                // Clear any previous event listeners
+                const newConfirmButton = confirmButton.cloneNode(true);
+                confirmButton.parentNode.replaceChild(newConfirmButton, confirmButton);
+
+                // Add new event listener
+                newConfirmButton.addEventListener('click', function() {
+                    confirmModal.hide();
+                    resolve(true);
+                });
+
+                // Add event listener for cancel (modal dismiss)
+                const modalElement = document.getElementById('confirmModal');
+                const handleModalHidden = function() {
+                    modalElement.removeEventListener('hidden.bs.modal', handleModalHidden);
+                    resolve(false);
+                };
+                modalElement.addEventListener('hidden.bs.modal', handleModalHidden);
+
+                // Show the modal
+                confirmModal.show();
+            });
+        }
+
 
         function openNewConnectionModal() {
             // Clear the form
@@ -692,6 +796,8 @@
                 }
 
                 const saveButton = document.getElementById('saveNewConnection');
+                const connectionStringInput = document.getElementById('connectionStringInput');
+
                 saveButton.disabled = true;
                 saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
 
@@ -713,12 +819,18 @@
                                 'success'
                             );
                         } else {
-                            alert('Error creating connection: ' + result.message);
+                            showAzureAlert('Error creating connection: ' + result.message, 'Input Error')
+                            .then(() => {
+                                document.getElementById('connectionStringInput').focus();
+                            });
                         }
                     },
                     error: function(error) {
                         console.error('Error creating connection:', error);
-                        alert('Error creating connection. Please try again.');
+                        showAzureAlert('Error creating connection: ' + result.message, 'Operation Error')
+                            .then(() => {
+                                document.getElementById('connectionStringInput').focus();
+                            });
                     },
                     complete: function() {
                         saveButton.disabled = false;
@@ -777,6 +889,25 @@
                     }
                 });
             }
+        }
+
+        function showAzureAlert(message, title = "Error") {
+            const messageElement = document.getElementById('alertMessage');
+            const titleElement = document.getElementById('alertModalTitle');
+
+            messageElement.textContent = message;
+            titleElement.textContent = title;
+
+            // Show the modal
+            alertModal.show();
+
+            // Return a promise that resolves when the modal is closed
+            return new Promise(resolve => {
+                document.getElementById('alertModal').addEventListener('hidden.bs.modal', function handler() {
+                    document.getElementById('alertModal').removeEventListener('hidden.bs.modal', handler);
+                    resolve();
+                });
+            });
         }
 
         function showDetails(item) {

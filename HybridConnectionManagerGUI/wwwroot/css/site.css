@@ -1,18 +1,4 @@
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
   position: relative;
   min-height: 100%;
 }
@@ -644,4 +630,41 @@ html, body {
 /* Style the second column (values) */
 .connections-table tbody tr td:last-child {
     color: #323130; /* Azure's primary text color */
+}
+
+.azure-alert-icon {
+    font-size: 24px;
+    color: #d83b01; /* Azure warning color */
+}
+
+.modal-header {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.modal-footer {
+    border-top: none;
+    padding-top: 0;
+}
+
+.azure-confirm-icon {
+    font-size: 24px;
+    color: #ff8c00; /* Azure warning color */
+}
+
+#azureConfirmButton:hover {
+    background-color: #c43601;
+    border-color: #c43601;
+}
+
+#azureConfirmModal .modal-dialog {
+    position: relative !important;
+    top: -300px !important; /* Move the modal up by 80px */
+}
+
+/* For smaller screens, reduce the upward shift */
+@media (max-width: 768px) {
+    #azureConfirmModal .modal-dialog {
+        top: -40px;
+    }
 }

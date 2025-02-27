@@ -188,6 +188,11 @@ namespace HybridConnectionManager.Service
                 try
                 {
                     await client.ConnectAsync(_endpointHost, _endpointPort);
+
+                    Task sendTask = Util.PipeStream(hcStream, client.GetStream());
+                    Task receiveTask = Util.PipeStream(client.GetStream(), hcStream);
+
+                    await Task.WhenAll(sendTask, receiveTask);
                 }
                 catch (Exception ex)
                 {
@@ -206,11 +211,6 @@ namespace HybridConnectionManager.Service
 
                     return;
                 }
-
-                Task sendTask = Util.PipeStream(hcStream, client.GetStream());
-                Task receiveTask = Util.PipeStream(client.GetStream(), hcStream);
-
-                await Task.WhenAll(sendTask, receiveTask);
             }
 
             try
