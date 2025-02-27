@@ -118,8 +118,6 @@ namespace HybridConnectionManager.Service
                 return;
             }
 
-            _logger.Information("Opening listener for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
-
             await _listener.OpenAsync(TimeSpan.FromSeconds(timeoutSeconds));
             IsOpen = true;
             AcceptAndRelay();
@@ -131,8 +129,6 @@ namespace HybridConnectionManager.Service
             {
                 return;
             }
-
-            _logger.Information("Closing listener for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
 
             _isShuttingDown = true;
             try

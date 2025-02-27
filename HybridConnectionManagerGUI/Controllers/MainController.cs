@@ -54,7 +54,6 @@ namespace HybridConnectionManagerGUI.Controllers
         {
             foreach (var connection in model.Connections)
             {
-                Console.WriteLine(connection.ConnectionString);
                 if (!Regex.IsMatch(connection.ConnectionString, Util.HcConnectionStringRegexPattern))
                 {
                     return Json(new { success = false, Message = "Please use a valid connection string." });
@@ -149,15 +148,22 @@ namespace HybridConnectionManagerGUI.Controllers
 
         public JsonResult AddHybridConnection(HybridConnectionModel model)
         {
-            HybridConnectionManagerClient client = new HybridConnectionManagerClient();
-            var response = client.AddUsingConnectionString(model.ConnectionString).Result;
-
-            if (response.Error)
+            try
             {
-                return Json( new { success = false, message = response.ErrorMessage });
-            }
+                HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+                var response = client.AddUsingConnectionString(model.ConnectionString).Result;
 
-            return Json(new { success = true });
+                if (response.Error)
+                {
+                    return Json(new { success = false, message = response.ErrorMessage });
+                }
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Could not connect to Hybrid Connection Manager Service." });
+            }
         }
 
         public List<string> GetLogFiles()

@@ -102,7 +102,7 @@ pre {
     line-height: 20px;
     color: #0078d4;
     background-color: transparent;
-    border: 1px solid transparent;
+    border: 1px solid transparent !important;/* Make border transparent by default */
     border-radius: 2px;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
@@ -111,25 +111,30 @@ pre {
 .btn-azure-white:hover:not(:disabled) {
     background-color: #f0f6fb;
     color: #106ebe;
-    border-color: #106ebe;
+    border-color: #106ebe; /* Show border on hover */
     text-decoration: none;
 }
 
 .btn-azure-white:active:not(:disabled) {
     background-color: #e1eef7;
     color: #005a9e;
-    border-color: #005a9e;
+    border-color: #005a9e; /* Keep border visible when clicked */
 }
 
-.btn-azure-white:focus {
-    outline: none;
+/* Only show outline when the button is focused by keyboard interaction */
+.btn-azure-white:focus-visible {
     box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0078d4;
+}
+
+/* Remove outline for mouse interaction */
+.btn-azure-white:focus:not(:focus-visible) {
+    box-shadow: none;
 }
 
 .btn-azure-white:disabled {
     background-color: transparent;
     color: #a19f9d;
-    border-color: transparent;
+    border-color: transparent; /* Keep border hidden when disabled */
     cursor: not-allowed;
 }
 
@@ -181,21 +186,47 @@ pre {
 
 /* Button container for proper spacing */
 .azure-button-container {
-    display: inline-flex;
-    gap: 8px;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
-.azure-button-container {
-    display: inline-flex;
-    gap: 8px;
+    display: flex;
+    justify-content: space-between; /* This will push the right group to the far right */
     align-items: center;
     margin-bottom: 16px;
     padding-bottom: 16px;
-    border-bottom: 1px solid #e1e1e1; /* Azure's subtle border color */
+    border-bottom: 1px solid #e1e1e1;
+    width: 100%;
+}
+
+/* Left group of buttons */
+.azure-button-group-left {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Right group of buttons */
+.azure-button-group-right {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Existing button separator style remains the same */
+.azure-button-separator {
+    width: 1px;
+    height: 24px;
+    background-color: #e1e1e1;
+    margin: 0 8px;
+    align-self: center;
+}
+
+.azure-button-container2 {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
     width: 100%; /* Make the border span the full width */
 }
+
 
 .azure-button-separator {
     width: 1px;
@@ -467,4 +498,150 @@ html, body {
     vertical-align: middle;
     display: inline-block;
     margin-top: -4px; /* Fine-tune vertical alignment with text */
+}
+
+.details-modal-custom {
+    max-width: 650px;
+    width: 100%;
+    margin: 5rem auto !important; /* Increased from 1.75rem to 5rem to move modal lower */
+}
+
+/* Azure-style radio buttons */
+.azure-radio {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #323130;
+    user-select: none;
+}
+
+.azure-radio input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.azure-radio-checkmark {
+    position: absolute;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    border: 1px solid #605e5c;
+    border-radius: 50%;
+    transition: all 0.2s ease-in-out;
+}
+
+.azure-radio:hover input ~ .azure-radio-checkmark {
+    border-color: #323130;
+}
+
+.azure-radio input:checked ~ .azure-radio-checkmark {
+    border-color: #0078d4;
+}
+
+.azure-radio-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    top: 2px;
+    left: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #0078d4;
+}
+
+.azure-radio input:checked ~ .azure-radio-checkmark:after {
+    display: block;
+}
+
+.azure-radio input:focus ~ .azure-radio-checkmark {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0078d4;
+}
+
+/* Radio button container */
+.azure-radio-group {
+    margin-bottom: 1rem;
+}
+
+.azure-radio-label {
+    font-weight: 400;
+    color: #323130;
+}
+
+.details-table {
+    width: 100%;
+}
+
+.details-table th,
+.details-table td {
+    padding: 8px;
+    border: none; /* Remove all borders */
+}
+/* Only add border between thead and tbody */
+.details-table thead {
+    border-bottom: 2px solid #dee2e6;
+}
+
+.details-table tbody tr:hover {
+    background-color: #e9ecef;
+    transition: background-color 0.05s ease-in-out;
+    cursor: pointer;
+}
+/* Ensure even rows maintain distinct hover state */
+.details-table tbody tr:nth-child(even):hover {
+    background-color: #e9ecef;
+}
+
+/* Custom table styling for modal */
+.connections-table {
+    width: 100%;
+}
+
+.connections-table th,
+.connections-table td {
+    padding: 12px 8px;
+    border: none;
+}
+
+/* Add border between rows in tbody */
+.connections-table tbody tr {
+    border-bottom: 1px solid #edebe9; /* Azure's subtle border color */
+}
+
+/* Remove border from last row */
+.connections-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* Only add border between thead and tbody */
+.connections-table thead {
+    border-bottom: 2px solid #dee2e6;
+}
+
+.connections-table tbody tr:hover {
+    background-color: #f3f2f1; /* Azure's hover background color */
+    transition: background-color 0.05s ease-in-out;
+}
+
+/* Ensure even rows maintain distinct hover state */
+.connections-table tbody tr:nth-child(even):hover {
+    background-color: #f3f2f1;
+}
+
+/* Style the first column (property names) */
+.connections-table tbody tr td:first-child {
+    color: #605e5c; /* Azure's secondary text color */
+    font-weight: 500;
+}
+
+/* Style the second column (values) */
+.connections-table tbody tr td:last-child {
+    color: #323130; /* Azure's primary text color */
 }

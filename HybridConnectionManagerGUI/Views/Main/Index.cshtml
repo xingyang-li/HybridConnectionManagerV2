@@ -32,30 +32,33 @@
         </div>
 
         <div class="azure-button-container">
-            <button id="newButton" class="btn-azure-primary" onclick="openNewConnectionModal()">
-                <i class="fas fa-plus"></i>
-                New
-            </button>
-            <button id="refreshButton" class="btn-azure-white" onclick="refreshContent()">
-                <i class="fas fa-sync-alt"></i>
-                Refresh
-            </button>
-            <div class="azure-button-separator"></div>
-            <button id="removeButton" class="btn-azure-white-danger" onclick="removeSelectedConnections()" disabled>
-                <i class="fas fa-trash-alt"></i>
-                Remove
-            </button>
-             <div class="azure-button-separator"></div>
-            <button id="viewLogsButton" class="btn-azure-white" onclick="openLogsModal()">
-                <i class="fas fa-file-alt"></i>
-                View Logs
-            </button>
+            <div class="azure-button-group-left">
+                <button id="newButton" class="btn-azure-primary" onclick="openNewConnectionModal()">
+                    <i class="fas fa-plus"></i>
+                    New
+                </button>
+                <button id="refreshButton" class="btn-azure-white" onclick="refreshContent()">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                </button>
+                <div class="azure-button-separator"></div>
+                <button id="removeButton" class="btn-azure-white-danger" onclick="removeSelectedConnections()" disabled>
+                    <i class="fas fa-trash-alt"></i>
+                    Remove
+                </button>
+            </div>
+            <div class="azure-button-group-right">
+                <button id="viewLogsButton" class="btn-azure-white" onclick="openLogsModal()">
+                    <i class="fas fa-file-alt"></i>
+                    View Logs
+                </button>
+            </div>
         </div>
 
         <div id="contentArea">
             @if (Model != null)
             {
-                <table class="table table-hover">
+                <table class="connections-table">
                     <thead>
                         <tr>
                             <td></td>
@@ -100,7 +103,7 @@
 
     <!--Connection Details Modal -->
     <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog details-modal-custom">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="detailsModalLabel">Hybrid Connection Details</h5>
@@ -108,42 +111,17 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <div class="mb-3">
+                        <div class=azure-button-container2>
                             <button type="button" class="btn-azure-white" onclick="openInAzurePortal()" id="openInPortalButton">
                                 <i class="fas fa-external-link-alt me-1"></i>
                                 Open in Azure Portal
                             </button>
                             <div class="azure-button-separator"></div>
-                            <button id="detailRemoveButton" class="btn-azure-white-danger" onclick="removeCurrentConnection()">
+                            <button id="detailRemoveButton" class="btn-azure-white" onclick="removeCurrentConnection()">
                                 <i class="fas fa-trash-alt"></i>
                                 Remove
                             </button>
                         </div>
-                        <style>
-                            /* Custom table styling for modal */
-                            .details-table {
-                                width: 100%;
-                            }
-                            .details-table th,
-                            .details-table td {
-                                padding: 8px;
-                                border: none; /* Remove all borders */
-                            }
-                            /* Only add border between thead and tbody */
-                            .details-table thead {
-                                border-bottom: 2px solid #dee2e6;
-                            }
-
-                            .details-table tbody tr:hover {
-                                background-color: #e9ecef;
-                                transition: background-color 0.05s ease-in-out;
-                                cursor: pointer;
-                            }
-                            /* Ensure even rows maintain distinct hover state */
-                            .details-table tbody tr:nth-child(even):hover {
-                                background-color: #e9ecef;
-                            }
-                        </style>
                         <table class="details-table">
                             <thead>
                                 <tr>
@@ -180,9 +158,6 @@
                         </table>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
             </div>
         </div>
     </div>
@@ -198,16 +173,16 @@
                 <div class="modal-body">
                     <form id="newConnectionForm">
                         <div class="mb-3">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="connectionType" id="connectionStringRadio" value="connectionStringType" checked>
-                                <label class="form-check-label" for="connectionStringRadio">
-                                    Use Connection String
+                            <div class="azure-radio-group">
+                                <label class="azure-radio mb-2">
+                                    <input type="radio" name="connectionType" id="connectionStringRadio" value="connectionStringType" checked>
+                                    <span class="azure-radio-checkmark"></span>
+                                    <span class="azure-radio-label">Use Connection String</span>
                                 </label>
-                            </div>
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="radio" name="connectionType" id="alternativeRadio" value="alternativeType">
-                                <label class="form-check-label" for="alternativeRadio">
-                                    Select with Azure
+                                <label class="azure-radio mb-3">
+                                    <input type="radio" name="connectionType" id="alternativeRadio" value="alternativeType">
+                                    <span class="azure-radio-checkmark"></span>
+                                    <span class="azure-radio-label">Select with Azure</span>
                                 </label>
                             </div>
                             <div id="connectionStringForm">
@@ -229,7 +204,7 @@
 
                             <div id="newConnectionsTable" style="display: none;">
                                 <div class="table-responsive">
-                                    <table class="table table-hover">
+                                    <table class="details-table">
                                         <thead>
                                             <tr>
                                                 <th style="width: 40px;"></th>
@@ -505,6 +480,25 @@
             if (!logContent) return;
 
             const text = logContent.textContent;
+
+            // Try Electron's clipboard API first
+            if (window.electronAPI) {
+                window.electronAPI.copyToClipboard(text)
+                    .then(() => {
+                        showNotification('Log content copied to clipboard', 'success');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy log content using Electron:', err);
+                        // Fall back to web API if Electron's API fails
+                        fallbackCopy(text);
+                    });
+            } else {
+                // Fall back to web API if not in Electron
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
             navigator.clipboard.writeText(text)
                 .then(() => {
                     showNotification('Log content copied to clipboard', 'success');

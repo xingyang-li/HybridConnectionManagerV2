@@ -43,7 +43,8 @@ if (HybridSupport.IsElectronActive)
                 ContextIsolation = false,
                 DevTools = true, // Enable DevTools for debugging
                 EnableRemoteModule = true,
-                WebSecurity = false // Note: Only disable this if you trust your content
+                WebSecurity = false, // Note: Only disable this if you trust your content
+                Preload = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "preload.js")
             }
         });
 
