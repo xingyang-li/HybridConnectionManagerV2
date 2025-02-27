@@ -22,7 +22,7 @@ Build the solution at the root of the repo using Visual Studio or `dotnet build`
 
 ### Run the Hybrid Connection Manager Service
 
-The Hybrid Connection Manager Service is a gRPC server that runs on the local machine and manages Hybrid Connection Listeners and proxies TCP requests to specified local endpoints. The service handles gRPC API requests initiated from the GUI or CLI to modify the Hybrid Connection. To run the service, open a console window and navigate to the build output directory for the HybridConnectionManagerService project:
+The Hybrid Connection Manager Service is a gRPC server that runs on the local machine and manages Hybrid Connection Listeners and proxies TCP requests to specified local endpoints. The service handles gRPC API requests initiated from the GUI or CLI to modify these Hybrid Connections. To run the service, open a console window and navigate to the build output directory for the HybridConnectionManagerService project:
 ```sh
 cd HybridConnectionManagerService/bin/Debug/netx.0
 ```
@@ -46,11 +46,11 @@ hcm list
 
 ### Hybrid Connection Manager GUI
 
-The Hybrid Connection Manager GUI is a UI that allows you to interact with the Hybrid Connection Manager Service using gRPC API requests. It is an ASP.NET MVC web application that has a dotnet Electron app wrapper. There are two easy ways to run the UI: 
+The Hybrid Connection Manager GUI is a UI that allows you to interact with the Hybrid Connection Manager Service using gRPC API requests. It is an ASP.NET MVC web application that has a .NET Electron app wrapper. There are two easy ways to run the UI: 
 
 #### 1. Start development server with Visual Studio
 
-Open the solution file in Visual Studio and run the `HybridConnectionManagerGUI` startup item. This will start a development server that serves the GUI and the web app content will be served in your default browser.
+Open the solution file in Visual Studio and select `HybridConnectionManagerGUI` as the startup item. Run the project with the `https` option. This will start a development server that serves the GUI and the web app content will be served in your default browser.
 
 #### 2. Build and run the Electron app
 
