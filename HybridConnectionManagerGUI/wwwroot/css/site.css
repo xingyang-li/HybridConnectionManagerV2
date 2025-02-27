@@ -20,15 +20,6 @@ html {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-    position: relative;
-    min-height: 100%;
-}
-
-body {
-    margin-bottom: 60px;
-}
-
 pre {
     font-family: 'Segoe UI', monospace;
     font-size: 14px;
@@ -240,38 +231,6 @@ html, body {
     font-size: 13px; /* Azure uses slightly smaller font for buttons */
     font-weight: 600;
     line-height: 20px;
-}
-
-/* Table typography */
-.table {
-    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
-    font-size: 13px;
-}
-
-    .table th {
-        font-weight: 600;
-        color: #323130;
-    }
-
-    .table td {
-        font-weight: 400;
-        color: #323130;
-    }
-
-/* Modal typography */
-.modal-title {
-    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 28px;
-    color: #323130;
-}
-
-.modal-body {
-    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
-    font-size: 14px;
-    line-height: 20px;
-    color: #323130;
 }
 
 /* Form control typography */
@@ -486,12 +445,6 @@ html, body {
     margin-top: -4px; /* Fine-tune vertical alignment with text */
 }
 
-.details-modal-custom {
-    max-width: 650px;
-    width: 100%;
-    margin: 5rem auto !important; /* Increased from 1.75rem to 5rem to move modal lower */
-}
-
 /* Azure-style radio buttons */
 .azure-radio {
     display: flex;
@@ -561,110 +514,12 @@ html, body {
     color: #323130;
 }
 
-.details-table {
-    width: 100%;
-}
-
-.details-table th,
-.details-table td {
-    padding: 8px;
-    border: none; /* Remove all borders */
-}
-/* Only add border between thead and tbody */
-.details-table thead {
-    border-bottom: 2px solid #dee2e6;
-}
-
-.details-table tbody tr:hover {
-    background-color: #e9ecef;
-    transition: background-color 0.05s ease-in-out;
-    cursor: pointer;
-}
-/* Ensure even rows maintain distinct hover state */
-.details-table tbody tr:nth-child(even):hover {
-    background-color: #e9ecef;
-}
-
-/* Custom table styling for modal */
-.connections-table {
-    width: 100%;
-}
-
-.connections-table th,
-.connections-table td {
-    padding: 12px 8px;
-    border: none;
-}
-
-/* Add border between rows in tbody */
-.connections-table tbody tr {
-    border-bottom: 1px solid #edebe9; /* Azure's subtle border color */
-}
-
-/* Remove border from last row */
-.connections-table tbody tr:last-child {
-    border-bottom: none;
-}
-
-/* Only add border between thead and tbody */
-.connections-table thead {
-    border-bottom: 2px solid #dee2e6;
-}
-
-.connections-table tbody tr:hover {
-    background-color: #f3f2f1; /* Azure's hover background color */
-    transition: background-color 0.05s ease-in-out;
-}
-
-/* Ensure even rows maintain distinct hover state */
-.connections-table tbody tr:nth-child(even):hover {
-    background-color: #f3f2f1;
-}
-
-/* Style the first column (property names) */
-.connections-table tbody tr td:first-child {
-    color: #605e5c; /* Azure's secondary text color */
-    font-weight: 500;
-}
-
-/* Style the second column (values) */
-.connections-table tbody tr td:last-child {
-    color: #323130; /* Azure's primary text color */
-}
-
 .azure-alert-icon {
     font-size: 24px;
     color: #d83b01; /* Azure warning color */
 }
 
-.modal-header {
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-.modal-footer {
-    border-top: none;
-    padding-top: 0;
-}
-
 .azure-confirm-icon {
     font-size: 24px;
     color: #ff8c00; /* Azure warning color */
-}
-
-#azureConfirmButton:hover {
-    background-color: #c43601;
-    border-color: #c43601;
-}
-
-#azureConfirmModal .modal-dialog {
-    position: relative !important;
-    top: -300px !important; /* Move the modal up by 80px */
-}
-
-/* For smaller screens, reduce the upward shift */
-@media (max-width: 768px) {
-    #azureConfirmModal .modal-dialog {
-        top: -40px;
-    }
 }

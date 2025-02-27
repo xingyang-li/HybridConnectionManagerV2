@@ -1,0 +1,86 @@
+﻿/* Table typography */
+.table {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    font-size: 13px;
+}
+
+.table th {
+    font-weight: 600;
+    color: #323130;
+}
+
+.table td {
+    font-weight: 400;
+    color: #323130;
+}
+
+.details-table {
+    width: 100%;
+}
+
+.details-table th,
+.details-table td {
+    padding: 8px;
+    border: none; /* Remove all borders */
+}
+/* Only add border between thead and tbody */
+.details-table thead {
+    border-bottom: 2px solid #dee2e6;
+}
+
+.details-table tbody tr:hover {
+    background-color: #e9ecef;
+    transition: background-color 0.05s ease-in-out;
+    cursor: pointer;
+}
+/* Ensure even rows maintain distinct hover state */
+.details-table tbody tr:nth-child(even):hover {
+    background-color: #e9ecef;
+}
+
+/* Custom table styling for modal */
+.connections-table {
+    width: 100%;
+}
+
+.connections-table th,
+.connections-table td {
+    padding: 12px 8px;
+    border: none;
+}
+
+/* Add border between rows in tbody */
+.connections-table tbody tr {
+    border-bottom: 1px solid #edebe9; /* Azure's subtle border color */
+}
+
+/* Remove border from last row */
+.connections-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* Only add border between thead and tbody */
+.connections-table thead {
+    border-bottom: 2px solid #dee2e6;
+}
+
+.connections-table tbody tr:hover {
+    background-color: #f3f2f1; /* Azure's hover background color */
+    transition: background-color 0.05s ease-in-out;
+}
+
+/* Ensure even rows maintain distinct hover state */
+.connections-table tbody tr:nth-child(even):hover {
+    background-color: #f3f2f1;
+}
+
+/* Style the first column (property names) */
+.connections-table tbody tr td:first-child {
+    color: #605e5c; /* Azure's secondary text color */
+    font-weight: 500;
+}
+
+/* Style the second column (values) */
+.connections-table tbody tr td:last-child {
+    color: #323130; /* Azure's primary text color */
+}

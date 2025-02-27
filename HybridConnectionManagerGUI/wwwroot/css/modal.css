@@ -1,0 +1,121 @@
+﻿/* Modal typography */
+.modal-title {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    color: #323130;
+}
+
+.modal-body {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #323130;
+}
+
+.modal-header {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.modal-footer {
+    border-top: none;
+    padding-top: 0;
+}
+
+.details-modal-custom {
+    max-width: 650px;
+    width: 100%;
+    margin: 5rem auto !important; /* Increased from 1.75rem to 5rem to move modal lower */
+}
+
+#confirmModal .modal-dialog {
+    position: relative;
+    top: 0px; /* Move the modal up by 80px */
+    max-width: 600px; /* Default Bootstrap modal is 500px */
+    width: 90%; /* This ensures it's responsive on smaller screens */
+}
+
+/* For smaller screens, reduce the upward shift */
+@media (max-width: 768px) {
+    #confirmModal .modal-dialog {
+        top: -40px;
+    }
+}
+
+#confirmModal .modal-header {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+#confirmModal .modal-footer {
+    border-top: none;
+    padding-top: 0;
+}
+
+#alertModal .modal-dialog {
+    position: relative;
+    top: 0px; /* Move the modal up by 80px */
+    max-width: 600px; /* Default Bootstrap modal is 500px */
+    width: 90%; /* This ensures it's responsive on smaller screens */
+}
+
+/* For smaller screens, reduce the upward shift */
+@media (max-width: 768px) {
+    #alertModal .modal-dialog {
+        top: -40px;
+    }
+}
+
+#alertModal .modal-header {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+#alertModal .modal-footer {
+    border-top: none;
+    padding-top: 0;
+}
+
+
+/* Azure-style close button for all modals */
+.modal .btn-close {
+    background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23605e5c'%3E%3Cpath d='M8 8.707l3.646 3.647.708-.707L8.707 8l3.647-3.646-.707-.708L8 7.293 4.354 3.646l-.707.708L7.293 8l-3.646 3.646.707.708L8 8.707z'/%3E%3C/svg%3E") center/1em auto no-repeat;
+    opacity: 1;
+    padding: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.modal .btn-close:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 2px;
+    opacity: 1;
+}
+
+.modal .btn-close:focus {
+    box-shadow: 0 0 0 0.25rem rgba(0, 120, 212, 0.25);
+    opacity: 1;
+    outline: none;
+}
+
+/* Adjust modal header to accommodate Azure-style close button */
+.modal .modal-header {
+    border-bottom: none;
+    padding: 1.25rem 1.25rem 0.75rem;
+    align-items: flex-start;
+}
+
+.modal .modal-title {
+    color: #323130;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+/* Remove default Bootstrap outline */
+.modal .btn-close:focus:not(:focus-visible) {
+    box-shadow: none;
+}
