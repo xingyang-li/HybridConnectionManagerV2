@@ -3,8 +3,7 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This project is intended to provide testing coverage for Swift/Vnet features through the use of canary web apps hosted on Azure across multiple regions.
-To introduce changes to the framework and set up local testing, please follow the below instructions.
+This project manages Hybrid Connections for Azure Relay. It is a complete rewrite of the original Hybrid Connection Manager project. The new version is built using .NET 8 and gRPC, and it has a new GUI and CLI.
 
 ### Prerequisites
 
