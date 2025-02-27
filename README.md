@@ -22,7 +22,7 @@ Build the solution at the root of the repo using Visual Studio or `dotnet build`
 
 ### Run the Hybrid Connection Manager Service
 
-The Hybrid Connection Manager service is a gRPC server that runs on the local machine and listens for gRPC API requests initiated from the GUI or CLI. To run the service, open a console window and navigate to the build output directory for the HybridConnectionManagerService project:
+The Hybrid Connection Manager Service is a gRPC server that runs on the local machine and manages Hybrid Connection Listeners and proxies TCP requests to specified local endpoints. The service handles gRPC API requests initiated from the GUI or CLI to modify the Hybrid Connection. To run the service, open a console window and navigate to the build output directory for the HybridConnectionManagerService project:
 ```sh
 cd HybridConnectionManagerService/bin/Debug/netx.0
 ```
