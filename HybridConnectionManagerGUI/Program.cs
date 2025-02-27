@@ -1,4 +1,5 @@
 using ElectronNET.API;
+using HybridConnectionManager.Library;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +46,8 @@ if (HybridSupport.IsElectronActive)
                 EnableRemoteModule = true,
                 WebSecurity = false, // Note: Only disable this if you trust your content
                 Preload = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "preload.js"),
-            }
+            },
+            Icon = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets", Util.GetIconFile())
         });
 
         window.OnReadyToShow += () => window.Show();

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
@@ -258,6 +259,24 @@ namespace HybridConnectionManager.Library
             {
                 Util.CreateAppDataFile();
             }
+        }
+
+        public static string GetIconFile()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "Icon.ico";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return "Icon.icns";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return "Icon.png";
+            }
+
+            return "Icon.png";
         }
     }
 }
