@@ -100,3 +100,38 @@ jobs:
           name: linux-gui
           path: ${{env.DOTNET_ROOT}}/gui/linux
           retention-days: 1
+
+  build-Service:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Build Service with dotnet
+        run: dotnet build ${{ env.SERVICE_PROJECT_PATH }} --configuration Release
+
+      - name: Publish Service for Windows
+        run: dotnet publish ${{ env.SERVICE_PROJECT_PATH }} -r win-x64 -p:PublishSingleFile=true -o ${{env.DOTNET_ROOT}}/service/win
+
+      - name: Publish Service for Linux
+        run: dotnet publish ${{ env.SERVICE_PROJECT_PATH }} -r linux-x64 -p:PublishSingleFile=true -o ${{env.DOTNET_ROOT}}/service/linux
+
+      - name: Upload Windows Service artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: win-service
+          path: ${{env.DOTNET_ROOT}}/service/win
+          retention-days: 1
+
+      - name: Upload Linux Service artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-service
+          path: ${{env.DOTNET_ROOT}}/service/linux
+          retention-days: 1
