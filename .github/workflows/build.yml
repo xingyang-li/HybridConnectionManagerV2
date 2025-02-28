@@ -46,14 +46,14 @@ jobs:
         run: dotnet publish ${{ env.CLI_SOLUTION_PATH }} -r linux-x64 -p:PublishSingleFile=true -o ${{env.DOTNET_ROOT}}/cli/linux
 
       - name: Upload Windows CLI artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: win-cli
           path: ${{env.DOTNET_ROOT}}/cli/win
           retention-days: 1
 
       - name: Upload Linux CLI artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: linux-app
           path: ${{env.DOTNET_ROOT}}/cli/linux
