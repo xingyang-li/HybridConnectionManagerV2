@@ -74,9 +74,6 @@ jobs:
         with:
           dotnet-version: ${{ env.ELECTRON_DOTNET_VERSION }}
 
-      - name: Build GUI with dotnet
-        run: dotnet build ${{ env.GUI_PROJECT_PATH }} --configuration Release
-
       - name: Install ElectronNET.CLI
         run: dotnet tool install ElectronNET.CLI -g
 
