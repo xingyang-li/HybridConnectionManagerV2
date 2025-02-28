@@ -17,13 +17,13 @@
       "output": "../../../bin/Desktop"
     },
     "win": {
-      "icon": "assets/icon.ico"
+      "icon": "bin/wwwroot/assets/icon.ico"
     },
     "mac": {
-      "icon": "assets/icon.icns"
+      "icon": "bin/wwwroot/assets/icon.icns"
     },
     "linux": {
-      "icon": "assets/icon.png"
+      "icon": "bin/wwwroot/assets/icon.png"
     },
     "extraResources": [
       {
