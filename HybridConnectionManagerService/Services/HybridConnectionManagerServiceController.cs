@@ -220,5 +220,13 @@ namespace HybridConnectionManager.Service
                 Content = String.Format("Authentication Successful. Token expires {0}", accessToken.ExpiresOn)
             };
         }
+
+        public override async Task<StringResponse> GetLogPath(EmptyRequest request, ServerCallContext context)
+        {
+            return new StringResponse
+            {
+                Content =  Util.AppDataLogDir
+            };
+        }
     }
 }

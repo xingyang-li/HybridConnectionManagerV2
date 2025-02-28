@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Microsoft.Extensions.Hosting.WindowsServices;
+using Serilog;
 
 namespace HybridConnectionManager.Service
 {
@@ -21,7 +22,6 @@ namespace HybridConnectionManager.Service
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseRouting();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<HybridConnectionManagerServiceController>();

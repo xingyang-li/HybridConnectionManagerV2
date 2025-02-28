@@ -1,6 +1,8 @@
 ﻿using Azure.Core;
 using Azure.Identity;
 using Microsoft.Identity.Client;
+using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
+using System.Net;
 
 namespace HybridConnectionManager.Library
 {
@@ -15,7 +17,7 @@ namespace HybridConnectionManager.Library
             ExcludeVisualStudioCodeCredential = true,
             ExcludeAzureCliCredential = true,
             ExcludeInteractiveBrowserCredential = false
-        });
+        }); 
 
         private IPublicClientApplication app;
 
@@ -32,6 +34,12 @@ namespace HybridConnectionManager.Library
                 .Build();
 
             TokenCacheHelper.EnableSerialization(app.UserTokenCache);
+        }
+
+        public static async Task<AccessToken> GetManagementTokenAsync()
+        {
+            var tokenRequestContext = new TokenRequestContext(new[] { "https://management.azure.com/.default" });
+            return await TokenCredential.GetTokenAsync(tokenRequestContext);
         }
 
         public async Task<string> GetTokenAsync()

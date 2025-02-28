@@ -184,7 +184,7 @@ namespace HybridConnectionManager.Service
 
         public async Task AuthenticateToAzure()
         {
-            var token = await Auth.GetAuthTokenFromAzure();
+            var token = await MSALProvider.GetManagementTokenAsync();
             AzureClient.SetToken(token);
             _logger.Information(String.Format("Authenticated user to Azure with token expiring on {0}", token.ExpiresOn));
         }

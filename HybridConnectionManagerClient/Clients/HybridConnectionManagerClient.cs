@@ -8,7 +8,7 @@ namespace HybridConnectionManager.Library
         public HcMan.HcManClient _client;
         public HybridConnectionManagerClient()
         {
-            var channel = GrpcChannel.ForAddress("https://localhost:5001");
+            var channel = GrpcChannel.ForAddress("http://localhost:5001");
             _client = new HcMan.HcManClient(channel);
         }
 
@@ -62,6 +62,13 @@ namespace HybridConnectionManager.Library
         {
             var request = new EmptyRequest();
             var response = await _client.AuthenticateUserAsync(request);
+            return response.Content;
+        }
+
+        public async Task<string> GetLogPath()
+        {
+            var request = new EmptyRequest();
+            var response = await _client.GetLogPathAsync(request);
             return response.Content;
         }
     }

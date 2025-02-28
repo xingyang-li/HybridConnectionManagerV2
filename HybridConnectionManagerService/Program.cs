@@ -1,4 +1,5 @@
 using HybridConnectionManager.Library;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
 
 namespace HybridConnectionManager.Service
@@ -19,14 +20,13 @@ namespace HybridConnectionManager.Service
 
             HybridConnectionManager.Instance.Initialize(connections);
 
-            CreateHostBuilder(args).Build().Run();
+            CreatHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        public static IHostBuilder CreatHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
         {
             webBuilder.UseStartup<Startup>();
-            webBuilder.UseUrls("https://localhost:5001");
-        });
+        }).UseWindowsService().UseSystemd();
     }
 }
