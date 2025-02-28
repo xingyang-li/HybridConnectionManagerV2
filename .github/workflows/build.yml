@@ -9,7 +9,9 @@ concurrency:
 env:
   DOTNET_VERSION: '8.0.x'
   CLI_PROJECT_PATH: HybridConnectionManagerCLI/HybridConnectionManagerCLI.csproj
-  FUNCTION_SOLUTION_PATH: src/Function/Function.sln
+  GUI_PROJECT_PATH: HybridConnectionManagerGUI/HybridConnectionManagerGUI.csproj
+  SERVICE_PROJECT_PATH: HybridConnectionManagerService/HybridConnectionManagerService.csproj
+
 
 # Controls when the workflow will run
 on:
@@ -57,4 +59,42 @@ jobs:
         with:
           name: linux-app
           path: ${{env.DOTNET_ROOT}}/cli/linux
+          retention-days: 1
+
+  build-GUI:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Build GUI with dotnet
+        run: dotnet build ${{ env.GUI_PROJECT_PATH }} --configuration Release
+
+      - name: Install ElectronNET.CLI
+        run: dotnet tool install ElectronNET.CLI -g
+
+      - name: Publish Windows Electron App for GUI
+        run: electronize build /target win /absolute-path ${{env.DOTNET_ROOT}}/gui/win
+
+      - name: Publish Linux Electron App for GUI
+        run: electronize build /target linux /absolute-path ${{env.DOTNET_ROOT}}/gui/linux
+
+      - name: Upload Windows GUI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: win-gui
+          path: ${{env.DOTNET_ROOT}}/gui/win
+          retention-days: 1
+
+      - name: Upload Linux GUI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-gui
+          path: ${{env.DOTNET_ROOT}}/gui/linux
           retention-days: 1
