@@ -16,6 +16,15 @@
     "directories": {
       "output": "../../../bin/Desktop"
     },
+    "win": {
+      "icon": "assets/icon.ico"
+    },
+    "mac": {
+      "icon": "assets/icon.icns"
+    },
+    "linux": {
+      "icon": "assets/icon.png"
+    },
     "extraResources": [
       {
         "from": "./bin",
