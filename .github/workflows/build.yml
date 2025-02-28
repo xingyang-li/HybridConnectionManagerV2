@@ -80,9 +80,11 @@ jobs:
         run: dotnet tool install ElectronNET.CLI -g
 
       - name: Publish Windows Electron App for GUI
+        working-directory: HybridConnectionManagerGUI
         run: electronize build /target win /absolute-path ${{env.DOTNET_ROOT}}/gui/win
 
       - name: Publish Linux Electron App for GUI
+        working-directory: HybridConnectionManagerGUI
         run: electronize build /target linux /absolute-path ${{env.DOTNET_ROOT}}/gui/linux
 
       - name: Upload Windows GUI artifact
