@@ -8,6 +8,7 @@ concurrency:
 
 env:
   DOTNET_VERSION: '8.0.x'
+  ELECTRON_DOTNET_VERSION: '6.0.x'
   CLI_PROJECT_PATH: HybridConnectionManagerCLI/HybridConnectionManagerCLI.csproj
   GUI_PROJECT_PATH: HybridConnectionManagerGUI/HybridConnectionManagerGUI.csproj
   SERVICE_PROJECT_PATH: HybridConnectionManagerService/HybridConnectionManagerService.csproj
@@ -71,7 +72,7 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: ${{ env.ELECTRON_DOTNET_VERSION }}
 
       - name: Build GUI with dotnet
         run: dotnet build ${{ env.GUI_PROJECT_PATH }} --configuration Release
