@@ -8,7 +8,7 @@ concurrency:
 
 env:
   DOTNET_VERSION: '8.0.x'
-  CLI_SOLUTION_PATH: HybridConnectionManagerCLI/HybridConnectionManagerCLI.sln
+  CLI_PROJECT_PATH: HybridConnectionManagerCLI/HybridConnectionManagerCLI.csproj
   FUNCTION_SOLUTION_PATH: src/Function/Function.sln
 
 # Controls when the workflow will run
@@ -37,13 +37,13 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Build CLI with dotnet
-        run: dotnet build ${{ env.CLI_SOLUTION_PATH }} --configuration Release
+        run: dotnet build ${{ env.CLI_PROJECT_PATH }} --configuration Release
 
       - name: Publish CLI for Windows
-        run: dotnet publish ${{ env.CLI_SOLUTION_PATH }} -r win-x64 -p:PublishSingleFile=true -o ${{env.DOTNET_ROOT}}/cli/win
+        run: dotnet publish ${{ env.CLI_PROJECT_PATH }} -r win-x64 -p:PublishSingleFile=true -o ${{env.DOTNET_ROOT}}/cli/win
 
       - name: Publish CLI for Linux
-        run: dotnet publish ${{ env.CLI_SOLUTION_PATH }} -r linux-x64 -p:PublishSingleFile=true -o ${{env.DOTNET_ROOT}}/cli/linux
+        run: dotnet publish ${{ env.CLI_PROJECT_PATH }} -r linux-x64 -p:PublishSingleFile=true -o ${{env.DOTNET_ROOT}}/cli/linux
 
       - name: Upload Windows CLI artifact
         uses: actions/upload-artifact@v4
