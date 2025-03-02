@@ -45,7 +45,7 @@ jobs:
 
       - name: Install ElectronNET.CLI
         run: dotnet tool install ElectronNET.CLI -g
-=
+
       - name: Install WixTools
         run: dotnet tool install wix -g --version 5.0.2
 
