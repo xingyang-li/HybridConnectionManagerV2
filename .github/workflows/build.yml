@@ -12,6 +12,8 @@ env:
   CLI_PROJECT_PATH: HybridConnectionManagerCLI/HybridConnectionManagerCLI.csproj
   GUI_PROJECT_PATH: HybridConnectionManagerGUI/HybridConnectionManagerGUI.csproj
   SERVICE_PROJECT_PATH: HybridConnectionManagerService/HybridConnectionManagerService.csproj
+  INSTALLER_PROJECT_DIR: HybridConnectionManagerService/HybridConnectionManagerService.csproj
+
 
 
 # Controls when the workflow will run
@@ -27,43 +29,8 @@ permissions:
 
 jobs:
  
-  build-CLI:
+  build-windows:
     runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Build CLI with dotnet
-        run: dotnet build ${{ env.CLI_PROJECT_PATH }} --configuration Release
-
-      - name: Publish CLI for Windows
-        run: dotnet publish ${{ env.CLI_PROJECT_PATH }} -r win-x64 -p:PublishSingleFile=true -o ${{env.DOTNET_ROOT}}/cli/win
-
-      - name: Publish CLI for Linux
-        run: dotnet publish ${{ env.CLI_PROJECT_PATH }} -r linux-x64 -p:PublishSingleFile=true -o ${{env.DOTNET_ROOT}}/cli/linux
-
-      - name: Upload Windows CLI artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: win-cli
-          path: ${{env.DOTNET_ROOT}}/cli/win
-          retention-days: 1
-
-      - name: Upload Linux CLI artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-app
-          path: ${{env.DOTNET_ROOT}}/cli/linux
-          retention-days: 1
-
-  build-GUI:
-    runs-on: windows-latest
 
     steps:
       - name: Checkout
@@ -79,59 +46,32 @@ jobs:
       - name: Install ElectronNET.CLI
         run: dotnet tool install ElectronNET.CLI -g
 
+      - name: Install WixTools
+        run: dotnet tool install wix -g --version 5.0.2
+
+      - name: Build CLI with dotnet
+        run: dotnet build ${{ env.CLI_PROJECT_PATH }} --configuration Release
+
+      - name: Publish CLI for Windows
+        run: dotnet publish ${{ env.CLI_PROJECT_PATH }} -r win-x64 -p:PublishSingleFile=true 
+
       - name: Publish Windows Electron App for GUI
         working-directory: HybridConnectionManagerGUI
-        run: electronize build /target win /absolute-path ${{env.DOTNET_ROOT}}/gui/win
-
-      - name: Publish Linux Electron App for GUI
-        working-directory: HybridConnectionManagerGUI
-        run: electronize build /target linux /absolute-path ${{env.DOTNET_ROOT}}/gui/linux
-
-      - name: Upload Windows GUI artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: win-gui
-          path: ${{env.DOTNET_ROOT}}/gui/win
-          retention-days: 1
-
-      - name: Upload Linux GUI artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-gui
-          path: ${{env.DOTNET_ROOT}}/gui/linux
-          retention-days: 1
-
-  build-Service:
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+        run: electronize build /target win
 
       - name: Build Service with dotnet
         run: dotnet build ${{ env.SERVICE_PROJECT_PATH }} --configuration Release
 
       - name: Publish Service for Windows
-        run: dotnet publish ${{ env.SERVICE_PROJECT_PATH }} -r win-x64 -p:PublishSingleFile=true -o ${{env.DOTNET_ROOT}}/service/win
+        run: dotnet publish ${{ env.SERVICE_PROJECT_PATH }} -r win-x64 -p:PublishSingleFile=true
 
-      - name: Publish Service for Linux
-        run: dotnet publish ${{ env.SERVICE_PROJECT_PATH }} -r linux-x64 -p:PublishSingleFile=true -o ${{env.DOTNET_ROOT}}/service/linux
+      - name: Build Windows Installer
+        working-directory: HybridConnectionManagerWindowsInstaller
+        run: dotnet build -c Release
 
-      - name: Upload Windows Service artifact
+      - name: Upload Windows Installer Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: win-service
-          path: ${{env.DOTNET_ROOT}}/service/win
-          retention-days: 1
-
-      - name: Upload Linux Service artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-service
-          path: ${{env.DOTNET_ROOT}}/service/linux
+          name: windows installer
+          path: ${{ env.INSTALLER_PROJECT_DIR }}/bin/Release/HybridConnectionManagerV2.msi
           retention-days: 1

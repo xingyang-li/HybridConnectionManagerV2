@@ -1,10 +1,10 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
-	<?define GUIPublishDir  = "..\HybridConnectionManagerGUI\bin\Release\net8.0\win-x64\publish"?>
+	<?define GUIPublishDir  = "..\HybridConnectionManagerGUI\bin\Desktop\win-unpacked"?>
 	<?define ServicePublishDir  = "..\HybridConnectionManagerService\bin\Release\net8.0\win-x64\publish"?>
 	<?define CLIPublishDir  = "..\HybridConnectionManagerCLI\bin\Release\net8.0\win-x64\publish"?>
 	<Package Name="Hybrid Connection Manager V2"
-			 Manufacturer="Microsoft"
+			 Manufacturer="Microsoft Corporation"
 			 Version="1.0.0.0"
 			 UpgradeCode="8A7CEB47-92D3-4DB0-9984-014124463789">
 
@@ -45,18 +45,6 @@
 			<Directory Id="ApplicationProgramsFolder" Name="Hybrid Connection Manager V2" />
 		</StandardDirectory>
 
-		<!-- Custom action to set Environment Path for CLI -->
-		<CustomAction Id="SetEnvironmentVariables"
-					 Directory="CLIDir"
-					 ExeCommand="[SystemFolder]cmd.exe /c SETX PATH &quot;%PATH%;[CLIDir]&quot; /M"
-					 Return="check"
-					 Execute="deferred"
-					 Impersonate="no" />
-
-		<InstallExecuteSequence>
-			<!-- Add CLI to PATH after files are installed -->
-			<Custom Action="SetEnvironmentVariables" After="InstallFiles"></Custom>
-		</InstallExecuteSequence>
 	</Package>
 
 	<!-- Service Components -->
@@ -113,6 +101,16 @@
 					  Source="$(var.CLIPublishDir)\hcm.exe"
 					  KeyPath="yes" />
 			</Component>
+			<Component Id="PathEnvironmentComponent" Directory="CLIDir" Guid="4F528A69-BE8A-4A03-9B64-54CAC25E068C">
+				<Environment Id="UpdatePath"
+							 Name="PATH"
+							 Value="[CLIDir]"
+							 Permanent="no"
+							 Part="last"
+							 Action="set"
+							 System="yes" />
+				<CreateFolder />
+			</Component>
 
 			<!-- Harvest all CLI files using Heat tool separately -->
 			<ComponentGroupRef Id="CLIFiles" />
@@ -124,7 +122,7 @@
 		<ComponentGroup Id="ApplicationShortcuts" Directory="ApplicationProgramsFolder">
 			<Component Id="GUIShortcut" Guid="*">
 				<Shortcut Id="GUIStartMenuShortcut"
-						Name="Hybrid Connection Manager"
+						Name="Hybrid Connection Manager GUI"
 						Description="Manage Hybrid Connections via GUI"
 						Target="[GUIDir]HybridConnectionManagerGUI.exe"
 						WorkingDirectory="GUIDir" />
