@@ -2,22 +2,19 @@
 	<?define ServicePublishDir  = "..\HybridConnectionManagerService\bin\Release\net8.0\win-x64\publish"?>
 	<Fragment>
         <DirectoryRef Id="ServiceDir">
-            <Component Id="cmpmwyV7r7L77MVoqFPmPTK2h9XEJI" Guid="{84EAA3D4-E0C4-4560-89C9-0AF3203EE81A}">
+            <Component Id="cmpmwyV7r7L77MVoqFPmPTK2h9XEJI" Guid="{0850309D-D72C-49D7-AF86-41F516AF9F83}">
                 <File Id="fil252QmQSUtQbX3Oinj7HYReYJdds" KeyPath="yes" Source="$(var.ServicePublishDir)\appsettings.Development.json" />
             </Component>
-            <Component Id="cmpRXI27USxUCz40.ER0sBEBhbhLaY" Guid="{ACBE25D9-CD94-4DD4-A461-822B70DD41B9}">
+            <Component Id="cmpRXI27USxUCz40.ER0sBEBhbhLaY" Guid="{49E7A18A-08E3-4B78-A3D4-128C7F88A2CD}">
                 <File Id="fillLPYAp945ndjyPjN3mkulVu0Zuk" KeyPath="yes" Source="$(var.ServicePublishDir)\appsettings.json" />
             </Component>
-            <Component Id="cmplqYu8cJP3aGRbxD6HL6n8Wq3wF8" Guid="{0658B569-874F-4C29-A3AC-92BD3D4A17CA}">
+            <Component Id="cmplqYu8cJP3aGRbxD6HL6n8Wq3wF8" Guid="{F961E7FE-195C-49B0-8BD6-FB439BE0FA69}">
                 <File Id="filBwv_701E1D0W8H9Y037pd0_ctyg" KeyPath="yes" Source="$(var.ServicePublishDir)\aspnetcorev2_inprocess.dll" />
             </Component>
-            <Component Id="cmpCAOWcKF98od2Dth27dnlQCQphrE" Guid="{3FFB8240-BA37-4BA1-8170-1BF3241C4DBE}">
+            <Component Id="cmpCAOWcKF98od2Dth27dnlQCQphrE" Guid="{E2398DCC-22CA-42EB-AE16-C6E442E47EE4}">
                 <File Id="fils40NAKmdHgcGTfTHs0YQigeU1pY" KeyPath="yes" Source="$(var.ServicePublishDir)\HybridConnectionManagerLibrary.pdb" />
             </Component>
-            <Component Id="cmpuidZgqUWpC8oma_jUek1PczIKd0" Guid="{F09F91CE-0F5A-4328-B09B-FE28C6C514A0}">
-                <File Id="fil_g4QrcnDw59WWiF58QRofMOreb0" KeyPath="yes" Source="$(var.ServicePublishDir)\HybridConnectionManagerService.exe" />
-            </Component>
-            <Component Id="cmpErrpQ2tJWJ5f9nH2NCbuUaz3PeQ" Guid="{30B13B1C-3968-40EF-ADAD-90B3C78974C3}">
+            <Component Id="cmpErrpQ2tJWJ5f9nH2NCbuUaz3PeQ" Guid="{2F5AA954-A1AA-4B17-AB96-8D07D9EBB2B2}">
                 <File Id="filoB0nN_5IF0uwUI7r3957UYJlKdk" KeyPath="yes" Source="$(var.ServicePublishDir)\HybridConnectionManagerService.pdb" />
             </Component>
         </DirectoryRef>
@@ -28,7 +25,6 @@
             <ComponentRef Id="cmpRXI27USxUCz40.ER0sBEBhbhLaY" />
             <ComponentRef Id="cmplqYu8cJP3aGRbxD6HL6n8Wq3wF8" />
             <ComponentRef Id="cmpCAOWcKF98od2Dth27dnlQCQphrE" />
-            <ComponentRef Id="cmpuidZgqUWpC8oma_jUek1PczIKd0" />
             <ComponentRef Id="cmpErrpQ2tJWJ5f9nH2NCbuUaz3PeQ" />
         </ComponentGroup>
     </Fragment>

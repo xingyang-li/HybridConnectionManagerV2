@@ -1,21 +1,17 @@
 ﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
 	<?define CLIPublishDir  = "..\HybridConnectionManagerCLI\bin\Release\net8.0\win-x64\publish"?>
-    <Fragment>
+	<Fragment>
         <DirectoryRef Id="CLIDir">
-            <Component Id="cmpxFcIYODE3ZuMOoTW.wc2lPB_MHg" Guid="{95F44DD4-22EA-4FC2-AE41-1559ED8BBE51}">
-                <File Id="filefpUdIbdpuqqQGaoqrRdZWdQ67g" KeyPath="yes" Source="$(var.CLIPublishDir)\hcm.exe" />
-            </Component>
-            <Component Id="cmp0PWfljb2rjYGFgkWCodKH4fOIlw" Guid="{E91BC8CE-34B7-40E9-9449-7567BC120F80}">
+            <Component Id="cmp0PWfljb2rjYGFgkWCodKH4fOIlw" Guid="{BDC2FA89-FE5F-4274-ABD3-F56B0C7308E4}">
                 <File Id="fil3JjjyrKt8NdJF2_mGfcgGubY7Vg" KeyPath="yes" Source="$(var.CLIPublishDir)\hcm.pdb" />
             </Component>
-            <Component Id="cmpiVUMJMMqP8w1_5gTNPP3RxwinGk" Guid="{5B1FEF1C-EEE3-4935-A587-F20EDE270138}">
+            <Component Id="cmpiVUMJMMqP8w1_5gTNPP3RxwinGk" Guid="{6B05C237-14CE-4360-B3EC-6EED9FE5ED52}">
                 <File Id="filzrJlP4_OKKbLpEQQ25.u1hxRaZk" KeyPath="yes" Source="$(var.CLIPublishDir)\HybridConnectionManagerLibrary.pdb" />
             </Component>
         </DirectoryRef>
     </Fragment>
     <Fragment>
         <ComponentGroup Id="CLIFiles">
-            <ComponentRef Id="cmpxFcIYODE3ZuMOoTW.wc2lPB_MHg" />
             <ComponentRef Id="cmp0PWfljb2rjYGFgkWCodKH4fOIlw" />
             <ComponentRef Id="cmpiVUMJMMqP8w1_5gTNPP3RxwinGk" />
         </ComponentGroup>
