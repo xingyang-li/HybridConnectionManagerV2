@@ -30,7 +30,6 @@
             <ComponentRef Id="cmpCAOWcKF98od2Dth27dnlQCQphrE" />
             <ComponentRef Id="cmpuidZgqUWpC8oma_jUek1PczIKd0" />
             <ComponentRef Id="cmpErrpQ2tJWJ5f9nH2NCbuUaz3PeQ" />
-            <ComponentRef Id="cmpkNHb8Al9eo.K8tJifQ3Q1OMCg2Q" />
         </ComponentGroup>
     </Fragment>
 </Wix>
