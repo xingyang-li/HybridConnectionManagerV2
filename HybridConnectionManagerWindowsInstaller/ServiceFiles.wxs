@@ -20,9 +20,6 @@
             <Component Id="cmpErrpQ2tJWJ5f9nH2NCbuUaz3PeQ" Guid="{30B13B1C-3968-40EF-ADAD-90B3C78974C3}">
                 <File Id="filoB0nN_5IF0uwUI7r3957UYJlKdk" KeyPath="yes" Source="$(var.ServicePublishDir)\HybridConnectionManagerService.pdb" />
             </Component>
-            <Component Id="cmpkNHb8Al9eo.K8tJifQ3Q1OMCg2Q" Guid="{F36F2369-402F-46A9-9ED0-547C6454A623}">
-                <File Id="filW5iIvmj0DNc3etnHpg..R6k55Z8" KeyPath="yes" Source="$(var.ServicePublishDir)\HybridConnectionManagerService.staticwebassets.endpoints.json" />
-            </Component>
         </DirectoryRef>
     </Fragment>
     <Fragment>

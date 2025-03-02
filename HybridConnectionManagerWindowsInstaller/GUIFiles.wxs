@@ -249,9 +249,6 @@
                     <Component Id="cmphHAbO2pfXVemFJkMX5ba_Cnz9zM" Guid="{D8DC970C-031D-47BB-A206-F8ECC2A58A1B}">
                         <File Id="filErcvDlnoFT5D_kE6c_wBgQIdy2c" KeyPath="yes" Source="$(var.GUIPublishDir)\resources\bin\HybridConnectionManagerGUI.pdb" />
                     </Component>
-                    <Component Id="cmp7nqCYWejXSKVvw9maTL7CTek.ck" Guid="{B910410A-B38A-44AF-89FD-D19D849A4515}">
-                        <File Id="fil4HA7MiRY7ztfl3.fkyjrR8fl5iw" KeyPath="yes" Source="$(var.GUIPublishDir)\resources\bin\HybridConnectionManagerGUI.staticwebassets.endpoints.json" />
-                    </Component>
                     <Component Id="cmpUwU1ts4HOribIR7Sb5RoQzqZzlE" Guid="{DE13685C-B733-4479-82FF-A347DFA2C3DC}">
                         <File Id="filaID.jKPJbyZyzcHMR6beT877omg" KeyPath="yes" Source="$(var.GUIPublishDir)\resources\bin\HybridConnectionManagerLibrary.pdb" />
                     </Component>
