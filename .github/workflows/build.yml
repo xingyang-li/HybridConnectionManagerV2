@@ -30,7 +30,7 @@ permissions:
 jobs:
  
   build-windows:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout
@@ -49,18 +49,12 @@ jobs:
       - name: Install WixTools
         run: dotnet tool install wix -g --version 5.0.2
 
-      - name: Build CLI with dotnet
-        run: dotnet build ${{ env.CLI_PROJECT_PATH }} --configuration Release
-
       - name: Publish CLI for Windows
         run: dotnet publish ${{ env.CLI_PROJECT_PATH }} -r win-x64 -p:PublishSingleFile=true 
 
       - name: Publish Windows Electron App for GUI
         working-directory: HybridConnectionManagerGUI
         run: electronize build /target win
-
-      - name: Build Service with dotnet
-        run: dotnet build ${{ env.SERVICE_PROJECT_PATH }} --configuration Release
 
       - name: Publish Service for Windows
         run: dotnet publish ${{ env.SERVICE_PROJECT_PATH }} -r win-x64 -p:PublishSingleFile=true
