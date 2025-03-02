@@ -1,0 +1,39 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<?define ServicePublishDir  = "..\HybridConnectionManagerService\bin\Release\net8.0\win-x64\publish"?>
+	<Fragment>
+        <DirectoryRef Id="ServiceDir">
+            <Component Id="cmpmwyV7r7L77MVoqFPmPTK2h9XEJI" Guid="{84EAA3D4-E0C4-4560-89C9-0AF3203EE81A}">
+                <File Id="fil252QmQSUtQbX3Oinj7HYReYJdds" KeyPath="yes" Source="$(var.ServicePublishDir)\appsettings.Development.json" />
+            </Component>
+            <Component Id="cmpRXI27USxUCz40.ER0sBEBhbhLaY" Guid="{ACBE25D9-CD94-4DD4-A461-822B70DD41B9}">
+                <File Id="fillLPYAp945ndjyPjN3mkulVu0Zuk" KeyPath="yes" Source="$(var.ServicePublishDir)\appsettings.json" />
+            </Component>
+            <Component Id="cmplqYu8cJP3aGRbxD6HL6n8Wq3wF8" Guid="{0658B569-874F-4C29-A3AC-92BD3D4A17CA}">
+                <File Id="filBwv_701E1D0W8H9Y037pd0_ctyg" KeyPath="yes" Source="$(var.ServicePublishDir)\aspnetcorev2_inprocess.dll" />
+            </Component>
+            <Component Id="cmpCAOWcKF98od2Dth27dnlQCQphrE" Guid="{3FFB8240-BA37-4BA1-8170-1BF3241C4DBE}">
+                <File Id="fils40NAKmdHgcGTfTHs0YQigeU1pY" KeyPath="yes" Source="$(var.ServicePublishDir)\HybridConnectionManagerLibrary.pdb" />
+            </Component>
+            <Component Id="cmpuidZgqUWpC8oma_jUek1PczIKd0" Guid="{F09F91CE-0F5A-4328-B09B-FE28C6C514A0}">
+                <File Id="fil_g4QrcnDw59WWiF58QRofMOreb0" KeyPath="yes" Source="$(var.ServicePublishDir)\HybridConnectionManagerService.exe" />
+            </Component>
+            <Component Id="cmpErrpQ2tJWJ5f9nH2NCbuUaz3PeQ" Guid="{30B13B1C-3968-40EF-ADAD-90B3C78974C3}">
+                <File Id="filoB0nN_5IF0uwUI7r3957UYJlKdk" KeyPath="yes" Source="$(var.ServicePublishDir)\HybridConnectionManagerService.pdb" />
+            </Component>
+            <Component Id="cmpkNHb8Al9eo.K8tJifQ3Q1OMCg2Q" Guid="{F36F2369-402F-46A9-9ED0-547C6454A623}">
+                <File Id="filW5iIvmj0DNc3etnHpg..R6k55Z8" KeyPath="yes" Source="$(var.ServicePublishDir)\HybridConnectionManagerService.staticwebassets.endpoints.json" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="ServiceFiles">
+            <ComponentRef Id="cmpmwyV7r7L77MVoqFPmPTK2h9XEJI" />
+            <ComponentRef Id="cmpRXI27USxUCz40.ER0sBEBhbhLaY" />
+            <ComponentRef Id="cmplqYu8cJP3aGRbxD6HL6n8Wq3wF8" />
+            <ComponentRef Id="cmpCAOWcKF98od2Dth27dnlQCQphrE" />
+            <ComponentRef Id="cmpuidZgqUWpC8oma_jUek1PczIKd0" />
+            <ComponentRef Id="cmpErrpQ2tJWJ5f9nH2NCbuUaz3PeQ" />
+            <ComponentRef Id="cmpkNHb8Al9eo.K8tJifQ3Q1OMCg2Q" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>

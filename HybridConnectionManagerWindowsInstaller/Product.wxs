@@ -1,0 +1,173 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+	<?define GUIPublishDir  = "..\HybridConnectionManagerGUI\bin\Release\net8.0\win-x64\publish"?>
+	<?define ServicePublishDir  = "..\HybridConnectionManagerService\bin\Release\net8.0\win-x64\publish"?>
+	<?define CLIPublishDir  = "..\HybridConnectionManagerCLI\bin\Release\net8.0\win-x64\publish"?>
+	<Package Name="Hybrid Connection Manager V2"
+			 Manufacturer="Microsoft"
+			 Version="1.0.0.0"
+			 UpgradeCode="8A7CEB47-92D3-4DB0-9984-014124463789">
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+		<MediaTemplate EmbedCab="yes" />
+
+		<!-- Main product feature includes all components -->
+		<Feature Id="Complete" Title="Hybrid Connection Manager V2" Level="1" Display="expand">
+			<Feature Id="ServiceFeature" Title="Hybrid Connection Manager Service" Level="1" Description="Windows Service component that manages hybrid connections">
+				<ComponentGroupRef Id="ServiceComponents" />
+			</Feature>
+
+			<Feature Id="GUIFeature" Title="Hybrid Connection Manager GUI" Level="1" Description="Graphical user interface for managing hybrid connections">
+				<ComponentGroupRef Id="GUIComponents" />
+			</Feature>
+
+			<Feature Id="CLIFeature" Title="Hybrid Connection Manager CLI" Level="1" Description="Command line interface for managing hybrid connections">
+				<ComponentGroupRef Id="CLIComponents" />
+			</Feature>
+
+			<Feature Id="StartMenuShortcuts" Title="Start Menu Shortcuts" Level="1">
+				<ComponentGroupRef Id="ApplicationShortcuts" />
+			</Feature>
+		</Feature>
+
+		<!-- Main installation directory structure -->
+		<StandardDirectory Id="ProgramFiles64Folder">
+			<Directory Id="INSTALLFOLDER" Name="HybridConnectionManagerV2">
+				<Directory Id="ServiceDir" Name="Service" />
+				<Directory Id="GUIDir" Name="GUI" />
+				<Directory Id="CLIDir" Name="CLI" />
+			</Directory>
+		</StandardDirectory>
+
+		<!-- Define Start Menu directory structure -->
+		<StandardDirectory Id="ProgramMenuFolder">
+			<Directory Id="ApplicationProgramsFolder" Name="Hybrid Connection Manager V2" />
+		</StandardDirectory>
+
+		<!-- Custom action to set Environment Path for CLI -->
+		<CustomAction Id="SetEnvironmentVariables"
+					 Directory="CLIDir"
+					 ExeCommand="[SystemFolder]cmd.exe /c SETX PATH &quot;%PATH%;[CLIDir]&quot; /M"
+					 Return="check"
+					 Execute="deferred"
+					 Impersonate="no" />
+
+		<InstallExecuteSequence>
+			<!-- Add CLI to PATH after files are installed -->
+			<Custom Action="SetEnvironmentVariables" After="InstallFiles"></Custom>
+		</InstallExecuteSequence>
+	</Package>
+
+	<!-- Service Components -->
+	<Fragment>
+		<ComponentGroup Id="ServiceComponents" Directory="ServiceDir">
+			<Component Id="ServiceExecutable" Guid="*">
+				<File Id="ServiceEXE"
+					  Source="$(var.ServicePublishDir)\HybridConnectionManagerService.exe"
+					  KeyPath="yes" />
+
+				<!-- Register Windows Service -->
+				<ServiceInstall Id="ServiceInstaller"
+							  Type="ownProcess"
+							  Name="HybridConnectionManagerService"
+							  DisplayName="Hybrid Connection Manager Service"
+							  Description="Manages Hybrid Connection Listeners and proxies TCP requests to specified local endpoints"
+							  Start="auto"
+							  Account="LocalSystem"
+							  ErrorControl="normal" />
+
+				<!-- Configure Service Control -->
+				<ServiceControl Id="ServiceControl"
+							  Start="install"
+							  Stop="both"
+							  Remove="uninstall"
+							  Name="HybridConnectionManagerService"
+							  Wait="yes" />
+			</Component>
+
+			<!-- Harvest all service files using Heat tool separately -->
+			<ComponentGroupRef Id="ServiceFiles" />
+		</ComponentGroup>
+	</Fragment>
+
+	<!-- GUI Components -->
+	<Fragment>
+		<ComponentGroup Id="GUIComponents" Directory="GUIDir">
+			<Component Id="GUIExecutable" Guid="*">
+				<File Id="GUIEXE"
+					  Source="$(var.GUIPublishDir)\HybridConnectionManagerGUI.exe"
+					  KeyPath="yes" />
+			</Component>
+
+			<!-- Harvest all GUI files using Heat tool separately -->
+			<ComponentGroupRef Id="GUIFiles" />
+		</ComponentGroup>
+	</Fragment>
+
+	<!-- CLI Components -->
+	<Fragment>
+		<ComponentGroup Id="CLIComponents" Directory="CLIDir">
+			<Component Id="CLIExecutable" Guid="*">
+				<File Id="CLIEXE"
+					  Source="$(var.CLIPublishDir)\hcm.exe"
+					  KeyPath="yes" />
+			</Component>
+
+			<!-- Harvest all CLI files using Heat tool separately -->
+			<ComponentGroupRef Id="CLIFiles" />
+		</ComponentGroup>
+	</Fragment>
+
+	<!-- Create shortcuts in the Start Menu -->
+	<Fragment>
+		<ComponentGroup Id="ApplicationShortcuts" Directory="ApplicationProgramsFolder">
+			<Component Id="GUIShortcut" Guid="*">
+				<Shortcut Id="GUIStartMenuShortcut"
+						Name="Hybrid Connection Manager"
+						Description="Manage Hybrid Connections via GUI"
+						Target="[GUIDir]HybridConnectionManagerGUI.exe"
+						WorkingDirectory="GUIDir" />
+				<RemoveFolder Id="CleanUpGUIShortcut" On="uninstall" />
+				<RegistryValue Root="HKCU"
+							 Key="Software\Microsoft\HybridConnectionManagerV2"
+							 Name="gui_installed"
+							 Type="integer"
+							 Value="1"
+							 KeyPath="yes" />
+			</Component>
+
+			<Component Id="CLIShortcut" Guid="*">
+				<Shortcut Id="CLIStartMenuShortcut"
+						Name="Hybrid Connection Manager CLI"
+						Description="Command Line Interface for Hybrid Connections"
+						Target="[SystemFolder]cmd.exe"
+						Arguments="/k cd [CLIDir]"
+						WorkingDirectory="CLIDir" />
+				<RemoveFolder Id="CleanUpCLIShortcut" On="uninstall" />
+				<RegistryValue Root="HKCU"
+							 Key="Software\Microsoft\HybridConnectionManagerV2"
+							 Name="cli_installed"
+							 Type="integer"
+							 Value="1"
+							 KeyPath="yes" />
+			</Component>
+
+			<Component Id="ServiceManagerShortcut" Guid="*">
+				<Shortcut Id="ServiceManagerShortcut"
+						Name="Manage Hybrid Connection Service"
+						Description="Open Windows Services to manage the Hybrid Connection Service"
+						Target="[SystemFolder]sc.exe"
+						Arguments="qc HybridConnectionManagerService"
+						WorkingDirectory="ServiceDir" />
+				<RemoveFolder Id="CleanUpServiceShortcut" On="uninstall" />
+				<RegistryValue Root="HKCU"
+							 Key="Software\Microsoft\HybridConnectionManagerV2"
+							 Name="service_shortcut_installed"
+							 Type="integer"
+							 Value="1"
+							 KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

@@ -1,0 +1,22 @@
+﻿<Project Sdk="WixToolset.Sdk/5.0.2">
+  <PropertyGroup>
+    <OutputName>HybridConnectionManagerV2</OutputName>
+    <OutputType>Package</OutputType>
+    <ServicePublishDir>..\HybridConnectionManagerService\bin\Release\net8.0\win-x64\publish</ServicePublishDir>
+    <GUIPublishDir>..\HybridConnectionManagerGUI\bin\Release\net8.0\win-x64\publish</GUIPublishDir>
+    <CLIPublishDir>..\HybridConnectionManagerCLI\bin\Release\net8.0\win-x64\publish</CLIPublishDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HybridConnectionManagerService\HybridConnectionManagerService.csproj" />
+    <ProjectReference Include="..\HybridConnectionManagerGUI\HybridConnectionManagerGUI.csproj" />
+    <ProjectReference Include="..\HybridConnectionManagerCLI\HybridConnectionManagerCLI.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <HarvestedFile Include="ServiceFiles.wxs" />
+    <HarvestedFile Include="GUIFiles.wxs" />
+    <HarvestedFile Include="CLIFiles.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BuildInstaller.bat" />
+  </ItemGroup>
+</Project>
