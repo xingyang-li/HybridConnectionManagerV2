@@ -12,7 +12,7 @@ env:
   CLI_PROJECT_PATH: HybridConnectionManagerCLI/HybridConnectionManagerCLI.csproj
   GUI_PROJECT_PATH: HybridConnectionManagerGUI/HybridConnectionManagerGUI.csproj
   SERVICE_PROJECT_PATH: HybridConnectionManagerService/HybridConnectionManagerService.csproj
-  INSTALLER_PROJECT_DIR: HybridConnectionManagerInstaller
+  INSTALLER_PROJECT_DIR: HybridConnectionManagerWindowsInstaller
 
 
 
