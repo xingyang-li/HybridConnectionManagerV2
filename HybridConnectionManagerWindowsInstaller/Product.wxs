@@ -1,5 +1,5 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
-     xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+     xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
 	<?define GUIPublishDir  = "..\HybridConnectionManagerGUI\bin\Desktop\win-unpacked"?>
 	<?define ServicePublishDir  = "..\HybridConnectionManagerService\bin\Release\net8.0\win-x64\publish"?>
 	<?define CLIPublishDir  = "..\HybridConnectionManagerCLI\bin\Release\net8.0\win-x64\publish"?>
@@ -8,7 +8,9 @@
 			 Version="1.0.0.0"
 			 UpgradeCode="8A7CEB47-92D3-4DB0-9984-014124463789">
 
+		<ui:WixUI Id="WixUI_InstallDir" />
 		<WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
 
 		<!-- Set bitmap images for UI -->
 		<WixVariable Id="WixUIBannerBmp" Value="bitmap\banner.bmp" />
