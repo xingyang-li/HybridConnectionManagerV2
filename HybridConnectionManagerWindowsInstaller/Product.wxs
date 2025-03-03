@@ -32,7 +32,7 @@
 		</Feature>
 
 		<!-- Main installation directory structure -->
-		<StandardDirectory Id="ProgramFiles64Folder">
+		<StandardDirectory Id="ProgramFilesFolder">
 			<Directory Id="INSTALLFOLDER" Name="HybridConnectionManagerV2">
 				<Directory Id="ServiceDir" Name="Service" />
 				<Directory Id="GUIDir" Name="GUI" />
