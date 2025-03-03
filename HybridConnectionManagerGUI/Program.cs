@@ -42,11 +42,11 @@ if (HybridSupport.IsElectronActive)
             {
                 NodeIntegration = true,
                 ContextIsolation = false,
-                DevTools = true, // Enable DevTools for debugging
                 EnableRemoteModule = true,
                 WebSecurity = false, // Note: Only disable this if you trust your content
             },
-            Icon = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets", Util.GetIconFile())
+            Icon = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets", Util.GetIconFile()),
+            AutoHideMenuBar = true,
         });
 
         window.OnReadyToShow += () => window.Show();
