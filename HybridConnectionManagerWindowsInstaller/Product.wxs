@@ -67,7 +67,6 @@
 						  Name="HcmDataDirectory"
 						  Type="raw" />
 		</Property>
-
 	</Package>
 
 	<!-- Service Components -->
@@ -105,7 +104,7 @@
 	<!-- GUI Components -->
 	<Fragment>
 		<ComponentGroup Id="GUIComponents" Directory="GUIDir">
-			<Component Id="GUIExecutable" Guid="*">
+			<Component Id="GUIExecutable" Guid="">
 				<File Id="GUIEXE"
 					  Source="$(GUIPublishDir)\HybridConnectionManagerGUI.exe"
 					  KeyPath="yes" />

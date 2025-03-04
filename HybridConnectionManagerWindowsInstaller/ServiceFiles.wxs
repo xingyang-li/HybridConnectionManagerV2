@@ -1,25 +1,20 @@
 ﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
     <Fragment>
         <DirectoryRef Id="ServiceDir">
-            <Component Id="cmpmwyV7r7L77MVoqFPmPTK2h9XEJI" Guid="{9BB0FA36-E4E7-4EA6-BAC4-EADC0C07FC54}">
+            <Component Id="cmpmwyV7r7L77MVoqFPmPTK2h9XEJI" Guid="{F1D24DED-59EE-4C86-BBAF-0E7BF202AA76}">
                 <File Id="fil252QmQSUtQbX3Oinj7HYReYJdds" KeyPath="yes" Source="$(var.ServicePublishDir)\appsettings.Development.json" />
             </Component>
-            <Component Id="cmpRXI27USxUCz40.ER0sBEBhbhLaY" Guid="{AF397186-4335-4415-8254-45C13EE5FFF8}">
+            <Component Id="cmpRXI27USxUCz40.ER0sBEBhbhLaY" Guid="{FEC410E1-30BB-41F5-A258-D5336F859F22}">
                 <File Id="fillLPYAp945ndjyPjN3mkulVu0Zuk" KeyPath="yes" Source="$(var.ServicePublishDir)\appsettings.json" />
             </Component>
-            <Component Id="cmplqYu8cJP3aGRbxD6HL6n8Wq3wF8" Guid="{0500B82E-8D43-466A-B2B6-154F0A920484}">
+            <Component Id="cmplqYu8cJP3aGRbxD6HL6n8Wq3wF8" Guid="{5363D534-B944-4E5D-95E3-C4C1A42E404E}">
                 <File Id="filBwv_701E1D0W8H9Y037pd0_ctyg" KeyPath="yes" Source="$(var.ServicePublishDir)\aspnetcorev2_inprocess.dll" />
-            </Component>
-            
-            
-            
-            
+            </Component>           
         </DirectoryRef>
     </Fragment>
     <Fragment>
         <ComponentGroup Id="ServiceFiles"><ComponentRef Id="cmpmwyV7r7L77MVoqFPmPTK2h9XEJI" /><ComponentRef Id="cmpRXI27USxUCz40.ER0sBEBhbhLaY" /><ComponentRef Id="cmplqYu8cJP3aGRbxD6HL6n8Wq3wF8" /><!--
 							Removed reference to cmpCAOWcKF98od2Dth27dnlQCQphrE--><!--
-							Removed reference to cmpuidZgqUWpC8oma_jUek1PczIKd0--><!--
 							Removed reference to cmpErrpQ2tJWJ5f9nH2NCbuUaz3PeQ--><!--
 							Removed reference to cmpkNHb8Al9eo.K8tJifQ3Q1OMCg2Q--></ComponentGroup>
     </Fragment>

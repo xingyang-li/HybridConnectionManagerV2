@@ -15,10 +15,8 @@
                   contains(wix:File/@Source, '.vshost.exe') or
                   contains(wix:File/@Source, '.xml') or
                   contains(wix:File/@Source, 'debug\') or
-                  contains(wix:File/@Source, 'node_modules\') or
                   contains(wix:File/@Source, '.sample.') or
                   contains(wix:File/@Source, '.tmp') or 
-			      contains(wix:File/@Source, '.exe') or
 			      contains(wix:File/@Source, '.staticwebassets.endpoints.json')
                   ]"
 			 use="@Id"/>
