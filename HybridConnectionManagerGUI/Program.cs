@@ -51,7 +51,6 @@ if (HybridSupport.IsElectronActive)
             AutoHideMenuBar = true,
         });
 
-        window.LoadURL("http://localhost:5000");
         window.OnReadyToShow += () => window.Show();
         window.OnClosed += () => Electron.App.Quit();
     });

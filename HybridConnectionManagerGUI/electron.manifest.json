@@ -7,6 +7,7 @@
   "author": "",
   "singleInstance": false,
   "environment": "Production",
+  "electronPort":  4999,
   "build": {
     "appId": "com.HybridConnectionManagerGUI.app",
     "productName": "HybridConnectionManagerGUI",
