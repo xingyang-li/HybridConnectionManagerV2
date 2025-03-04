@@ -67,6 +67,8 @@
 						  Name="HcmDataDirectory"
 						  Type="raw" />
 		</Property>
+
+		<Property Id="MSIRESTARTMANAGERCONTROL" Value="Disable"/>
 	</Package>
 
 	<!-- Service Components -->
