@@ -1,386 +1,386 @@
 ﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
     <Fragment>
         <DirectoryRef Id="GUIDir">
-            <Component Id="cmpVZaE1m2mruKH1G_KLpLLd_.Jj_o" Guid="{CE4DF615-90AF-4DDA-A0B1-BD6406449D53}">
+            <Component Id="cmpVZaE1m2mruKH1G_KLpLLd_.Jj_o" Guid="{D2E28D53-CD99-4101-9BA1-F46F8ECF61A2}">
                 <File Id="fillxGqAu_Sv9oeQ03ffUj8HbSHnxQ" KeyPath="yes" Source="$(GUIPublishDir)\chrome_100_percent.pak" />
             </Component>
-            <Component Id="cmpQ8FKkC2XiCkPY7H7RJ0a3a4OZLY" Guid="{0A29D56C-45E3-408B-AC14-58C95BFE2B89}">
+            <Component Id="cmpQ8FKkC2XiCkPY7H7RJ0a3a4OZLY" Guid="{4F7C3D6F-DFBE-48A9-8E19-E5B33D8C6C31}">
                 <File Id="filpuA2As3dsQetE2eVGuO.oT4qWuM" KeyPath="yes" Source="$(GUIPublishDir)\chrome_200_percent.pak" />
             </Component>
-            <Component Id="cmpcRlZxYEw1MVUyTXoGPjXCPsEb.Y" Guid="{F50D3E92-0328-4BA9-A9FF-BB599C2441BD}">
+            <Component Id="cmpcRlZxYEw1MVUyTXoGPjXCPsEb.Y" Guid="{30F92D51-FCCC-4CA1-B139-FB14F9854C0C}">
                 <File Id="fildwxi7FV4bvEL4jm3YANOImVtPA0" KeyPath="yes" Source="$(GUIPublishDir)\d3dcompiler_47.dll" />
             </Component>
-            <Component Id="cmpFsfHbH8rKaESCSsGTV5RSbdTgTM" Guid="{F500A77C-948D-4D70-8CE9-5A369BB25FE4}">
+            <Component Id="cmpFsfHbH8rKaESCSsGTV5RSbdTgTM" Guid="{943CEF80-6BD5-4705-824F-448C0A374664}">
                 <File Id="filWUPrUMrmfVLQaF8o..R4U76sAsE" KeyPath="yes" Source="$(GUIPublishDir)\ffmpeg.dll" />
             </Component>
-            <Component Id="cmp7zYvAUxwMryCDL4pELnTFQKI9ko" Guid="{1AF428CC-9604-4DC3-99EB-753BCCCC5788}">
+            <Component Id="cmp7zYvAUxwMryCDL4pELnTFQKI9ko" Guid="{143E2DF2-365A-41CB-B933-41279A2C8089}">
                 <File Id="file1ZE9kTozoHD89iNLnp.l0a2BEk" KeyPath="yes" Source="$(GUIPublishDir)\icudtl.dat" />
             </Component>
-            <Component Id="cmpevzYQdKNuntSnbVkloRyVISAdS4" Guid="{3CC8E384-53F8-4495-89F3-AF325F57B85E}">
+            <Component Id="cmpevzYQdKNuntSnbVkloRyVISAdS4" Guid="{EFC898AC-CA6A-47CF-A32F-C564AFCF1E6B}">
                 <File Id="filG3Kqqr1DxIo5dHbwbjrYcvF.mig" KeyPath="yes" Source="$(GUIPublishDir)\libEGL.dll" />
             </Component>
-            <Component Id="cmpPWfg_oC_eoS1wWw6fHI_SDwh0dw" Guid="{BDCC4874-3CE8-4DD1-80A9-731E7970DEDC}">
+            <Component Id="cmpPWfg_oC_eoS1wWw6fHI_SDwh0dw" Guid="{71705868-F339-4CA8-9A4A-10310363579D}">
                 <File Id="fil8BWtKpDikbnC3JHCGAzHU1MA3RM" KeyPath="yes" Source="$(GUIPublishDir)\libGLESv2.dll" />
             </Component>
-            <Component Id="cmpx6C2xj3Kh4wSO49un0zFKSVEM6A" Guid="{7F390446-7D40-4697-9CCF-CA43D00DB32D}">
+            <Component Id="cmpx6C2xj3Kh4wSO49un0zFKSVEM6A" Guid="{B97C0EE6-CADA-414E-B74A-BC5248990283}">
                 <File Id="fil_LDEyaoZF7IhiPE.aOAmD8AszGs" KeyPath="yes" Source="$(GUIPublishDir)\LICENSE.electron.txt" />
             </Component>
-            <Component Id="cmpxHFPFkyXCMD.lu9qdwVzlgf6DyA" Guid="{5645BC16-54CA-4260-9F3E-6F876B7419C2}">
+            <Component Id="cmpxHFPFkyXCMD.lu9qdwVzlgf6DyA" Guid="{4B7732BD-B624-4C91-AA16-FECABBE2E1D2}">
                 <File Id="filwDeSSsJp6MhEGoIkXDEFnghsbKo" KeyPath="yes" Source="$(GUIPublishDir)\LICENSES.chromium.html" />
             </Component>
-            <Component Id="cmp9mNPgX.MswyxCklmUXzgx4.OyL8" Guid="{447ADC55-9D15-42BF-BD51-35815349BCED}">
+            <Component Id="cmp9mNPgX.MswyxCklmUXzgx4.OyL8" Guid="{15580435-3718-4FA8-8CFA-F848CEA32433}">
                 <File Id="fila00pgmbwA01YsWuL7VsKlSmNBFg" KeyPath="yes" Source="$(GUIPublishDir)\resources.pak" />
             </Component>
-            <Component Id="cmpdjHQq4JHS4niX8B_UZV0pST4Dhs" Guid="{B3BCF612-A2E3-44AB-91D2-886255EA944D}">
+            <Component Id="cmpdjHQq4JHS4niX8B_UZV0pST4Dhs" Guid="{7AD2380C-1459-4311-B9BE-649E48E5AAB3}">
                 <File Id="filY7PUrbgik.pArIN0_6IjhgcBMSo" KeyPath="yes" Source="$(GUIPublishDir)\snapshot_blob.bin" />
             </Component>
-            <Component Id="cmpJCAKIBf9BRVWD333xKcTRz.9q0E" Guid="{600A63D5-6F7D-4883-A25F-95D53E01DAAE}">
+            <Component Id="cmpJCAKIBf9BRVWD333xKcTRz.9q0E" Guid="{0AF8C98D-39B1-48B1-8E55-B2E10B8EBD37}">
                 <File Id="filzkanz.hZ1zuJtSTJpHxaW0smI_w" KeyPath="yes" Source="$(GUIPublishDir)\v8_context_snapshot.bin" />
             </Component>
-            <Component Id="cmpkocfYdzFPk68QijNXEKaaBkqkec" Guid="{A561C66B-7AAB-4398-9B6D-DC8EEAABF32B}">
+            <Component Id="cmpkocfYdzFPk68QijNXEKaaBkqkec" Guid="{C6C9715C-5536-4E59-AFB6-CD7176708C94}">
                 <File Id="filC37Vg.y2xqR8cUsbf.NQR380OJk" KeyPath="yes" Source="$(GUIPublishDir)\vk_swiftshader.dll" />
             </Component>
-            <Component Id="cmp_RkCSWh.zBpYiAYaoAWnwvP7ZSY" Guid="{33511454-B3F6-4BAA-9586-077F562B279B}">
+            <Component Id="cmp_RkCSWh.zBpYiAYaoAWnwvP7ZSY" Guid="{E1204539-3DD4-4EF4-BD62-8525AF6ED485}">
                 <File Id="filcsmE89Z9cloWC4_vqOFNli4F6p4" KeyPath="yes" Source="$(GUIPublishDir)\vk_swiftshader_icd.json" />
             </Component>
-            <Component Id="cmpY5DNCpTsk.NePnfzsb02biBW38A" Guid="{5DC785B8-4793-43D1-B78A-0DB3497C0EEA}">
+            <Component Id="cmpY5DNCpTsk.NePnfzsb02biBW38A" Guid="{23387AB9-D1C1-416E-A59B-0F2A61B1CD8B}">
                 <File Id="fil5ng3GgYiM1xaletdb3CudhLGrW4" KeyPath="yes" Source="$(GUIPublishDir)\vulkan-1.dll" />
             </Component>
             <Directory Id="dirOtVRZggoa5HL5.iVtFtu3xIaRQE" Name="locales">
-                <Component Id="cmp35UrzCa.VGRV6dv9AAelQW8oJik" Guid="{B11FAA5C-D80F-465A-808A-20A80AF7FA38}">
+                <Component Id="cmp35UrzCa.VGRV6dv9AAelQW8oJik" Guid="{1391F01E-9DFA-4A6E-8223-1C71D3366581}">
                     <File Id="filce00CaTaSYtOtU6ZXuwOOIyNYKg" KeyPath="yes" Source="$(GUIPublishDir)\locales\af.pak" />
                 </Component>
-                <Component Id="cmpJBDzLo0MiTFHCoeKq6MDe9tsTe0" Guid="{54DA00CB-B751-4F17-8CE3-65F7BE846B79}">
+                <Component Id="cmpJBDzLo0MiTFHCoeKq6MDe9tsTe0" Guid="{0FF853C5-14D9-4873-B410-ED6668D083C2}">
                     <File Id="filRszB82VLilOdzQiAsNW_145rbXU" KeyPath="yes" Source="$(GUIPublishDir)\locales\am.pak" />
                 </Component>
-                <Component Id="cmpzB8_mu8D0kQQN6m1ePXL7avMRQM" Guid="{3F04DE53-13A3-4661-AAD1-3DDC74DD5FF1}">
+                <Component Id="cmpzB8_mu8D0kQQN6m1ePXL7avMRQM" Guid="{24D8E66D-C595-4168-967D-CC063A8F1244}">
                     <File Id="filGDjPZRN9xqeRBw9jI5U_zq_YR3c" KeyPath="yes" Source="$(GUIPublishDir)\locales\ar.pak" />
                 </Component>
-                <Component Id="cmpLTb7YsBdM7wSiI.FdlzK6NLJ1CQ" Guid="{223B3275-D039-42C0-A3F3-09844297DB67}">
+                <Component Id="cmpLTb7YsBdM7wSiI.FdlzK6NLJ1CQ" Guid="{238FF253-7F21-4431-BD2A-09923D369ABB}">
                     <File Id="fili0n0wtzAMXxmCr_ZPDM7bDB_hYA" KeyPath="yes" Source="$(GUIPublishDir)\locales\bg.pak" />
                 </Component>
-                <Component Id="cmpctmEqKddXQW0BuEHzLeMXca7tOM" Guid="{AC2E62F2-9B31-4604-9257-263AEE3F01A1}">
+                <Component Id="cmpctmEqKddXQW0BuEHzLeMXca7tOM" Guid="{4B6AF20A-3BC1-455F-9ECF-EAC43693370E}">
                     <File Id="filTuxFECPfCI_Ayb8WYe2nxqbwPmU" KeyPath="yes" Source="$(GUIPublishDir)\locales\bn.pak" />
                 </Component>
-                <Component Id="cmpIEtNz8JE5rLNjPvETPtxab5S_cA" Guid="{415585D1-EA9A-40BD-A015-CAC1E83495DA}">
+                <Component Id="cmpIEtNz8JE5rLNjPvETPtxab5S_cA" Guid="{5D2C1C7A-1ABF-46AD-BA67-3DE91CCBA801}">
                     <File Id="filL6Kseeyfq5J0A7ycvtvkvfQ1IuI" KeyPath="yes" Source="$(GUIPublishDir)\locales\ca.pak" />
                 </Component>
-                <Component Id="cmpTOZyiK4JmRFbzvfjI6URCVtd8DU" Guid="{B17D06D9-28E7-4AFF-8FCB-1E001964B6BE}">
+                <Component Id="cmpTOZyiK4JmRFbzvfjI6URCVtd8DU" Guid="{06D6C054-15C7-4FFF-A0E1-90B4ACEE0867}">
                     <File Id="fil8xLogpfcSjgyPGSqXY1lzeLzy8Q" KeyPath="yes" Source="$(GUIPublishDir)\locales\cs.pak" />
                 </Component>
-                <Component Id="cmp5cbaihllKpYQESvg.ki3CU7M_UU" Guid="{6CDE4738-6275-4487-9594-67D0EFB3FED0}">
+                <Component Id="cmp5cbaihllKpYQESvg.ki3CU7M_UU" Guid="{0834D01A-D272-4CE6-82D0-5F120B553DB8}">
                     <File Id="filRK.iDeYah8niqA6612Jt0zRbhoA" KeyPath="yes" Source="$(GUIPublishDir)\locales\da.pak" />
                 </Component>
-                <Component Id="cmpaY1hEBm0xUlQ0sGQv40uFiBS1D8" Guid="{2A624B8A-0033-4A59-B27E-F76471A823E3}">
+                <Component Id="cmpaY1hEBm0xUlQ0sGQv40uFiBS1D8" Guid="{AA5E2A57-1849-446B-979B-798E96762C47}">
                     <File Id="fil6GTpL_mXw5j7RRbUPknRY._RoIg" KeyPath="yes" Source="$(GUIPublishDir)\locales\de.pak" />
                 </Component>
-                <Component Id="cmprY3FSSGXwg_iJFPVtohuE4aS7UM" Guid="{4D443381-5EEC-46C4-B234-1BFF47ACD9AA}">
+                <Component Id="cmprY3FSSGXwg_iJFPVtohuE4aS7UM" Guid="{8B7A6EC8-35FF-4579-A93D-7844265CDB41}">
                     <File Id="filjmmF9.M12cl4HUXPOHqdfpPSuLE" KeyPath="yes" Source="$(GUIPublishDir)\locales\el.pak" />
                 </Component>
-                <Component Id="cmpLQI8hFdxJUc5d2VuYL1_pro3d30" Guid="{A0A5D6FB-733F-4D67-ACC8-06EF24B0F493}">
+                <Component Id="cmpLQI8hFdxJUc5d2VuYL1_pro3d30" Guid="{B0DDEC61-32BB-4E6D-B5E0-BBCB3D2D4ADD}">
                     <File Id="filOef.RYOOYr9nYuUS12oGPqYAJFY" KeyPath="yes" Source="$(GUIPublishDir)\locales\en-GB.pak" />
                 </Component>
-                <Component Id="cmpHihlzS_FFAwnJaP2OET6f5XYx40" Guid="{9D23B733-8BC3-46A7-9CAB-891F5108F6C8}">
+                <Component Id="cmpHihlzS_FFAwnJaP2OET6f5XYx40" Guid="{D333C64D-7DD7-42A7-B615-8D7A95DC3537}">
                     <File Id="fil.ljTyMqZPVZKkL.Jz1T5kEB0V_g" KeyPath="yes" Source="$(GUIPublishDir)\locales\en-US.pak" />
                 </Component>
-                <Component Id="cmpTP1fbUjN7iTpK5pIScrlxbbI8Bc" Guid="{316DC302-54B0-4703-9079-B03574EA9DD3}">
+                <Component Id="cmpTP1fbUjN7iTpK5pIScrlxbbI8Bc" Guid="{7E3BD613-C596-4F90-B1E8-56216E64E62A}">
                     <File Id="fil9M1ujVheVyjTS6CQ1ivS6KYRXI4" KeyPath="yes" Source="$(GUIPublishDir)\locales\es-419.pak" />
                 </Component>
-                <Component Id="cmpeb8rGcpv3shJwVoGyCGNV4OeHZg" Guid="{B2388264-4E83-4CB9-BAF8-949FD139A14D}">
+                <Component Id="cmpeb8rGcpv3shJwVoGyCGNV4OeHZg" Guid="{77F7F8FE-28E4-4617-AA77-F78833E221B3}">
                     <File Id="fil1qRozrKsWEaWaQr2MkWkR8_kOkk" KeyPath="yes" Source="$(GUIPublishDir)\locales\es.pak" />
                 </Component>
-                <Component Id="cmpX7qoeIYOJgt5bAOgwHL_yL8t6w4" Guid="{072C05AE-51D9-4085-877E-B73BE0667206}">
+                <Component Id="cmpX7qoeIYOJgt5bAOgwHL_yL8t6w4" Guid="{9E80CFC2-B39F-49E9-8F59-035A13153FBF}">
                     <File Id="filP0avlszS1Qn2.Ehap1Uk4D7RVgk" KeyPath="yes" Source="$(GUIPublishDir)\locales\et.pak" />
                 </Component>
-                <Component Id="cmpCvCDlA7rTs.yVXhYqnkuDfhrBV8" Guid="{40518F16-3DF4-4D3B-8A60-48ED493C29CF}">
+                <Component Id="cmpCvCDlA7rTs.yVXhYqnkuDfhrBV8" Guid="{5D5868EC-1982-465D-8987-3DC78F4C13A4}">
                     <File Id="filAHT1YfiEIozoDHkNC6PS3Az9Bco" KeyPath="yes" Source="$(GUIPublishDir)\locales\fa.pak" />
                 </Component>
-                <Component Id="cmps6VH5CwL213a4NJ6HXP7O14i2GY" Guid="{88995F82-DC26-4642-A8A9-11158EB8FA6D}">
+                <Component Id="cmps6VH5CwL213a4NJ6HXP7O14i2GY" Guid="{10370335-893B-46A3-81A9-EB54AA4EFB4D}">
                     <File Id="filo3aGF6VzgPRbVNXbxsgWoWCbxlg" KeyPath="yes" Source="$(GUIPublishDir)\locales\fi.pak" />
                 </Component>
-                <Component Id="cmph1BuIMrAaD9EwIueQJ6OylRMrMc" Guid="{7C1CC59A-AEF2-4CC2-970E-2689F462F3B7}">
+                <Component Id="cmph1BuIMrAaD9EwIueQJ6OylRMrMc" Guid="{1AC4DF1D-80EE-4EA5-B3CC-6D19413A34B9}">
                     <File Id="file55ORkXMdYPap80Cjwg_o4.o2NM" KeyPath="yes" Source="$(GUIPublishDir)\locales\fil.pak" />
                 </Component>
-                <Component Id="cmpGooaKXaDju0GYwQm4b70AsMYzXU" Guid="{A86F1D82-DA01-41A8-9EAC-CD0EC93CBDDA}">
+                <Component Id="cmpGooaKXaDju0GYwQm4b70AsMYzXU" Guid="{FDB45E8B-52AB-41A0-85AF-7BFFE868E822}">
                     <File Id="filHQCSlvpYuorCo2H3Sh27loVMGAQ" KeyPath="yes" Source="$(GUIPublishDir)\locales\fr.pak" />
                 </Component>
-                <Component Id="cmpxy3G6VZz9fv5pjCCNrs7Z3GOA_s" Guid="{920906AB-5F3C-4AA5-B01B-6C3806EAAB7D}">
+                <Component Id="cmpxy3G6VZz9fv5pjCCNrs7Z3GOA_s" Guid="{7C1CB80C-EBF2-48EF-AAAA-8C92BE71097F}">
                     <File Id="filn7ajf.pejGLJLoXRCso.0FiZmHg" KeyPath="yes" Source="$(GUIPublishDir)\locales\gu.pak" />
                 </Component>
-                <Component Id="cmpUwRRfk4_PCs8d1Eh2VFsQGpQt70" Guid="{D00AB809-0271-4618-B26D-D18CC4CF35B6}">
+                <Component Id="cmpUwRRfk4_PCs8d1Eh2VFsQGpQt70" Guid="{4965F1A3-BDD8-4AE1-8E58-219CAEBB45A9}">
                     <File Id="filqtB7I2EgitJ_pltosm2ALbMSll8" KeyPath="yes" Source="$(GUIPublishDir)\locales\he.pak" />
                 </Component>
-                <Component Id="cmpJ_jkqtqe4.EmiReHAngx9iooN_U" Guid="{9499EA74-E6AF-4614-B59B-21E5FE448E4B}">
+                <Component Id="cmpJ_jkqtqe4.EmiReHAngx9iooN_U" Guid="{A03293A5-07C1-4C6C-94CD-2CDEF8ED4D48}">
                     <File Id="filN.2jeTuioxOTNTvQohCXwUaA_qI" KeyPath="yes" Source="$(GUIPublishDir)\locales\hi.pak" />
                 </Component>
-                <Component Id="cmp0d_q6YTGwa9K9m5u4o7Ru.HsiB0" Guid="{AAD788D4-DBDE-4060-8B48-2A550A3487F8}">
+                <Component Id="cmp0d_q6YTGwa9K9m5u4o7Ru.HsiB0" Guid="{4EFEA96F-8912-4B5D-A781-73A873EBAF33}">
                     <File Id="fily2Ub24nXFGbEJgrcInP9jBkDtII" KeyPath="yes" Source="$(GUIPublishDir)\locales\hr.pak" />
                 </Component>
-                <Component Id="cmp0_MnHUXa4bTsRhX5RDoRGtIgD34" Guid="{108ECB18-71F4-4D1E-822F-2FC5B42CD6B5}">
+                <Component Id="cmp0_MnHUXa4bTsRhX5RDoRGtIgD34" Guid="{7EDF6840-3929-4F8D-9F1E-867240E20B4E}">
                     <File Id="filBMV4n7snr1lQAJRJn2kEFpFL9lI" KeyPath="yes" Source="$(GUIPublishDir)\locales\hu.pak" />
                 </Component>
-                <Component Id="cmpQ0Jev79PYg2JBLAZLRc9MpmgE7A" Guid="{61D577E5-C4B5-4C15-A744-784206BA5FE0}">
+                <Component Id="cmpQ0Jev79PYg2JBLAZLRc9MpmgE7A" Guid="{71475C46-AB84-44F4-B97A-9979DCFE8372}">
                     <File Id="filLO_Ng_.dSHmu3UidC2yYAVFC_8M" KeyPath="yes" Source="$(GUIPublishDir)\locales\id.pak" />
                 </Component>
-                <Component Id="cmpko4AyfhhePaMxFFbUuU3keZ6CDc" Guid="{EACEC106-32B8-4F72-A88E-38D5904D8271}">
+                <Component Id="cmpko4AyfhhePaMxFFbUuU3keZ6CDc" Guid="{6D587C6A-9E6A-4715-80BC-41CF730CB838}">
                     <File Id="filCQe4GeCUPG8LgRbnbn3WG0ISK10" KeyPath="yes" Source="$(GUIPublishDir)\locales\it.pak" />
                 </Component>
-                <Component Id="cmpkLPYitMF5PQE13oAJ.4ikogpQic" Guid="{085A502E-7564-423B-9F23-4EE4E1B262C6}">
+                <Component Id="cmpkLPYitMF5PQE13oAJ.4ikogpQic" Guid="{B824DB97-2218-4D2B-B587-44769640E333}">
                     <File Id="filUFloaTnIySLA1wMltUapPH5uxQk" KeyPath="yes" Source="$(GUIPublishDir)\locales\ja.pak" />
                 </Component>
-                <Component Id="cmpay0M91_xyGQYYhWL33DfhYc3MMY" Guid="{542ECCFE-0B03-4CD9-AA0E-B3B5EC37C333}">
+                <Component Id="cmpay0M91_xyGQYYhWL33DfhYc3MMY" Guid="{945305A4-3066-4FFB-A06E-C741D06351F8}">
                     <File Id="fildFwsrl18Pq7CH2KTbBLzUToJ4A8" KeyPath="yes" Source="$(GUIPublishDir)\locales\kn.pak" />
                 </Component>
-                <Component Id="cmpQT_2M7V0gYOEtq87ImeiiCMHIB4" Guid="{69C17473-9DA4-4C45-969A-BA3225B295C7}">
+                <Component Id="cmpQT_2M7V0gYOEtq87ImeiiCMHIB4" Guid="{0861DF43-18B2-4215-A1DC-1BCB0962EB10}">
                     <File Id="filikhkXRYWqypyPXdL2YK6vPh9szM" KeyPath="yes" Source="$(GUIPublishDir)\locales\ko.pak" />
                 </Component>
-                <Component Id="cmp8nf8buAIqU3wFOS_hgme_FKgBgY" Guid="{38FCCB52-31DF-4812-9089-916E008F0CBC}">
+                <Component Id="cmp8nf8buAIqU3wFOS_hgme_FKgBgY" Guid="{9ED62655-C0E2-42E2-A9AF-95AE2F09F326}">
                     <File Id="filI6D3sqeDAepryLYR4fHI3h.mKjw" KeyPath="yes" Source="$(GUIPublishDir)\locales\lt.pak" />
                 </Component>
-                <Component Id="cmp_zkg63drLNVaocFimvr9xZbl.V8" Guid="{C22E7AC3-187D-4190-BDE2-6DA57B9FAFF9}">
+                <Component Id="cmp_zkg63drLNVaocFimvr9xZbl.V8" Guid="{BC5B1936-FB8D-4377-B544-09B2128035A1}">
                     <File Id="filEJLm6zRw8BzQzORwH.VpOkR6q_U" KeyPath="yes" Source="$(GUIPublishDir)\locales\lv.pak" />
                 </Component>
-                <Component Id="cmpbrwtA3pqjmXdbkPRyMCk4OdSjG4" Guid="{95A961DC-1E3F-4694-89BB-AFFA7A425F58}">
+                <Component Id="cmpbrwtA3pqjmXdbkPRyMCk4OdSjG4" Guid="{E19E8E92-D014-4C13-9FE3-3CDADC1BB1FC}">
                     <File Id="filXakulyzIBGPgVuC1a_dWiAYp0rA" KeyPath="yes" Source="$(GUIPublishDir)\locales\ml.pak" />
                 </Component>
-                <Component Id="cmprqPzPfWxh_uffOMQuzzSNNzNMbs" Guid="{3208B25A-91A7-4B13-88AF-97C89ABBFFA1}">
+                <Component Id="cmprqPzPfWxh_uffOMQuzzSNNzNMbs" Guid="{CC520DFA-3075-43F6-8546-5382D2018BE5}">
                     <File Id="filunXvHR.zPc_8yi.tGyvYlxran78" KeyPath="yes" Source="$(GUIPublishDir)\locales\mr.pak" />
                 </Component>
-                <Component Id="cmpISYGAPrg.3oQYRxzTmh3mSxRNG8" Guid="{83FF2E25-036F-40B2-845E-11E28E72D2A4}">
+                <Component Id="cmpISYGAPrg.3oQYRxzTmh3mSxRNG8" Guid="{A8CF82D8-C357-4D04-830B-0EEEE7B2B553}">
                     <File Id="fil6MvEg0mhYnDjVd4nqPZXmFRLkCI" KeyPath="yes" Source="$(GUIPublishDir)\locales\ms.pak" />
                 </Component>
-                <Component Id="cmpMzW6D_jpXiaZ6EDVWF_aYU5RHKc" Guid="{B765E3BD-8E19-43C3-8D58-9D0D2BD093F8}">
+                <Component Id="cmpMzW6D_jpXiaZ6EDVWF_aYU5RHKc" Guid="{8C3613FB-1130-4C0F-A4FC-2921A3BF8B12}">
                     <File Id="filTytb3BklNYdz943pzwGXEC8.Hgo" KeyPath="yes" Source="$(GUIPublishDir)\locales\nb.pak" />
                 </Component>
-                <Component Id="cmphwLk7KtlpVn2vKYgJtFnEU.6Il0" Guid="{D39CF953-62FE-45F8-91B0-2A62EF351F18}">
+                <Component Id="cmphwLk7KtlpVn2vKYgJtFnEU.6Il0" Guid="{E1ADC5CC-54E7-4456-BE1E-76931D5ADD80}">
                     <File Id="filcvY8OuqSysn1s3HqQsV7.aoYcyU" KeyPath="yes" Source="$(GUIPublishDir)\locales\nl.pak" />
                 </Component>
-                <Component Id="cmp47PPMChTWI4aC4EKoBp3LY5LjYE" Guid="{1268C47F-53BA-47B8-A963-8078AE041DC2}">
+                <Component Id="cmp47PPMChTWI4aC4EKoBp3LY5LjYE" Guid="{5F786122-7951-43C4-A61F-48DB1D0F1483}">
                     <File Id="filvthTkWOYfoNHAFqq6V942RzaKgo" KeyPath="yes" Source="$(GUIPublishDir)\locales\pl.pak" />
                 </Component>
-                <Component Id="cmpSTWXEhtjc0vA38wOcFHx9ZqhSuM" Guid="{5ED61BEE-FAD6-41DE-A71A-226C749DEFC3}">
+                <Component Id="cmpSTWXEhtjc0vA38wOcFHx9ZqhSuM" Guid="{CC16CFAA-029A-4321-AE37-691AD5DE2AF7}">
                     <File Id="filsDfU6gud2xC8WYY9_8xvo42EwDA" KeyPath="yes" Source="$(GUIPublishDir)\locales\pt-BR.pak" />
                 </Component>
-                <Component Id="cmpzpsyatpwQrAr3D8scWU3QHFWWW8" Guid="{AC9B5F72-989D-4F18-BBC9-49870543EACA}">
+                <Component Id="cmpzpsyatpwQrAr3D8scWU3QHFWWW8" Guid="{E3BE1777-A0A5-4913-979A-A4E9606FF463}">
                     <File Id="filh4v6ibnqpip1QzTrBfNYr6JJ22Q" KeyPath="yes" Source="$(GUIPublishDir)\locales\pt-PT.pak" />
                 </Component>
-                <Component Id="cmpnCGOsgSnHgUJ6lFb0P29SBgm5wM" Guid="{92E597D1-3572-4BCE-B931-728A2B3D78C4}">
+                <Component Id="cmpnCGOsgSnHgUJ6lFb0P29SBgm5wM" Guid="{726341B9-A708-4F84-A18A-80F6FDB2898F}">
                     <File Id="filR3My3rFc7tHA82ikStdv1q.hShM" KeyPath="yes" Source="$(GUIPublishDir)\locales\ro.pak" />
                 </Component>
-                <Component Id="cmpy9DEmE6VwQu.nP0IUpjzZcXyvmc" Guid="{942F5FEC-EEA1-459E-A429-A0F72185523C}">
+                <Component Id="cmpy9DEmE6VwQu.nP0IUpjzZcXyvmc" Guid="{BEEB54A5-F95A-4B0C-B429-D6A1E11B4EF6}">
                     <File Id="filHgnj0prYNQbMAybFswwHTQrTQcE" KeyPath="yes" Source="$(GUIPublishDir)\locales\ru.pak" />
                 </Component>
-                <Component Id="cmpzPU0Hq98bNTzn_Ybs3.UnIlzPj8" Guid="{4E06EFEC-C246-4265-8686-5E9DD73F1065}">
+                <Component Id="cmpzPU0Hq98bNTzn_Ybs3.UnIlzPj8" Guid="{E63D008E-D99F-41AA-870F-9BF4AA4582DE}">
                     <File Id="fil1T9_lygGTqKqSZxsCo6E9CI2pWs" KeyPath="yes" Source="$(GUIPublishDir)\locales\sk.pak" />
                 </Component>
-                <Component Id="cmpz_GzN_BGx5LkZ4A05JtU70Z7gWw" Guid="{52E0C836-802D-4B26-98A9-AC43BBD46497}">
+                <Component Id="cmpz_GzN_BGx5LkZ4A05JtU70Z7gWw" Guid="{2A061542-54B4-47AF-9D72-6CDB3A02BE4C}">
                     <File Id="filBldHK9TKXtQKmtXShY3B74jMAds" KeyPath="yes" Source="$(GUIPublishDir)\locales\sl.pak" />
                 </Component>
-                <Component Id="cmpIrJCMvxIxF1GmZNernj_x7jlBQ0" Guid="{F7E7CE53-1915-41E5-BC3A-84E7E88703EE}">
+                <Component Id="cmpIrJCMvxIxF1GmZNernj_x7jlBQ0" Guid="{7B25EBD6-DC00-4CA0-B539-C969B6DF0AB9}">
                     <File Id="filaQ6XLj11CHBZgwvAYHvyjyquypM" KeyPath="yes" Source="$(GUIPublishDir)\locales\sr.pak" />
                 </Component>
-                <Component Id="cmpXknjPLEz2DHfkwSxXrnZXUyMyEo" Guid="{F4A59CE9-F38A-4B4E-AB97-90955639D403}">
+                <Component Id="cmpXknjPLEz2DHfkwSxXrnZXUyMyEo" Guid="{6EE0DB6D-FE24-4FC4-A095-9B6DE5D12CF2}">
                     <File Id="filFePd5Y7lweWatgwjkYWYDKHznSQ" KeyPath="yes" Source="$(GUIPublishDir)\locales\sv.pak" />
                 </Component>
-                <Component Id="cmpXilimUjs0xWpPxtBqnhfzN9wxWI" Guid="{C80539B6-D83C-4919-8C8C-7F4623D1C62F}">
+                <Component Id="cmpXilimUjs0xWpPxtBqnhfzN9wxWI" Guid="{2EBB67B1-BDBB-4510-85DB-3B40D8D34618}">
                     <File Id="filJSX0fXG5r4wovHSiY52kKn6Zxtw" KeyPath="yes" Source="$(GUIPublishDir)\locales\sw.pak" />
                 </Component>
-                <Component Id="cmpmdJ2916Z6_5fsldw6e.S5MZBidc" Guid="{848DDDB9-EF42-4D1A-931A-1C3A44072A08}">
+                <Component Id="cmpmdJ2916Z6_5fsldw6e.S5MZBidc" Guid="{353A763A-3188-438F-8486-1B781E76AEB8}">
                     <File Id="filKAXR3eLFJZ0_D24PA5_HakX3GSQ" KeyPath="yes" Source="$(GUIPublishDir)\locales\ta.pak" />
                 </Component>
-                <Component Id="cmp4fkKwz6XT.7TfLBNcvFsKBFC7VY" Guid="{5895AB3B-9AC6-4246-BA8E-8BC818194C1F}">
+                <Component Id="cmp4fkKwz6XT.7TfLBNcvFsKBFC7VY" Guid="{2E79300E-8C9D-45E8-8597-1A71AF67B3B1}">
                     <File Id="fil_ELyjUUZ3fPEFPDsd6DBZ3rVTA0" KeyPath="yes" Source="$(GUIPublishDir)\locales\te.pak" />
                 </Component>
-                <Component Id="cmpNLQMU2M9kb0OhvqKBECwvhB59rk" Guid="{E4A963ED-8D99-4249-90CF-01CC1F11CF46}">
+                <Component Id="cmpNLQMU2M9kb0OhvqKBECwvhB59rk" Guid="{A0F18964-08E1-4D64-950E-48EAB798A52F}">
                     <File Id="filrq04VSdPIOHlkJ7Rs8TUSWgia0I" KeyPath="yes" Source="$(GUIPublishDir)\locales\th.pak" />
                 </Component>
-                <Component Id="cmp54FN3tM2MN8Qg4j0qqbmzaJf1eA" Guid="{1D9A499E-A894-47D3-80AE-A703471B5033}">
+                <Component Id="cmp54FN3tM2MN8Qg4j0qqbmzaJf1eA" Guid="{105C7DB1-CA6E-408C-8192-72C0FC5AA57D}">
                     <File Id="filSco_UbFhlb498AW8xTtvbZeIEK0" KeyPath="yes" Source="$(GUIPublishDir)\locales\tr.pak" />
                 </Component>
-                <Component Id="cmp1ZrhMXSF5OoV6ni7nsfUg3GPzd8" Guid="{6A04AD9F-A096-4FF5-AAF5-4F9FB6C6FAAD}">
+                <Component Id="cmp1ZrhMXSF5OoV6ni7nsfUg3GPzd8" Guid="{F6D1C7C7-B4AB-4C7F-93BD-D0D812DFE754}">
                     <File Id="filXoXGTb0.vBv4SJ2oge9npPrf7Rg" KeyPath="yes" Source="$(GUIPublishDir)\locales\uk.pak" />
                 </Component>
-                <Component Id="cmpNGZVoibN1ep8QGjTjtNhmHtW3Kk" Guid="{42579887-844C-4D24-A7CA-6FA5F8D2D5D2}">
+                <Component Id="cmpNGZVoibN1ep8QGjTjtNhmHtW3Kk" Guid="{36A58DCF-39B2-46C4-BE68-CDAB841B1D1E}">
                     <File Id="fil8qF2vyiYAL4mDtvJYwK1NRL0rzw" KeyPath="yes" Source="$(GUIPublishDir)\locales\ur.pak" />
                 </Component>
-                <Component Id="cmpMnI5hb9xagvMyE4dX5WkRUMyVEw" Guid="{530583F3-B7B9-48E6-B2FD-1DFB9507D678}">
+                <Component Id="cmpMnI5hb9xagvMyE4dX5WkRUMyVEw" Guid="{FBF48878-E84A-44A5-A2C3-43E6035F21A6}">
                     <File Id="filJN.8bcsJ015GWAaceZGLK0xDxkE" KeyPath="yes" Source="$(GUIPublishDir)\locales\vi.pak" />
                 </Component>
-                <Component Id="cmp6xoKgOnb01uQv7oIvJL9zPlN2d0" Guid="{48240F53-A464-425D-B8F7-AFAF6C0CFC3D}">
+                <Component Id="cmp6xoKgOnb01uQv7oIvJL9zPlN2d0" Guid="{0BA949D3-9D54-4FD5-BB4B-A28DA6D56C3D}">
                     <File Id="filmE9qc7.rgHBQhaKvsRaV44tmKms" KeyPath="yes" Source="$(GUIPublishDir)\locales\zh-CN.pak" />
                 </Component>
-                <Component Id="cmp4fB_Hr11rxmU8GduLH98LAnTjGQ" Guid="{2E1BCA2D-6C32-41D5-A0D5-A49FB28EF2D0}">
+                <Component Id="cmp4fB_Hr11rxmU8GduLH98LAnTjGQ" Guid="{48429298-5D5F-42CC-AAE4-102012304ACA}">
                     <File Id="filYc0pkMmIq_JjNDGVaRJ6kecLyUM" KeyPath="yes" Source="$(GUIPublishDir)\locales\zh-TW.pak" />
                 </Component>
             </Directory>
             <Directory Id="dircEmC1n0fyDf1lJ0Ox1zDCefxpmk" Name="resources">
-                <Component Id="cmpwRXap0FePD032neFVWK3WCkxrac" Guid="{B58277F5-B092-4843-835E-12AC85A008AE}">
+                <Component Id="cmpwRXap0FePD032neFVWK3WCkxrac" Guid="{9FBBCEEF-988E-4D2B-BB53-7C908AE10403}">
                     <File Id="fil7fHK5Kj8s1CHap6FfEjmYC9L_QY" KeyPath="yes" Source="$(GUIPublishDir)\resources\app-update.yml" />
                 </Component>
-                <Component Id="cmpq6ggCzA86xsY70wTiAF2tcWEczI" Guid="{6762FCE0-A06F-47CC-9689-E508825502D7}">
+                <Component Id="cmpq6ggCzA86xsY70wTiAF2tcWEczI" Guid="{9DB9A04B-A738-4AAD-93A2-F631CEF7B487}">
                     <File Id="filDDJrT8H9_x15CB6rz3E.mjPUgrA" KeyPath="yes" Source="$(GUIPublishDir)\resources\app.asar" />
                 </Component>
-                <Component Id="cmpamb6EJJoEyovr292NfdRbl98M9g" Guid="{C0F7F68B-1446-4377-B511-A0068F45658C}">
+                <Component Id="cmpamb6EJJoEyovr292NfdRbl98M9g" Guid="{16D42B76-1F12-4446-92EF-662DC711AA4A}">
                     <File Id="filneOWQtGvrqy4PS.dsDDXCcVwHE0" KeyPath="yes" Source="$(GUIPublishDir)\resources\elevate.exe" />
                 </Component>
                 <Directory Id="dirqStIiU1ZfDChoDy76Yxnd3Tcau8" Name="bin">
-                    <Component Id="cmpAiCWQkEXjecuAawXIm1WmNxkR2o" Guid="{FF93237C-0C08-4DC5-B77C-F0A0E9078D46}">
+                    <Component Id="cmpAiCWQkEXjecuAawXIm1WmNxkR2o" Guid="{8F730AF9-F0B4-4B4D-9347-04827F8AA5AD}">
                         <File Id="fil64nn9CMENm7f2IlJzkudwvHKbVk" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\appsettings.Development.json" />
                     </Component>
-                    <Component Id="cmpi0C6bDe.l3OTUSq1aJLFQFIuGAI" Guid="{8087D405-C67F-4BAD-A162-06030559F7BC}">
+                    <Component Id="cmpi0C6bDe.l3OTUSq1aJLFQFIuGAI" Guid="{11CCD34C-4FA0-43DB-96C0-2049438759B8}">
                         <File Id="filnzXzWFQg_RE4DY_goa6j64usCy0" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\appsettings.json" />
                     </Component>
-                    <Component Id="cmpITOFX63VCh9jf2nD5GNQ8an1y48" Guid="{AE5E2E1F-3D84-47E1-A993-5AFA4F8D3D93}">
+                    <Component Id="cmpITOFX63VCh9jf2nD5GNQ8an1y48" Guid="{EE25D36C-EF90-4EAD-90EC-CE1BC964619D}">
                         <File Id="filp83pTdEF1XgO_KzmQABSlTIiq84" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\aspnetcorev2_inprocess.dll" />
                     </Component>
-                    <Component Id="cmpvCWUczLw.I47Y1G5p82andYjw2M" Guid="{635078F9-4714-492D-B73E-749C21C066C8}">
+                    <Component Id="cmpvCWUczLw.I47Y1G5p82andYjw2M" Guid="{B85D77EB-54CF-4C3A-9FC8-40BCC5DD6CF7}">
                         <File Id="fil.tywnEld54jWS0fxwm36PYcabJU" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\electron-builder.json" />
                     </Component>
-                    <Component Id="cmpweaPy_m.QiVbyeeeSI7pvsRaNMY" Guid="{77FE05A9-2FD0-4E96-B449-79B2EE149A13}">
+                    <Component Id="cmpweaPy_m.QiVbyeeeSI7pvsRaNMY" Guid="{1302348D-BD76-4CDC-944C-F8A99C79ED2A}">
                         <File Id="filpfyKjI7iB1EYpulSo.NOSgRQCHQ" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\electron.manifest.json" />
                     </Component>
-                    <Component Id="cmpbSAc0jDiofsrb9Y5dQy4vqZiLq4" Guid="{6570A19B-D23D-4797-85BC-0FCDFAE2EEF9}">
+                    <Component Id="cmpbSAc0jDiofsrb9Y5dQy4vqZiLq4" Guid="{87FC6069-649A-41C3-AB87-8A00D299412D}">
                         <File Id="fil6LfL.av_rniRJ5iLXk_NLA57aYM" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\HybridConnectionManagerGUI.exe" />
                     </Component>
                     
                     
                     
-                    <Component Id="cmpDbwXEKbXnmQCTp5sPkTxJ8wdMoA" Guid="{44244AA8-2421-4464-ADEF-8DABCD6F62CD}">
+                    <Component Id="cmpDbwXEKbXnmQCTp5sPkTxJ8wdMoA" Guid="{4A4F4C20-04BB-48D1-BA83-701DBBA4D206}">
                         <File Id="filf_vc2japGJsk74BURqIDFaXg1Nc" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\web.config" />
                     </Component>
                     <Directory Id="dirugAZ3WtNVpDwC.mtetpwYLyBNic" Name="wwwroot">
-                        <Component Id="cmpZf7nByadyXpqvgowgR2GxjPQVKI" Guid="{A03FD5F7-6C87-4317-919C-B42F7E840142}">
+                        <Component Id="cmpZf7nByadyXpqvgowgR2GxjPQVKI" Guid="{D1173F61-EFFD-4C2B-A4FF-B98FB8A216CE}">
                             <File Id="filWFcMbbTxAv_IDMXaaB68Qm6OJmM" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\favicon.ico" />
                         </Component>
-                        <Component Id="cmp0q8KWZbH.lvVNOsfntZUSyPyNXE" Guid="{DF9E51CC-F242-494C-925B-71C5C0D3EA5A}">
+                        <Component Id="cmp0q8KWZbH.lvVNOsfntZUSyPyNXE" Guid="{4E786188-B379-4FBA-8AAD-373C366B06EA}">
                             <File Id="filbTbfODtb2n17lUuxiKAKJvujCFM" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\HybridConnectionManagerGUI.styles.css" />
                         </Component>
                         <Directory Id="dirzoTjjtfdEHi9Jf5.wF4cRqm5IE8" Name="assets">
-                            <Component Id="cmpschAXslFE.czfn.X8gLqrg39j0w" Guid="{6D9976F1-C0EB-4403-9BCA-E01B6642A63F}">
+                            <Component Id="cmpschAXslFE.czfn.X8gLqrg39j0w" Guid="{C625CBAC-829B-40FE-BE4E-536CA0F5BC87}">
                                 <File Id="fillVe6coi2RY4LBNPED6Z0h5wNJZQ" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\assets\Icon.icns" />
                             </Component>
-                            <Component Id="cmpwXypFdcCpwsMw5ytr1Lgcw68.KM" Guid="{07055CD6-D97C-471E-A711-4DFA10884BF9}">
+                            <Component Id="cmpwXypFdcCpwsMw5ytr1Lgcw68.KM" Guid="{40C001AC-658E-4417-8CE3-4F0F8E35D108}">
                                 <File Id="fillknDvZImvPlkNAjk8LR8D7FeeBg" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\assets\Icon.ico" />
                             </Component>
-                            <Component Id="cmps15Rk9VafNux9fq6WjrBqbBQ4yY" Guid="{E76F1AB2-6705-4346-B61B-671ED0E00FAA}">
+                            <Component Id="cmps15Rk9VafNux9fq6WjrBqbBQ4yY" Guid="{E43C0848-FEB7-4E94-910D-2FCC017B41E3}">
                                 <File Id="filnAOT3YmdUk3Br0SMTlkS7ryXoX8" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\assets\Icon.png" />
                             </Component>
                         </Directory>
                         <Directory Id="dirMwjSCX73NJx9mQro_bokVxn9sqE" Name="css">
-                            <Component Id="cmplLV5ZjKaoAKqFjJ1T_SsQV9iWw8" Guid="{F6DE808D-3495-4D15-922C-6C4133B6E3CA}">
+                            <Component Id="cmplLV5ZjKaoAKqFjJ1T_SsQV9iWw8" Guid="{785210A7-1028-445E-B82E-A44F046CC189}">
                                 <File Id="filvDpdQD2_xNy00PyVR_kF982rb.g" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\css\modal.css" />
                             </Component>
-                            <Component Id="cmpLRyz3.L_ZS7ulG5_DtzIRoJ5A94" Guid="{B4893CCF-0533-41AB-86FD-7E0D9CCEE3E2}">
+                            <Component Id="cmpLRyz3.L_ZS7ulG5_DtzIRoJ5A94" Guid="{D8DD1F85-1F45-4348-9964-948360F2EAC0}">
                                 <File Id="filxs.fntImmAR0F7cCgHeGieqqHj4" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\css\site.css" />
                             </Component>
-                            <Component Id="cmpt8evOCdCWfirWiufuxWqvoBv6BQ" Guid="{5BCA7406-F3DD-4C91-9258-3F4F8756E2C9}">
+                            <Component Id="cmpt8evOCdCWfirWiufuxWqvoBv6BQ" Guid="{6167F3FB-EFBB-499C-BF31-4901E508BE33}">
                                 <File Id="filsdcijS_GnJBJ6oLnj_EASTSuf2M" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\css\table.css" />
                             </Component>
                         </Directory>
                         <Directory Id="dirFlj1pr4d4pbRacIKFCC00a.9I8s" Name="images">
-                            <Component Id="cmpLuti8XBMYDCcP.DFW2Ws98..GEc" Guid="{1DA19A6F-4C79-4FA6-8ABC-60FC6694EBD1}">
+                            <Component Id="cmpLuti8XBMYDCcP.DFW2Ws98..GEc" Guid="{B28A0F2B-E191-4315-9C04-6FE38E89A61D}">
                                 <File Id="fildpmnPWmjx17q3WIRWifSfo0aqXk" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\images\HybridConnectionIcon.png" />
                             </Component>
                         </Directory>
                         <Directory Id="dirU_rWIgx0BMm_MBEi8SCGKA7bsLE" Name="js">
-                            <Component Id="cmpALkyZ7QQJ9UxorTlOd3LBoqsqbg" Guid="{A8D724F1-623C-4D19-A4DD-2B44D3817724}">
+                            <Component Id="cmpALkyZ7QQJ9UxorTlOd3LBoqsqbg" Guid="{B3A1981B-5B60-4327-BE41-9A9BEDEC6B29}">
                                 <File Id="filxZ68.vAXM_fSwV_.2ORyVNjjdqk" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\js\site.js" />
                             </Component>
                         </Directory>
                         <Directory Id="dirt7CrEBH6W9KMfVOf5rIjeYeSKFE" Name="lib">
                             <Directory Id="dirxJKVy4ZX0nUouPUoW3rv9lWm8oU" Name="bootstrap">
-                                <Component Id="cmpfd7XpUhJs47_HPzrpMysrMee5ug" Guid="{A1DE35F4-5DEE-482A-92F1-01D73E1F3268}">
+                                <Component Id="cmpfd7XpUhJs47_HPzrpMysrMee5ug" Guid="{D8E92A9F-03DA-415A-AB37-32FD62382EC1}">
                                     <File Id="filpSKQfC_jw_FRO85KusNOU5MxYto" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\LICENSE" />
                                 </Component>
                                 <Directory Id="dirqvFtoXSI1qgQYr3EAvgYEjCeWAI" Name="dist">
                                     <Directory Id="dir6Zvf0iLemgZOc3pTriyNZqCqILM" Name="css">
-                                        <Component Id="cmpp0c4sVTM7e9nS1AAcx4h6sPTnB4" Guid="{19A234FD-E011-499E-A3D0-4D45446CD22E}">
+                                        <Component Id="cmpp0c4sVTM7e9nS1AAcx4h6sPTnB4" Guid="{E89BD280-7198-4BC6-A118-5EDD460EB220}">
                                             <File Id="filiV2UTbonMGPBF6eyDclOinNStTU" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
                                         </Component>
                                         
-                                        <Component Id="cmpZi.BbBWlCqd4iEnptxQ0cN_4WFs" Guid="{F653677D-36DA-4443-9614-DFEF1900DF34}">
+                                        <Component Id="cmpZi.BbBWlCqd4iEnptxQ0cN_4WFs" Guid="{6AA0B66B-489E-4FC0-93EE-9A6D73B46894}">
                                             <File Id="filloCo91lif_n8C9aEGqOnX34c2Pg" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css" />
                                         </Component>
                                         
-                                        <Component Id="cmpFktmofmEcS3jfMJPfCmQEqLBIRg" Guid="{4F84E437-845F-46C1-9185-495B85F6164B}">
+                                        <Component Id="cmpFktmofmEcS3jfMJPfCmQEqLBIRg" Guid="{5CBA782C-0014-4776-9951-FF9056401285}">
                                             <File Id="filnVK9owbnVT6S3oZqz1bXOJVFRK4" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css" />
                                         </Component>
                                         
-                                        <Component Id="cmpLq7S4X.OCAOAUeUrFcTaSHmFjWA" Guid="{F46366D4-F84A-48BC-88BA-CCEC25570314}">
+                                        <Component Id="cmpLq7S4X.OCAOAUeUrFcTaSHmFjWA" Guid="{55AD70DE-FA34-4AEE-9098-A6B65A7AE983}">
                                             <File Id="fil6xF4.1p5lh4xqg0nL_Q.46DdqDo" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css" />
                                         </Component>
                                         
-                                        <Component Id="cmp4q7fWGqu49DpMjBMUZ3eJ4DVJe8" Guid="{B88A55F9-9DA3-4E7C-BF5A-8830BB2167D7}">
+                                        <Component Id="cmp4q7fWGqu49DpMjBMUZ3eJ4DVJe8" Guid="{C3AD2B50-F2C8-41CE-BAB2-1CCA8B51C74E}">
                                             <File Id="filnVfh9OoKDLX6.zlyHb2_RGnhycE" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css" />
                                         </Component>
                                         
-                                        <Component Id="cmp9vXa8tCt0eXLmTG.cWwG202Kpo8" Guid="{559965A4-CA79-410F-918F-1E8DADE63EFA}">
+                                        <Component Id="cmp9vXa8tCt0eXLmTG.cWwG202Kpo8" Guid="{EA954F2F-7098-4EAE-900F-B8885758DCBE}">
                                             <File Id="filCof5UAZljnqCoH_reF4tMMfzGJY" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css" />
                                         </Component>
                                         
-                                        <Component Id="cmpSePL_3EepsbbfEM_aa5bLHreatA" Guid="{804BD1B5-E4E5-430E-8BC4-2AECFF347A46}">
+                                        <Component Id="cmpSePL_3EepsbbfEM_aa5bLHreatA" Guid="{39E52CF9-874A-4EAA-B9B9-1C4232F9FFAC}">
                                             <File Id="filu.XCY1ZLznIhodGX2N6ja0qqDkE" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css" />
                                         </Component>
                                         
-                                        <Component Id="cmpntvvKDRaPoL4VRp8jMAhi_iMpa8" Guid="{D6DDF2E7-6F31-4B7E-885C-8561397E798A}">
+                                        <Component Id="cmpntvvKDRaPoL4VRp8jMAhi_iMpa8" Guid="{9BD404B5-7668-49B8-9312-8EB1E092429A}">
                                             <File Id="filVXoUDRIHmyLrnkP43O2T3HCOHrE" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css" />
                                         </Component>
                                         
-                                        <Component Id="cmp4AmKfNVSyLz9lW58ROvD1IK76T4" Guid="{CE455B13-938D-4564-A425-F3D1F2EB25E4}">
+                                        <Component Id="cmp4AmKfNVSyLz9lW58ROvD1IK76T4" Guid="{84727AF9-A2BF-49E4-8FD9-5ABA2AF8F1B1}">
                                             <File Id="filFdGDopOXtAdiT69_f33TbAhI4aM" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css" />
                                         </Component>
                                         
-                                        <Component Id="cmpzOxyHYPzHq7pS9Y1hnUMj4DX9EE" Guid="{D9AA8510-6529-447D-BF61-D3D5931C3937}">
+                                        <Component Id="cmpzOxyHYPzHq7pS9Y1hnUMj4DX9EE" Guid="{BE660F8A-A4A2-4A57-BFD7-10721FA95709}">
                                             <File Id="filX6eMqaQ8mUGPWVsjinRyI5CQuw8" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css" />
                                         </Component>
                                         
-                                        <Component Id="cmphEgEzV5oPTmeHBmWHEHZ6qKgd8s" Guid="{6906A70A-1F8C-4FF0-9588-6758706C67CD}">
+                                        <Component Id="cmphEgEzV5oPTmeHBmWHEHZ6qKgd8s" Guid="{3A57177C-ED8D-42EB-A24D-930895399023}">
                                             <File Id="filfL5eSATlkYP6OlgvuraCCw9LBQM" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css" />
                                         </Component>
                                         
-                                        <Component Id="cmpJNT_dyJkmbgWBlOk7aeOKMYgcLc" Guid="{2D464A89-5919-4787-88CA-8E1F5DD0ED11}">
+                                        <Component Id="cmpJNT_dyJkmbgWBlOk7aeOKMYgcLc" Guid="{BE5D9753-5D76-4F1D-BEC1-E481970BF7FF}">
                                             <File Id="fil54.75ttV88x2brahtYhoJN2moLE" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css" />
                                         </Component>
                                         
-                                        <Component Id="cmpe0B4HnAQal1zKRd2HS8IS9o4G7M" Guid="{9F03B823-65A7-409C-BB6E-4362778E4994}">
+                                        <Component Id="cmpe0B4HnAQal1zKRd2HS8IS9o4G7M" Guid="{F3288B39-3F07-494F-9896-38459355468E}">
                                             <File Id="filIk_yM0kR2Jw5z1.SDpGabGR7ZjA" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
                                         </Component>
                                         
-                                        <Component Id="cmpWmIri4ML..a12Pw0NYKkMhZANMM" Guid="{D38AF1C7-E200-4313-8FC7-65E3DD9D5017}">
+                                        <Component Id="cmpWmIri4ML..a12Pw0NYKkMhZANMM" Guid="{E465B1A3-539F-4BCD-AA2B-ABEF84BBC3B4}">
                                             <File Id="filfHFS7LY3uFdZhkxDC58kUtAmlWQ" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
                                         </Component>
                                         
-                                        <Component Id="cmpA_l_1UmUoRIo_PViYDKVetu3PyE" Guid="{2DFB94DB-F7BC-4008-8A30-D3D40852290B}">
+                                        <Component Id="cmpA_l_1UmUoRIo_PViYDKVetu3PyE" Guid="{78A47030-25BA-4189-BAD7-3997E63B2374}">
                                             <File Id="filwZV2QGhGsxHPAa3dMFjj7cWxFCw" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css" />
                                         </Component>
                                         
-                                        <Component Id="cmp2wXCAZQ8_U8q_PGhTcs3DoekREs" Guid="{CCA4735A-6CA7-4E52-9CC4-E2578E3E9AFD}">
+                                        <Component Id="cmp2wXCAZQ8_U8q_PGhTcs3DoekREs" Guid="{20F33856-F4B5-44E1-A216-EB79A7AFE3D3}">
                                             <File Id="filuKFhq.PAr.YTBrRkcIyx_gvthcQ" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css" />
                                         </Component>
                                         
                                     </Directory>
                                     <Directory Id="dirY1yIwxO1..AtN1S86HEujBgImM8" Name="js">
-                                        <Component Id="cmp6_bPTNeELW2Tx55joZvdixcGJrA" Guid="{069CF938-F0ED-4453-B4C3-D6C85840D48C}">
+                                        <Component Id="cmp6_bPTNeELW2Tx55joZvdixcGJrA" Guid="{B2D73C77-D746-4FF6-99C7-922A2F41991C}">
                                             <File Id="filskxpoCYeAuOs.qwmrr39BwXm9Xo" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
                                         </Component>
                                         
-                                        <Component Id="cmpcqSsBH8ljoJMo96Ic5G2MxOnBy4" Guid="{87644B51-06A1-47F7-9DB1-99499EEA6FE2}">
+                                        <Component Id="cmpcqSsBH8ljoJMo96Ic5G2MxOnBy4" Guid="{22EE796A-25AD-4D3F-B104-C74E1A48633E}">
                                             <File Id="fil63.UYZi3bUDwYrWUrn.cTZ2hwlc" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
                                         </Component>
                                         
-                                        <Component Id="cmpAtFj9.d_RQKEUOqp1l3cyL.Fo2g" Guid="{D5953617-9896-4850-9C6F-78D8BA6236E9}">
+                                        <Component Id="cmpAtFj9.d_RQKEUOqp1l3cyL.Fo2g" Guid="{8002AD37-EFC2-4610-BCC6-746750C91349}">
                                             <File Id="filFvdXQLOrI.Kh2RCOvnJb2RizKXQ" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js" />
                                         </Component>
                                         
-                                        <Component Id="cmpY3tiyEZunf5JiKqP_XqURX8ZMgY" Guid="{043FF368-C847-4134-B3AF-E752F3D9723A}">
+                                        <Component Id="cmpY3tiyEZunf5JiKqP_XqURX8ZMgY" Guid="{5216C4BD-8A30-4CAF-B26C-408406C20E40}">
                                             <File Id="filCGn9vum5JmnJjxMq3tZpLMn6U6s" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js" />
                                         </Component>
                                         
-                                        <Component Id="cmpDGhf5_JKPLAGVKWVqCVnKoaW.Mo" Guid="{5D56D94F-DC64-44F8-A75F-F67CBD73A3F1}">
+                                        <Component Id="cmpDGhf5_JKPLAGVKWVqCVnKoaW.Mo" Guid="{45E98054-6060-4699-8FF4-C65A481F3343}">
                                             <File Id="fil60sEzliFh5WQHVa2nkfND8a6_j4" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
                                         </Component>
                                         
-                                        <Component Id="cmpAx5zO3fgBZt.tWwva8AxXxRS_I8" Guid="{41635397-4098-4795-8036-45C8E2D8F676}">
+                                        <Component Id="cmpAx5zO3fgBZt.tWwva8AxXxRS_I8" Guid="{5E65F602-8D9F-4D19-BD5F-75672C843B71}">
                                             <File Id="filHpgYHWuyk6CC0CFK8lDf8kQmEys" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
                                         </Component>
                                         
@@ -388,46 +388,46 @@
                                 </Directory>
                             </Directory>
                             <Directory Id="diru9nw7HDSMN0zVJMEV12vP4VlQU8" Name="jquery">
-                                <Component Id="cmpE0bFFar2_QGKneQ1RfoPVzk8uMU" Guid="{1816E39E-DCAC-4E71-A975-A2D95009D403}">
+                                <Component Id="cmpE0bFFar2_QGKneQ1RfoPVzk8uMU" Guid="{30216FCC-209D-4154-932F-7761586DB2C3}">
                                     <File Id="filnOkYOtN0GSR9l6RvJPYNepvI3p8" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\jquery\LICENSE.txt" />
                                 </Component>
                                 <Directory Id="dirzOm1aD9KTU3xsBwR4X6DAPcvBpc" Name="dist">
-                                    <Component Id="cmpBGDYMN.3i.LZHR5Flwchn5LP__M" Guid="{C2DDEDD2-7DDC-4C17-BB07-EDF7AD429D52}">
+                                    <Component Id="cmpBGDYMN.3i.LZHR5Flwchn5LP__M" Guid="{9F9FFA64-016A-4BEE-8B5A-D84AEA3EBC2E}">
                                         <File Id="filxEmjnnXs.mPtRPMr0vKVBwh6yuo" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\jquery\dist\jquery.js" />
                                     </Component>
-                                    <Component Id="cmpNtDTFBO7muAzRQzGOkebEJp4PgI" Guid="{3C8510ED-8277-4320-BC37-AAF3B6B94E3E}">
+                                    <Component Id="cmpNtDTFBO7muAzRQzGOkebEJp4PgI" Guid="{C951CCE2-F634-4AE8-B0A6-059735FB5EF2}">
                                         <File Id="filXAHNZ5wqTU.n45cKPEA28rmhdvk" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\jquery\dist\jquery.min.js" />
                                     </Component>
                                     
                                 </Directory>
                             </Directory>
                             <Directory Id="dirx6e.5O5P3r52iXwxn5uGVINtt9o" Name="jquery-validation">
-                                <Component Id="cmpUcJj_BQpvnlGeZyQQyiEM3Xks.A" Guid="{84CF4D70-CDE3-41E5-854D-B695E173B95B}">
+                                <Component Id="cmpUcJj_BQpvnlGeZyQQyiEM3Xks.A" Guid="{04C15807-5A06-4679-B339-C2C2D1CE9798}">
                                     <File Id="filUEyPEEgAY2sIXBoWTuQfnB0c6hA" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\jquery-validation\LICENSE.md" />
                                 </Component>
                                 <Directory Id="dir4ldZTIhqfod9PZ1aHxt77tuZmJM" Name="dist">
-                                    <Component Id="cmptvfQylym8u23aV3yyKqHbkqn.xY" Guid="{61066D9D-5651-481B-BC51-46591986A74D}">
+                                    <Component Id="cmptvfQylym8u23aV3yyKqHbkqn.xY" Guid="{78CA71FE-7710-414B-B8B6-55B7CA63C453}">
                                         <File Id="filcUVG2ePInDefXJ7VtQhgT6_Nu2k" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\jquery-validation\dist\additional-methods.js" />
                                     </Component>
-                                    <Component Id="cmpMa0PmZ68It9s3O8y1haKWvaVlY8" Guid="{8AAF79AC-1667-4C45-A764-0E605DEF8322}">
+                                    <Component Id="cmpMa0PmZ68It9s3O8y1haKWvaVlY8" Guid="{1EE02173-B07B-494E-AABE-6B87FA15EAFA}">
                                         <File Id="fil1lm0NwqDHp1esmgAwGYbY4Coll8" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
                                     </Component>
-                                    <Component Id="cmpNDu066LCXJWGr_r0b5RT6tyDxxE" Guid="{9C392F19-8763-4162-A6E3-1581633048E0}">
+                                    <Component Id="cmpNDu066LCXJWGr_r0b5RT6tyDxxE" Guid="{8CAF8291-9083-4FD6-A2B4-075B63883C9E}">
                                         <File Id="filh.meUgz9bojwuwtjsk_YlXr4ArQ" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
                                     </Component>
-                                    <Component Id="cmpHCtQirq1mnHySOG1.6M8MDcXWNA" Guid="{F9026B7E-B415-4E68-B02A-D58A9C7A40B0}">
+                                    <Component Id="cmpHCtQirq1mnHySOG1.6M8MDcXWNA" Guid="{974B9DE3-617F-4E52-A0A4-29B1C7E00D18}">
                                         <File Id="fill3w_tSdHNQGAwk0yo4Yf1TFWYH8" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
                                     </Component>
                                 </Directory>
                             </Directory>
                             <Directory Id="dirzaDOzzT2FNRQi7zRC8sD0S9oe7o" Name="jquery-validation-unobtrusive">
-                                <Component Id="cmpmEDF6F_ISuvb1d24kBByDKxVq3E" Guid="{64B4EFF1-F1E1-4217-8F8E-576ECF2F8AF4}">
+                                <Component Id="cmpmEDF6F_ISuvb1d24kBByDKxVq3E" Guid="{60C670E1-79E9-4AE3-BCB3-25B6F15BF5B8}">
                                     <File Id="filmnEaj4tkynWXDJygtMTBSfHN6a0" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
                                 </Component>
-                                <Component Id="cmphENRJyb2MJVnRtUiBnO41cGGaL8" Guid="{D8A5E7DF-53E9-4C72-A6B4-991AB0A99DE9}">
+                                <Component Id="cmphENRJyb2MJVnRtUiBnO41cGGaL8" Guid="{3DB47F65-6B5C-4627-A938-6457910AAAF8}">
                                     <File Id="fil4mXVlNAF8.Sy06PGcKqwawkPNjM" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
                                 </Component>
-                                <Component Id="cmp7w3JYgUf_BQww74HDRrVXiJOxSI" Guid="{0E1CCBF0-969B-43C4-9105-B249562443FF}">
+                                <Component Id="cmp7w3JYgUf_BQww74HDRrVXiJOxSI" Guid="{69FA38A1-ECFB-47EB-B212-E030420316BD}">
                                     <File Id="filtzNb6LGqiBjCa.a.EIn_eNPBApI" KeyPath="yes" Source="$(GUIPublishDir)\resources\bin\wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
                                 </Component>
                             </Directory>
