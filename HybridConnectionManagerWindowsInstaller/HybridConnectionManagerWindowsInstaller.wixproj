@@ -1,34 +1,44 @@
 ﻿<Project Sdk="WixToolset.Sdk/5.0.2">
-	<PropertyGroup>
-		<OutputName>HybridConnectionManagerV2</OutputName>
-		<OutputType>Package</OutputType>
-		<ServicePublishDir>..\HybridConnectionManagerService\bin\Release\net8.0\win-x64\publish</ServicePublishDir>
-		<GUIPublishDir>..\HybridConnectionManagerGUI\bin\Release\net8.0\win-x64\publish</GUIPublishDir>
-		<CLIPublishDir>..\HybridConnectionManagerCLI\bin\Release\net8.0\win-x64\publish</CLIPublishDir>
-	</PropertyGroup>
-	<ItemGroup>
-		<PackageReference Include="WixToolset.Util.wixext" Version="5.0.0" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\HybridConnectionManagerService\HybridConnectionManagerService.csproj" />
-		<ProjectReference Include="..\HybridConnectionManagerGUI\HybridConnectionManagerGUI.csproj" />
-		<ProjectReference Include="..\HybridConnectionManagerCLI\HybridConnectionManagerCLI.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-		<HarvestedFile Include="ServiceFiles.wxs" />
-		<HarvestedFile Include="GUIFiles.wxs" />
-		<HarvestedFile Include="CLIFiles.wxs" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="BuildInstaller.bat" />
-		<None Include="License.rtf" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="bitmap\banner.bmp" />
-		<Content Include="bitmap\dialog.bmp" />
-	</ItemGroup>
-	<!-- Add WiX UI Extension -->
-	<ItemGroup>
-		<PackageReference Include="WixToolset.UI.wixext" Version="5.0.0" />
-	</ItemGroup>
+  <PropertyGroup>
+    <OutputName>HybridConnectionManagerV2</OutputName>
+    <OutputType>Package</OutputType>
+    <ServicePublishDir>..\HybridConnectionManagerService\bin\Release\net8.0\win-x64\publish</ServicePublishDir>
+    <GUIPublishDir>..\HybridConnectionManagerGUI\bin\Release\net8.0\win-x64\publish</GUIPublishDir>
+    <CLIPublishDir>..\HybridConnectionManagerCLI\bin\Release\net8.0\win-x64\publish</CLIPublishDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants>
+	  CLIPublishDir=..\HybridConnectionManagerCLI\bin\Release\net8.0\win-x64\publish;
+	  GUIPublishDir=..\HybridConnectionManagerGUI\bin\Desktop\win-unpacked;
+	  ServicePublishDir=..\HybridConnectionManagerService\bin\Release\net8.0\win-x64\publish;
+	  $(DefineConstants)
+	</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="WixToolset.Util.wixext" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HybridConnectionManagerService\HybridConnectionManagerService.csproj" />
+    <ProjectReference Include="..\HybridConnectionManagerGUI\HybridConnectionManagerGUI.csproj" />
+    <ProjectReference Include="..\HybridConnectionManagerCLI\HybridConnectionManagerCLI.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <HarvestedFile Include="ServiceFiles.wxs" />
+    <HarvestedFile Include="GUIFiles.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BuildInstaller.bat" />
+    <None Include="ExcludeFiles.xslt" />
+    <None Include="GenerateGUIFiles.bat" />
+    <None Include="GenerateServiceFiles.bat" />
+    <None Include="License.rtf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bitmap\banner.bmp" />
+    <Content Include="bitmap\dialog.bmp" />
+  </ItemGroup>
+  <!-- Add WiX UI Extension -->
+  <ItemGroup>
+    <PackageReference Include="WixToolset.UI.wixext" Version="5.0.0" />
+  </ItemGroup>
 </Project>

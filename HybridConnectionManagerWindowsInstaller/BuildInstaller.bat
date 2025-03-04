@@ -12,7 +12,6 @@ dotnet publish ..\HybridConnectionManagerCLI\HybridConnectionManagerCLI.csproj -
 rem Generate WiX component files
 call GenerateServiceFiles.bat
 call GenerateGUIFiles.bat
-call GenerateCLIFiles.bat
 
 rem Build WiX project
 dotnet build -c Release

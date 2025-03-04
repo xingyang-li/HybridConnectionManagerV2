@@ -1,8 +1,6 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
-	<?define GUIPublishDir  = "..\HybridConnectionManagerGUI\bin\Desktop\win-unpacked"?>
-	<?define ServicePublishDir  = "..\HybridConnectionManagerService\bin\Release\net8.0\win-x64\publish"?>
-	<?define CLIPublishDir  = "..\HybridConnectionManagerCLI\bin\Release\net8.0\win-x64\publish"?>
+
 	<Package Name="Hybrid Connection Manager V2"
 			 Manufacturer="Microsoft Corporation"
 			 Version="1.0.0.0"
@@ -77,7 +75,7 @@
 		<ComponentGroup Id="ServiceComponents" Directory="ServiceDir">
 			<Component Id="ServiceExecutable" Guid="*">
 				<File Id="ServiceEXE"
-					  Source="$(var.ServicePublishDir)\HybridConnectionManagerService.exe"
+					  Source="$(ServicePublishDir)\HybridConnectionManagerService.exe"
 					  KeyPath="yes" />
 
 				<!-- Register Windows Service -->
@@ -109,7 +107,7 @@
 		<ComponentGroup Id="GUIComponents" Directory="GUIDir">
 			<Component Id="GUIExecutable" Guid="*">
 				<File Id="GUIEXE"
-					  Source="$(var.GUIPublishDir)\HybridConnectionManagerGUI.exe"
+					  Source="$(GUIPublishDir)\HybridConnectionManagerGUI.exe"
 					  KeyPath="yes" />
 			</Component>
 
@@ -123,7 +121,7 @@
 		<ComponentGroup Id="CLIComponents" Directory="CLIDir">
 			<Component Id="CLIExecutable" Guid="*">
 				<File Id="CLIEXE"
-					  Source="$(var.CLIPublishDir)\hcm.exe"
+					  Source="$(CLIPublishDir)\hcm.exe"
 					  KeyPath="yes" />
 			</Component>
 			<Component Id="PathEnvironmentComponent" Directory="CLIDir" Guid="4F528A69-BE8A-4A03-9B64-54CAC25E068C">
@@ -136,9 +134,6 @@
 							 System="yes" />
 				<CreateFolder />
 			</Component>
-
-			<!-- Harvest all CLI files using Heat tool separately -->
-			<ComponentGroupRef Id="CLIFiles" />
 		</ComponentGroup>
 	</Fragment>
 

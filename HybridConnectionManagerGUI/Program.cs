@@ -43,6 +43,7 @@ if (HybridSupport.IsElectronActive)
                 NodeIntegration = true,
                 ContextIsolation = false,
                 EnableRemoteModule = true,
+                DevTools = false,
                 WebSecurity = false, // Note: Only disable this if you trust your content
             },
             Icon = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets", Util.GetIconFile()),
