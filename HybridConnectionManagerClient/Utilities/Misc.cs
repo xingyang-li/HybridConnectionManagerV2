@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using HcManProto;
+using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
@@ -158,7 +159,7 @@ namespace HybridConnectionManager.Library
             };
         }
 
-        public static async Task<string> ConnectToEndpoint(string endpoint)
+        public static async Task<StringResponse> ConnectToEndpoint(string endpoint)
         {
             string host = endpoint.Split(':')[0];
             int port = int.Parse(endpoint.Split(':')[1]);
@@ -168,12 +169,20 @@ namespace HybridConnectionManager.Library
                 using (TcpClient client = new TcpClient())
                 {
                     await client.ConnectAsync(host, port);
-                    return String.Format("Connection to {0}:{1} successful", host, port);
+                    return new StringResponse
+                    {
+                        Content = String.Format("Connection to {0}:{1} successful", host, port),
+                        Error = false
+                    };
                 }
             }
             catch (Exception ex)
             {
-                return String.Format("Connection to {0}:{1} failed with: {2}", host, port, ex.Message);
+                return new StringResponse
+                {
+                    Content = String.Format("Connection to {0}:{1} failed with: {2}", host, port, ex.Message),
+                    Error = true
+                };
             }
         }
 

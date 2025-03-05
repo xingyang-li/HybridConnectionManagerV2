@@ -65,5 +65,5 @@ message EmptyRequest {
 
 message StringResponse {
     string Content = 1;
-    bool AuthExpired = 2;
+    bool Error = 2;
 }

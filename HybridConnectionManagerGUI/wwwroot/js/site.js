@@ -3,6 +3,7 @@ let logsModal;
 let detailModal;
 let alertModal;
 let confirmModal;
+let testEndpointModal;
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -30,6 +31,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize the Azure Alert Modal
     alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+
+    // Initialize the Test Connection Modal
+    testEndpointModal = new bootstrap.Modal(document.getElementById('testEndpointModal'));
+
+    // Add event listener for endpoint input to enable/disable the Connect button
+    document.getElementById('testEndpointInput').addEventListener('input', function () {
+        document.getElementById('startTestButton').disabled = this.value.trim() === '';
+    });
+
+    // Add event listener for the Connect button
+    document.getElementById('startTestButton').addEventListener('click', function () {
+        testEndpoint();
+    });
 
     InitializeNewConnectionsListeners();
 
@@ -93,7 +107,6 @@ function InitializeNewConnectionsListeners() {
         document.getElementById('subscriptionSelect').addEventListener('change', async function () {
             const newConnectionsTable = document.getElementById('newConnectionsTable');
             const newConnectionsTableBody = document.getElementById('newConnectionsTableBody');
-            const selectAllCheckbox = document.getElementById('selectAllConnections');
             const loadingSpinner = document.getElementById('loadingSpinner');
             const noConnectionsMessage = document.getElementById('noConnectionsMessage');
 
@@ -452,8 +465,75 @@ function openNewConnectionModal() {
     newConnectionModal.show();
 
     setTimeout(() => {
-        document.getElementById('connectionStringInput').focus();
+        connectionStringInput.focus();
     }, 100);
+}
+
+function openTestEndpointModal() {
+    const testEndpointForm = document.getElementById('testEndpointForm');
+    const testEndpointInput = document.getElementById('testEndpointInput');
+    const testSpinner = document.getElementById('testLoadingSpinner');
+    const testButton = document.getElementById('startTestButton');
+    const noConnectionMessage = document.getElementById('noConnectionMessage');
+
+
+    testEndpointForm.reset();
+    testSpinner.style.display = 'none';
+    testEndpointForm.style.display = 'block';
+    testEndpointInput.disabled = false;
+    testButton.disabled = true;
+    noConnectionMessage.style.display = 'none';
+
+    testEndpointModal.show();
+
+    setTimeout(() => {
+        testEndpointInput.focus();
+    }, 100);
+}
+
+function testEndpoint() {
+    const form = document.getElementById('testEndpointForm');
+    const testSpinner = document.getElementById('testLoadingSpinner');
+    const endpoint = document.getElementById('testEndpointInput').value.trim();
+    const testButton = document.getElementById('startTestButton');
+    const noConnectionMessage = document.getElementById('noConnectionMessage');
+
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    testButton.disabled = true;
+    testButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+
+    testSpinner.style.display = 'flex';
+    noConnectionMessage.style.display = 'none';
+
+    $.ajax({
+        url: `/Main/Test?endpoint=${encodeURIComponent(endpoint)}`,
+        type: 'POST',
+        contentType: 'text/plain',
+        success: function (result) {
+            if (result.success) {
+                noConnectionMessage.innerHTML = `<div class="alert alert-success" role="alert">Connection successful!</div>`;
+                noConnectionMessage.style.display = 'block';
+            } else {
+                noConnectionMessage.innerHTML = `<div class="alert alert-danger" role="alert">${result.message}</div>`;
+                noConnectionMessage.style.display = 'block';
+            }
+        },
+        error: function (error) {
+            showAzureAlert('Error testing endpoint ' + endpoint)
+        },
+        complete: function () {
+            testButton.disabled = false;
+            testButton.innerHTML = 'Connect';
+            testSpinner.style.display = 'none';
+            setTimeout(() => {
+                testEndpointInput.focus();
+            }, 100);
+        }
+    });
 }
 
 function saveNewConnection() {

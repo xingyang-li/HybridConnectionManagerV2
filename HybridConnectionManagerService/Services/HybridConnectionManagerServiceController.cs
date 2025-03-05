@@ -207,8 +207,12 @@ namespace HybridConnectionManager.Service
 
         public override async Task<StringResponse> TestEndpointForConnection(EndpointRequest request, ServerCallContext context)
         {
-            string responseStr = await Util.ConnectToEndpoint(request.Endpoint);
-            return new StringResponse { Content = responseStr };
+            var response = await Util.ConnectToEndpoint(request.Endpoint);
+            return new StringResponse
+            {
+                Content = response.Content,
+                Error = response.Error
+            };
         }
 
         public override async Task<StringResponse> AuthenticateUser(EmptyRequest request, ServerCallContext context)

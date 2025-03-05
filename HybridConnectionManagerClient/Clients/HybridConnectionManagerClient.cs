@@ -51,11 +51,11 @@ namespace HybridConnectionManager.Library
             var response = await _client.RemoveConnectionAsync(request);
             return response.Content;
         }
-        public async Task<string> TestEndpointForConnection(string endpoint)
+        public async Task<StringResponse> TestEndpointForConnection(string endpoint)
         {
             var request = new EndpointRequest { Endpoint = endpoint };
             var response = await _client.TestEndpointForConnectionAsync(request);
-            return response.Content;
+            return response;
         }
 
         public async Task<string> AuthenticateUser()

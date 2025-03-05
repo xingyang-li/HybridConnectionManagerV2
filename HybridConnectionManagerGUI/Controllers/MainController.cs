@@ -63,6 +63,26 @@ namespace HybridConnectionManagerGUI.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost]
+        public JsonResult Test([FromQuery] string endpoint)
+        {
+            if (!Regex.IsMatch(endpoint, Util.EndpointRegexPattern))
+            {
+                return Json(new { success = false, Message = "Please use a valid endpoint of form [host]:[port]." });
+            }
+
+            HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+            try
+            {
+                var response = client.TestEndpointForConnection(endpoint).Result;
+                return Json(new { success = !response.Error, Message = response.Content });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, Message = "Hybrid Connection Manager Service not reachable. Please make sure the service is running." + ex.Message });
+            }
+        }
+
         public List<HybridConnectionModel> GetHybridConnectionsForSubscription(string subscriptionId)
         {
             List<HybridConnectionModel> hybridConnectionsList = new List<HybridConnectionModel>();

@@ -68,7 +68,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="newConnectionForm">
+                <form id="newConnectionForm" onsubmit="return false;">
                     <div class="mb-3">
                         <div class="azure-radio-group">
                             <label class="azure-radio mb-2">
@@ -209,6 +209,46 @@
             <div class="modal-footer">
                 <button type="button" class="btn-azure-white" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn-azure-primary" id="confirmButton">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Test Endpoint Modal -->
+<div class="modal fade" id="testEndpointModal" tabindex="-1" role="dialog" aria-labelledby="testEndpointModalLabel" aria-hidden="true">
+    <div class="modal-dialog details-modal-custom">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="testEndpointModalTitle">Test Endpoint Connection</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="testEndpointForm" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="testEndpointInput" class="form-label">Endpoint</label>
+                        <input type="text"
+                               class="form-control"
+                               id="testEndpointInput"
+                               required
+                               autocomplete="off">
+                        <small class="form-text text-muted">
+                            Enter the endpoint you want the background Hybrid Connection Manager Service
+                            to connect to. This endpoint should be of form [host]:[port]. (Ex. localhost:1234)
+                        </small>
+                    </div>
+                    <div id="testLoadingSpinner" class="loading-spinner-container" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <span class="loading-text">Connecting to endpoint...</span>
+                    </div>
+                    <div id="noConnectionMessage" class="mt-4 mb-4 text-center" style="display: none;">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Could not connect to endpoint.
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-azure-white" data-bs-dismiss="modal">Cancel </button>
+                <button type="button" class="btn-azure-primary" id="startTestButton">Connect</button>
             </div>
         </div>
     </div>

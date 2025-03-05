@@ -193,7 +193,7 @@ namespace HybridConnectionManager.CLI
 
                 HybridConnectionManagerClient client = new HybridConnectionManagerClient();
                 var response = await client.TestEndpointForConnection(endpoint);
-                Console.WriteLine(response);
+                Console.WriteLine(response.Content);
             }
             catch (RpcException ex)
             {
