@@ -4,6 +4,7 @@ let detailModal;
 let alertModal;
 let confirmModal;
 let testEndpointModal;
+let helpModal;
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -48,6 +49,13 @@ document.addEventListener('DOMContentLoaded', function () {
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
+    helpModal = new bootstrap.Modal(document.getElementById('helpModal'));
+
+    // Add event listener to the help button
+    document.getElementById('helpButton').addEventListener('click', function () {
+        openHelpModal();
     });
 
     InitializeNewConnectionsListeners();
@@ -446,6 +454,10 @@ function showAzureConfirm(message, title = "Confirm Action") {
         // Show the modal
         confirmModal.show();
     });
+}
+
+function openHelpModal() {
+    helpModal.show();
 }
 
 function openNewConnectionModal() {

@@ -254,3 +254,49 @@
         </div>
     </div>
 </div>
+
+<!-- Help Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg details-modal-custom">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="helpModalTitle">Help</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Overview</h6>
+                <p>Hybrid Connection Manager allows you to manage Azure Relay Hybrid Connections from your machine. This user interface gives you the
+                    ability to add or delete Hybrid Connections to your machine while also providing additional tools to debug and test connectivity to your endpoints. 
+                </p>
+                
+                <h6>Creating a New Connection</h6>
+                <p>Click the <strong>New</strong> button and enter a connection string or select from your Azure subscriptions.</p>
+                
+                <h6>Testing an Endpoint</h6>
+                <p>Click the <strong>Test</strong> button to verify connectivity to a specific endpoint.</p>
+
+                <h6>Removing Connections</h6>
+                <p>Select one or more connections using the checkboxes and click the <strong>Remove</strong> button.</p>
+                
+                <h6>Viewing Logs</h6>
+                <p>Click the <strong>View Logs</strong> button to see the application logs.</p>
+                
+                <h6>Connection Status</h6>
+                <p>The status indicator in the top right corner shows the connection status to the Hybrid Connection Manager background service.</p>
+                <p>If the status indicator displays a 'Disconnected' status or is a red color, then the background service may not be running 
+                    and your Hybrid Connection Listeners will be unable to relay TCP requests to your endpoint.</p>
+
+                <p>If you are on a Windows machine, navigate to Services in the Start Menu and ensure the Hybrid Connection Manager Service is running.</p>
+
+                <p>If you are on a Linux machine, run 'systemctl --type=service --state=running' in the terminal to ensure Hybrid Connection Manager Service is active.</p>
+                
+                <h6>Additional Help</h6>
+                <p>For more information, visit the <a href="https://learn.microsoft.com/en-us/azure/app-service/app-service-hybrid-connections" target="_blank">Azure App Service Hybrid Connections</a> documentation.</p>
+                <p>For additional support or feature requests, please email hcmsupport@service.microsoft.com.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-azure-white" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
