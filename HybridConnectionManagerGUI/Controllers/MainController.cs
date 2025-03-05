@@ -143,8 +143,6 @@ namespace HybridConnectionManagerGUI.Controllers
                             ResourceGroup = resourceGroup,
                         };
 
-                        Console.WriteLine(connection.Namespace + " " + connection.Name + " " + connection.SubscriptionId + " " + connection.ResourceGroup);
-
                         hybridConnectionsList.Add(connection);
                     }
                 }
@@ -211,7 +209,6 @@ namespace HybridConnectionManagerGUI.Controllers
         {
             try
             {
-                Console.WriteLine(model.ConnectionString + " " + model.SubscriptionId + " " + model.ResourceGroup); 
                 HybridConnectionManagerClient client = new HybridConnectionManagerClient();
                 var response = client.AddUsingConnectionString(model.ConnectionString, model.SubscriptionId ?? "", model.ResourceGroup ?? "").Result;
 

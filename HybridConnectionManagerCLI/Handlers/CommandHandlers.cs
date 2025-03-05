@@ -106,7 +106,7 @@ namespace HybridConnectionManager.CLI
                     connectionString = relayArmClient.GetHybridConnectionPrimaryConnectionString(subscription, resourceGroup, @namespace, name);
                 }
 
-                var response = await client.AddUsingConnectionString(connectionString);
+                var response = await client.AddUsingConnectionString(connectionString, string.Empty, string.Empty);
 
                 if (response.Error)
                 {
