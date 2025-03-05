@@ -301,7 +301,7 @@ function initializeAllListeners() {
                 subscriptionId: this.dataset.subscription,
                 resourceGroup: this.dataset.resourceGroup
             };
-            showDetails(details);
+            openDetailsModal(details);
         });
     });
 }
@@ -380,7 +380,7 @@ function removeSelectedConnections() {
 }
 
 function removeCurrentConnection() {
-    // Using the currentItem that's already set in showDetails()
+    // Using the currentItem that's already set in openDetailsModal()
     if (currentItem) {
         const confirmMessage = `This Hybrid Connection will be removed from your machine and your App Service will no longer be able to connect to this endpoint.`;
 
@@ -680,8 +680,9 @@ function showAzureAlert(message, title = "Error") {
     });
 }
 
-function showDetails(item) {
+function openDetailsModal(item) {
     currentItem = item;
+    azureLinkButton = document.getElementById('openInPortalButton')
 
     // Update modal content
     document.getElementById('modal-name').textContent = item.name;
@@ -695,6 +696,9 @@ function showDetails(item) {
 
     // Show the modal
     detailModal = new bootstrap.Modal(document.getElementById('detailsModal'));
+
+    azureLinkButton.disabled = (!currentItem.subscriptionId || !currentItem.resourceGroup)
+
     detailModal.show();
 }
 
@@ -709,7 +713,7 @@ function getAzurePortalUrl(subscriptionId, resourceGroup, namespace, name) {
 }
 
 function openInAzurePortal() {
-    // Using the currentItem that's already set in showDetails()
+    // Using the currentItem that's already set in openDetailsModal()
     if (currentItem && currentItem.namespace && currentItem.name && currentItem.subscriptionId && currentItem.resourceGroup) {
         const portalUrl = getAzurePortalUrl(currentItem.subscriptionId, currentItem.resourceGroup, currentItem.namespace, currentItem.name);
         window.open(portalUrl, '_blank');
