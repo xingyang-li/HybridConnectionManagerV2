@@ -523,3 +523,141 @@ html, body {
     font-size: 24px;
     color: #ff8c00; /* Azure warning color */
 }
+
+/* TCP Connection Indicator Styles */
+.tcp-connection-indicator {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.connection-label {
+    color: #605e5c;
+    font-weight: 500;
+}
+
+.connection-status-indicator {
+    display: flex;
+    align-items: center;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-dot-connected {
+    background-color: #107c10;
+    box-shadow: 0 0 5px #107c10;
+}
+
+.status-dot-disconnected {
+    background-color: #d13438;
+    box-shadow: 0 0 5px #d13438;
+}
+
+.status-dot-unknown {
+    background-color: #797775;
+    box-shadow: 0 0 5px #797775;
+}
+
+#connectionStatusText {
+    font-weight: 500;
+}
+
+/* Pulsing animation for the status dot */
+@keyframes pulse {
+    0% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.7;
+    }
+}
+
+.status-dot.status-dot-connected {
+    animation: pulse 2s infinite;
+}
+
+/* Azure style tooltip - updated */
+.azure-tooltip {
+    opacity: 1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.azure-tooltip .tooltip-inner {
+    background-color: #0078d4;
+    color: white;
+    font-size: 12px;
+    border-radius: 2px;
+    padding: 8px 12px;
+    max-width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.azure-tooltip .tooltip-arrow::before {
+    border-bottom-color: #0078d4;
+}
+
+.azure-tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: #0078d4;
+}
+
+.azure-tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: #0078d4;
+}
+
+.azure-tooltip.bs-tooltip-start .tooltip-arrow::before {
+    border-left-color: #0078d4;
+}
+
+.azure-tooltip.bs-tooltip-end .tooltip-arrow::before {
+    border-right-color: #0078d4;
+}
+
+/* Azure Footer Styles */
+.azure-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    padding: 8px 0;
+    font-size: 14px;
+    color: #605e5c;
+    z-index: 1000;
+}
+
+.footer-left {
+    padding-left: 15px;
+}
+
+.footer-right {
+    padding-right: 15px;
+}
+
+.azure-footer-btn {
+    color: #0078d4;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 2px;
+    transition: background-color 0.2s;
+}
+
+    .azure-footer-btn:hover {
+        background-color: rgba(0, 120, 212, 0.1);
+        color: #0078d4;
+        text-decoration: none;
+    }
+
+    .azure-footer-btn i {
+        margin-right: 5px;
+    }

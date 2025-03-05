@@ -20,8 +20,20 @@
     </main>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Microsoft
+        <div class="fixed-bottom azure-footer">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="footer-left">
+                        <span>&copy; @DateTime.Now.Year - Microsoft Corporation</span>
+                    </div>
+                    <div class="footer-right">
+                        <button id="helpButton" class="btn-azure-white" title="Help">
+                            <i class="fas fa-question-circle"></i>
+                            <span>Help</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
 

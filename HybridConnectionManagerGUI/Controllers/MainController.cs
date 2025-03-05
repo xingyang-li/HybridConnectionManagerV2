@@ -1,17 +1,27 @@
 ﻿using HcManProto;
 using HybridConnectionManagerGUI.Models;
+using HybridConnectionManagerGUI.Services;
 using HybridConnectionManager.Library;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 using Azure.Core;
 using Azure.ResourceManager;
 using Azure.ResourceManager.Relay;
+using System.Net.Sockets;
 
 namespace HybridConnectionManagerGUI.Controllers
 {
     public class MainController : Controller
     {
         private RelayArmClient _client;
+
+        private TcpConnectionChecker _connectionChecker;
+
+        public MainController(TcpConnectionChecker connectionChecker)
+        {
+            _connectionChecker = connectionChecker;
+        }
+
         public IActionResult Index()
         {
             var hybridConnections = GetHybridConnections();
@@ -80,6 +90,30 @@ namespace HybridConnectionManagerGUI.Controllers
             catch (Exception ex)
             {
                 return Json(new { success = false, Message = "Hybrid Connection Manager Service not reachable. Please make sure the service is running. " + ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CheckTcpConnection()
+        {
+            try
+            {
+                bool isConnected = await _connectionChecker.CheckConnectionAsync("localhost", 5001);
+
+                return Json(new
+                {
+                    isConnected = isConnected,
+                    checkedAt = DateTime.UtcNow
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    isConnected = false,
+                    error = ex.Message,
+                    checkedAt = DateTime.UtcNow
+                });
             }
         }
 

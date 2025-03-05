@@ -35,10 +35,6 @@
 			<Feature Id="StartMenuShortcuts" Title="Start Menu Shortcuts" Level="1">
 				<ComponentGroupRef Id="ApplicationShortcuts" />
 			</Feature>
-
-			<Feature Id="CleanupData" Title="Clean up Hybrid Connection Manager Data on Uninstall" Level="1">
-				<ComponentGroupRef Id="HcmDataCleanupComponents" />
-			</Feature>
 		</Feature>
 
 		<!-- Main installation directory structure -->
@@ -59,14 +55,6 @@
 		<StandardDirectory Id="CommonAppDataFolder">
 			<Directory Id="HCM_APPDATA" Name="HybridConnectionManagerV2" />
 		</StandardDirectory>
-
-		<Property Id="HCM_APPDATA_LOCATION" Secure="yes">
-			<RegistrySearch Id="FindHcmDataDir"
-						  Root="HKLM"
-						  Key="Software\Microsoft\HybridConnectionManagerV2"
-						  Name="HcmDataDirectory"
-						  Type="raw" />
-		</Property>
 
 		<Property Id="MSIRESTARTMANAGERCONTROL" Value="Disable"/>
 	</Package>
@@ -134,23 +122,6 @@
 							 Action="set"
 							 System="yes" />
 				<CreateFolder />
-			</Component>
-		</ComponentGroup>
-	</Fragment>
-
-	<!-- ProgramData Cleanup Components -->
-	<Fragment>
-		<ComponentGroup Id="HcmDataCleanupComponents" Directory="CommonAppDataFolder">
-			<Component Id="CleanupHcmData" Guid="2f8a26e5-3c1d-4b9b-a76c-d891e2a5e832">
-				<util:RemoveFolderEx Id="RemoveHcmData"
-                                    On="uninstall"
-                                    Property="HCM_APPDATA_LOCATION" />
-				<RegistryValue Root="HKLM"
-					 Key="Software\Microsoft\HybridConnectionManagerV2"
-					 Name="HcmDataDirectory"
-					 Type="string"
-					 Value="[HCM_APPDATA]"
-					 KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 	</Fragment>

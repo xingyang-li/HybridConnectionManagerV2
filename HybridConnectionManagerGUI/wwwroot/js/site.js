@@ -45,6 +45,11 @@ document.addEventListener('DOMContentLoaded', function () {
         testEndpoint();
     });
 
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
     InitializeNewConnectionsListeners();
 
     initializeAllListeners();
@@ -758,3 +763,55 @@ function hideNotification() {
         banner.classList.remove('fade-out');
     }, 300);
 }
+
+// Connection Monitor for checking TCP connection to localhost:5001
+(function () {
+    const CHECK_INTERVAL = 5000; // Check every 5 seconds
+    const connectionStatusDot = document.getElementById('connectionStatusDot');
+    const connectionStatusText = document.getElementById('connectionStatusText');
+
+    // Set initial state
+    updateConnectionStatus('unknown', 'Checking...');
+
+    // Start checking the connection
+    checkConnection();
+    setInterval(checkConnection, CHECK_INTERVAL);
+
+    // Function to check connection
+    function checkConnection() {
+        fetch('/Main/CheckTcpConnection', {
+            method: 'GET',
+            headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.isConnected) {
+                    updateConnectionStatus('connected', 'Connected');
+                } else {
+                    updateConnectionStatus('disconnected', 'Disconnected');
+                }
+            })
+            .catch(error => {
+                console.error('Error checking connection:', error);
+                updateConnectionStatus('disconnected', 'Error');
+            });
+    }
+
+    // Function to update the connection status UI
+    function updateConnectionStatus(status, text) {
+        // Remove all status classes
+        connectionStatusDot.classList.remove('status-dot-connected', 'status-dot-disconnected', 'status-dot-unknown');
+
+        // Add the appropriate class
+        connectionStatusDot.classList.add(`status-dot-${status}`);
+
+        // Update the text
+        connectionStatusText.textContent = text;
+
+        // Add data attribute for accessibility
+        connectionStatusDot.setAttribute('data-status', status);
+    }
+})();

@@ -29,6 +29,21 @@
             <!-- Added for title section with margin bottom -->
             <img src="~/images/HybridConnectionIcon.png" alt="Hybrid Connection Icon" class="hybrid-connection-icon me-2" />
             <h2>Hybrid Connections</h2>
+
+            <div class="ms-auto tcp-connection-indicator">
+                <div class="d-flex align-items-center">
+                    <span class="connection-label me-2">Hybrid Connection Manager Background Service:</span>
+                    <div class="connection-status-indicator">
+                        <span id="connectionStatusDot"
+                              class="status-dot status-dot-unknown"
+                              data-bs-custom-class="azure-tooltip"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="bottom"
+                              title="HybridConnectionManagerService Connection Status"></span>
+                        <span id="connectionStatusText">Checking...</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="azure-button-container">

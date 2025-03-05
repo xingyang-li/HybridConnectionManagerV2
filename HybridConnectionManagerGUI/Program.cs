@@ -1,5 +1,6 @@
 using ElectronNET.API;
 using HybridConnectionManager.Library;
+using HybridConnectionManagerGUI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ builder.WebHost.UseElectron(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSingleton<TcpConnectionChecker>();
 
 builder.WebHost.UseUrls("http://localhost:5000");
 
