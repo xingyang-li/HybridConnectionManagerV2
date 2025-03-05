@@ -71,15 +71,15 @@ namespace HybridConnectionManagerGUI.Controllers
                 return Json(new { success = false, Message = "Please use a valid endpoint of form [host]:[port]." });
             }
 
-            HybridConnectionManagerClient client = new HybridConnectionManagerClient();
             try
             {
+                HybridConnectionManagerClient client = new HybridConnectionManagerClient();
                 var response = client.TestEndpointForConnection(endpoint).Result;
                 return Json(new { success = !response.Error, Message = response.Content });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, Message = "Hybrid Connection Manager Service not reachable. Please make sure the service is running." + ex.Message });
+                return Json(new { success = false, Message = "Hybrid Connection Manager Service not reachable. Please make sure the service is running. " + ex.Message });
             }
         }
 

@@ -523,7 +523,8 @@ function testEndpoint() {
             }
         },
         error: function (error) {
-            showAzureAlert('Error testing endpoint ' + endpoint)
+            noConnectionMessage.innerHTML = `<div class="alert alert-danger" role="alert">${error.statusText}</div>`;
+            noConnectionMessage.style.display = 'block';
         },
         complete: function () {
             testButton.disabled = false;
