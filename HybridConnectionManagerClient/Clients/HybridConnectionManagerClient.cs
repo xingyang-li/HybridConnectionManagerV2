@@ -12,9 +12,9 @@ namespace HybridConnectionManager.Library
             _client = new HcMan.HcManClient(channel);
         }
 
-        public async Task<HybridConnectionInformationResponse> AddUsingConnectionString(string connectionString)
+        public async Task<HybridConnectionInformationResponse> AddUsingConnectionString(string connectionString, string subscriptionId, string resourceGroup)
         {
-            var request = new HybridConnectionRequest { ConnectionString = connectionString };
+            var request = new HybridConnectionRequest { ConnectionString = connectionString, SubscriptionId = subscriptionId, ResourceGroup = resourceGroup };
             return await _client.AddUsingConnectionStringAsync(request);
         }
 

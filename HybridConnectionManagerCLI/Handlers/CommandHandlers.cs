@@ -13,7 +13,7 @@ namespace HybridConnectionManager.CLI
 {
     public static class CommandHandlers
     {
-        public static JsonSerializerSettings HybridConnectionJsonSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, ContractResolver = new IgnorePropertiesResolver(new[] { "Error", "ErrorMessage" }) };
+        public static JsonSerializerSettings HybridConnectionJsonSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, ContractResolver = new IgnorePropertiesResolver(new[] { "Error", "ErrorMessage", "SubscriptionId", "ResourceGroup" })};
         public static MSALProvider MSALProvider = new MSALProvider();
 
         public static async Task LoginHandler()

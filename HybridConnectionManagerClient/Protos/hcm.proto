@@ -49,6 +49,8 @@ message HybridConnectionInformationResponse {
     string ServiceBusEndpoint = 8;
     string CreatedOn = 9;
     string LastUpdated = 10;
+    string SubscriptionId = 11;
+    string ResourceGroup = 12;
 }
 
 message HybridConnectionInformationListResponse {

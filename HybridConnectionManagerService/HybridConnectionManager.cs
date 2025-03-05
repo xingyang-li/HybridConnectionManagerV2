@@ -68,7 +68,7 @@ namespace HybridConnectionManager.Service
             }
         }
 
-        public async Task<HybridConnectionInformation> AddWithConnectionString(string connectionString)
+        public async Task<HybridConnectionInformation> AddWithConnectionString(string connectionString, string subscriptionId, string resourceGroup)
         {
             HybridConnectionInformation hcInfo = null;
 
@@ -82,6 +82,13 @@ namespace HybridConnectionManager.Service
                 var hybridConnection = new HybridConnection(connectionString);
                 await hybridConnection.Open();
                 Thread.Sleep(1000);
+
+                if (!string.IsNullOrEmpty(subscriptionId) && !string.IsNullOrEmpty(resourceGroup))
+                {
+                    hybridConnection.Information.SubscriptionId = subscriptionId;
+                    hybridConnection.Information.ResourceGroup = resourceGroup;
+                }
+
                 hcInfo = hybridConnection.Information;
 
                 lock (_readLock)
@@ -103,7 +110,7 @@ namespace HybridConnectionManager.Service
         {
             string connectionString = await AzureHelper.GetConnectionStringFromAzure(AzureClient, subscription, resourceGroup, @namespace, name);
 
-            return await AddWithConnectionString(connectionString);
+            return await AddWithConnectionString(connectionString, string.Empty, string.Empty);
         }
 
         public bool FindConnectionInformation(string @namespace, string name, out HybridConnectionInformation connectionInformation)

@@ -56,7 +56,7 @@ namespace HybridConnectionManager.Service
                 }
             }
 
-            var connectionInformation = await HybridConnectionManager.AddWithConnectionString(request.ConnectionString);
+            var connectionInformation = await HybridConnectionManager.AddWithConnectionString(request.ConnectionString, request.SubscriptionId, request.ResourceGroup);
 
             if (connectionInformation != null)
             {
@@ -199,6 +199,8 @@ namespace HybridConnectionManager.Service
                     ServiceBusEndpoint = connectionInformation.Namespace + ".servicebus.windows.net",
                     CreatedOn = connectionInformation.CreatedOn,
                     LastUpdated = connectionInformation.LastUpdated,
+                    SubscriptionId = connectionInformation.SubscriptionId ?? "",
+                    ResourceGroup = connectionInformation.ResourceGroup ?? "",
                 });
             }
 

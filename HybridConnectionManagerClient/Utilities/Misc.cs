@@ -287,5 +287,30 @@ namespace HybridConnectionManager.Library
 
             return "Icon.png";
         }
+
+        public static bool TryParseHybridConnectionId(string armId, out string subscriptionId, out string resourceGroup, out string @namespace, out string name)
+        {
+            subscriptionId = null;
+            resourceGroup = null;
+            @namespace = null;
+            name = null;
+
+            var uriElements = armId.Split('/');
+
+            try
+            {
+                subscriptionId = uriElements[2];
+                resourceGroup = uriElements[4];
+                @namespace = uriElements[8];
+                name = uriElements[10];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+
+            return true;
+        }
     }
 }

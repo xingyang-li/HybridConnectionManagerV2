@@ -129,6 +129,7 @@ namespace HybridConnectionManagerGUI.Controllers
                 if (!String.IsNullOrEmpty(hybridConnection.Data.UserMetadata))
                 {
                     string endpoint = Util.GetEndpointStringFromUserMetadata(hybridConnection.Data.UserMetadata);
+                    Util.TryParseHybridConnectionId(hybridConnection.Data.Id, out string _, out string resourceGroup, out string _, out string _);
                     if (!String.IsNullOrEmpty(endpoint))
                     {
                         string connectionString = _client.GetHybridConnectionPrimaryConnectionString(hybridConnection.Data.Id);
@@ -137,8 +138,12 @@ namespace HybridConnectionManagerGUI.Controllers
                             Namespace = hybridConnection.Data.Name,
                             Name = hybridConnection.Data.Name,
                             Endpoint = endpoint,
-                            ConnectionString = connectionString
+                            ConnectionString = connectionString,
+                            SubscriptionId = subscriptionId,
+                            ResourceGroup = resourceGroup,
                         };
+
+                        Console.WriteLine(connection.Namespace + " " + connection.Name + " " + connection.SubscriptionId + " " + connection.ResourceGroup);
 
                         hybridConnectionsList.Add(connection);
                     }
@@ -179,6 +184,8 @@ namespace HybridConnectionManagerGUI.Controllers
                         Status = hybridConnection.Status,
                         CreatedOn = hybridConnection.CreatedOn,
                         LastUpdated = hybridConnection.LastUpdated,
+                        SubscriptionId = hybridConnection.SubscriptionId,
+                        ResourceGroup = hybridConnection.ResourceGroup
                     });
                 }
 
@@ -204,8 +211,9 @@ namespace HybridConnectionManagerGUI.Controllers
         {
             try
             {
+                Console.WriteLine(model.ConnectionString + " " + model.SubscriptionId + " " + model.ResourceGroup); 
                 HybridConnectionManagerClient client = new HybridConnectionManagerClient();
-                var response = client.AddUsingConnectionString(model.ConnectionString).Result;
+                var response = client.AddUsingConnectionString(model.ConnectionString, model.SubscriptionId ?? "", model.ResourceGroup ?? "").Result;
 
                 if (response.Error)
                 {

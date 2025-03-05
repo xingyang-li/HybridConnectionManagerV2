@@ -138,7 +138,7 @@ function InitializeNewConnectionsListeners() {
                             row.innerHTML = `
                                         <td>
                                             <input type="checkbox" class="form-check-input new-connection-checkbox" id="connectionCheckbox" name="connectionCheckbox"
-                                                   value="${connection.connectionString}">
+                                                   value="${connection.connectionString}" data-subscription="${connection.subscriptionId}" data-resource-group="${connection.resourceGroup}">
                                         </td>
                                         <td>${connection.name}</td>
                                         <td>${connection.namespace}</td>
@@ -297,7 +297,9 @@ function initializeAllListeners() {
                 endpoint: this.dataset.endpoint,
                 status: this.dataset.status,
                 createdOn: this.dataset.createdOn,
-                lastUpdated: this.dataset.lastUpdated
+                lastUpdated: this.dataset.lastUpdated,
+                subscriptionId: this.dataset.subscription,
+                resourceGroup: this.dataset.resourceGroup
             };
             showDetails(details);
         });
@@ -606,7 +608,9 @@ function saveNewConnection() {
         if (selectedBoxes.length === 0) return;
 
         const selectedItems = Array.from(selectedBoxes).map(checkbox => ({
-            connectionString: checkbox.value
+            connectionString: checkbox.value,
+            subscriptionId: checkbox.dataset.subscription,
+            resourceGroup: checkbox.dataset.resourceGroup
         }));
 
         const saveButton = document.getElementById('saveNewConnection');
@@ -700,14 +704,14 @@ function formatDate(dateString) {
     return date.toLocaleString();
 }
 
-function getAzurePortalUrl(namespace, name) {
-    return "https://portal.azure.com/#" + "@@" + "/resource/providers/Microsoft.Relay/namespaces/" + encodeURIComponent(namespace) + "/hybridConnections/" + encodeURIComponent(name);
+function getAzurePortalUrl(subscriptionId, resourceGroup, namespace, name) {
+    return "https://portal.azure.com/#" + "@@" + "/resource/subscriptions/" + encodeURIComponent(subscriptionId) + "/resourceGroups/" + encodeURIComponent(resourceGroup) + "/providers/Microsoft.Relay/namespaces/" + encodeURIComponent(namespace) + "/hybridConnections/" + encodeURIComponent(name);
 }
 
 function openInAzurePortal() {
     // Using the currentItem that's already set in showDetails()
-    if (currentItem && currentItem.namespace && currentItem.name) {
-        const portalUrl = getAzurePortalUrl(currentItem.namespace, currentItem.name);
+    if (currentItem && currentItem.namespace && currentItem.name && currentItem.subscriptionId && currentItem.resourceGroup) {
+        const portalUrl = getAzurePortalUrl(currentItem.subscriptionId, currentItem.resourceGroup, currentItem.namespace, currentItem.name);
         window.open(portalUrl, '_blank');
     } else {
         console.error('Missing connection details for Azure Portal URL');
@@ -715,52 +719,60 @@ function openInAzurePortal() {
     }
 }
 
-function showNotification(message, type = 'success') {
-    const banner = document.getElementById('notificationBanner');
-    const messageElement = document.getElementById('notificationMessage');
-    const iconElement = banner.querySelector('.notification-icon i');
+function showNotification(message, type, autoHide = true) {
+    const notificationContainer = document.getElementById('notificationContainer');
+    const notification = document.getElementById('notification');
+    const notificationIcon = document.getElementById('notificationIcon');
+    const notificationContent = document.getElementById('notificationContent');
 
-    // Reset classes
-    banner.className = 'notification-banner';
-    banner.classList.add(type);
+    // Remove any existing classes
+    notification.className = 'azure-notification';
 
-    // Update icon based on type
-    if (type === 'success') {
-        iconElement.className = 'fas fa-check-circle';
-    } else if (type === 'error') {
-        iconElement.className = 'fas fa-exclamation-circle';
+    // Add the appropriate class based on type
+    notification.classList.add(`azure-notification-${type}`);
+
+    // Set the icon
+    switch (type) {
+        case 'success':
+            notificationIcon.className = 'fas fa-check-circle';
+            break;
+        case 'error':
+            notificationIcon.className = 'fas fa-times-circle';
+            break;
+        case 'warning':
+            notificationIcon.className = 'fas fa-exclamation-triangle';
+            break;
+        case 'info':
+            notificationIcon.className = 'fas fa-info-circle';
+            break;
     }
 
-    // Set message
-    messageElement.textContent = message;
+    // Set the message
+    notificationContent.textContent = message;
 
-    // Show banner with animation
-    banner.style.display = 'flex';
+    // Show the notification
+    notificationContainer.style.display = 'block';
 
-    // Auto hide after 5 seconds
-    const hideTimer = setTimeout(() => {
-        hideNotification();
-    }, 5000);
-
-    // Store timer ID on the banner element
-    banner.dataset.hideTimer = hideTimer;
+    // Auto-hide after 5 seconds if requested
+    if (autoHide) {
+        setTimeout(() => {
+            dismissNotification();
+        }, 5000);
+    }
 }
 
-function hideNotification() {
-    const banner = document.getElementById('notificationBanner');
-
-    // Clear any existing hide timer
-    if (banner.dataset.hideTimer) {
-        clearTimeout(parseInt(banner.dataset.hideTimer));
-    }
+// Function to dismiss the notification
+function dismissNotification() {
+    const notificationContainer = document.getElementById('notificationContainer');
+    const notification = document.getElementById('notification');
 
     // Add fade-out animation
-    banner.classList.add('fade-out');
+    notification.classList.add('fade-out');
 
     // Hide after animation completes
     setTimeout(() => {
-        banner.style.display = 'none';
-        banner.classList.remove('fade-out');
+        notificationContainer.style.display = 'none';
+        notification.classList.remove('fade-out');
     }, 300);
 }
 

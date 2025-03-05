@@ -255,102 +255,100 @@ html, body {
     font-weight: 500 !important;
 }
 
-/* Azure-style notifications */
-.notification-container {
-    position: fixed;
-    top: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1050;
-    width: auto;
-    min-width: 320px;
-    max-width: 80%;
-}
-
-.notification-banner {
+/* Azure-style notification */
+.azure-notification {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 12px 16px;
     border-radius: 2px;
-    box-shadow: 0 6.4px 14.4px 0 rgba(0,0,0,.132), 0 1.2px 3.6px 0 rgba(0,0,0,.108);
-    animation: slideDown 0.3s ease-out;
+    margin-bottom: 16px;
+    animation: fadeIn 0.3s ease-in-out;
+    width: 100%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.notification-banner.success {
+.azure-notification-success {
     background-color: #dff6dd;
-    border: 1px solid #c2ecc0;
+    border-left: 4px solid #107c10;
+    color: #107c10;
 }
 
-.notification-banner.error {
+.azure-notification-error {
     background-color: #fde7e9;
-    border: 1px solid #fad0d4;
+    border-left: 4px solid #d13438;
+    color: #d13438;
 }
 
-.notification-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.notification-icon {
-    display: flex;
-    align-items: center;
-}
-
-.notification-banner.success .notification-icon {
-    color: #0b7a05;
-}
-
-.notification-banner.error .notification-icon {
-    color: #a4262c;
-}
-
-.notification-message {
-    color: #242424;
-    font-size: 14px;
-    line-height: 20px;
-}
-
-.notification-close {
-    background: none;
-    border: none;
-    padding: 4px;
-    margin-left: 16px;
-    cursor: pointer;
-    color: #605e5c;
-    display: flex;
-    align-items: center;
-}
-
-.notification-close:hover {
+.azure-notification-warning {
+    background-color: #fff4ce;
+    border-left: 4px solid #ffd335;
     color: #323130;
 }
 
-@keyframes slideDown {
+.azure-notification-info {
+    background-color: #f0f6ff;
+    border-left: 4px solid #0078d4;
+    color: #0078d4;
+}
+
+.azure-notification-icon {
+    margin-right: 12px;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.azure-notification-content {
+    flex-grow: 1;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.azure-notification-dismiss {
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 12px;
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+    .azure-notification-dismiss:hover {
+        opacity: 1;
+    }
+
+@keyframes fadeIn {
     from {
-        transform: translateY(-100%);
         opacity: 0;
+        transform: translateY(-10px);
     }
 
     to {
-        transform: translateY(0);
         opacity: 1;
+        transform: translateY(0);
     }
 }
 
 @keyframes fadeOut {
     from {
         opacity: 1;
+        transform: translateY(0);
     }
 
     to {
         opacity: 0;
+        transform: translateY(-10px);
     }
 }
 
-.notification-banner.fade-out {
-    animation: fadeOut 0.3s ease-out forwards;
+.fade-out {
+    animation: fadeOut 0.3s ease-in-out forwards;
+}
+
+/* Hide the notification initially */
+.notification-container {
+    display: none;
 }
 
 .log-content {
@@ -652,12 +650,12 @@ html, body {
     transition: background-color 0.2s;
 }
 
-    .azure-footer-btn:hover {
-        background-color: rgba(0, 120, 212, 0.1);
-        color: #0078d4;
-        text-decoration: none;
-    }
+.azure-footer-btn:hover {
+    background-color: rgba(0, 120, 212, 0.1);
+    color: #0078d4;
+    text-decoration: none;
+}
 
-    .azure-footer-btn i {
-        margin-right: 5px;
-    }
+.azure-footer-btn i {
+    margin-right: 5px;
+}

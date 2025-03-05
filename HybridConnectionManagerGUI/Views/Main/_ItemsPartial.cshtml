@@ -21,7 +21,9 @@
                     data-endpoint="@item.Endpoint"
                     data-status="@item.Status"
                     data-created-on="@item.CreatedOn"
-                    data-last-updated="@item.LastUpdated">
+                    data-last-updated="@item.LastUpdated"
+                    data-subscription="@item.SubscriptionId"
+                    data-resource-group="@item.ResourceGroup">
                     <td onclick="event.stopPropagation()">
                         <input type="checkbox" name="selectedIds"
                                value="@item.Name"

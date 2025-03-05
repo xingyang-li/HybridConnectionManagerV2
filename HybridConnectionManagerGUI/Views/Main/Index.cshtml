@@ -10,20 +10,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <div class="container pt-4">
-        <div class="notification-container">
-            <div id="notificationBanner" class="notification-banner" style="display: none;" role="alert">
-                <div class="notification-content">
-                    <div class="notification-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <span id="notificationMessage" class="notification-message"></span>
-                </div>
-                <button type="button" class="notification-close" onclick="hideNotification()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
+     <div class="container pt-4">
+       <div id="notificationContainer" class="notification-container">
+         <div id="notification" class="azure-notification">
+           <div class="azure-notification-icon">
+             <i id="notificationIcon" class="fas"></i>
+           </div>
+         <div id="notificationContent" class="azure-notification-content"></div>
+           <button type="button" class="azure-notification-dismiss" onclick="dismissModalNotification()">
+             <i class="fas fa-times"></i>
+           </button>
+         </div>
+       </div>
 
         <div class="d-flex align-items-center mb-4">
             <!-- Added for title section with margin bottom -->
@@ -96,7 +94,9 @@
                                 data-endpoint="@item.Endpoint"
                                 data-status="@item.Status"
                                 data-created-on="@item.CreatedOn"
-                                data-last-updated="@item.LastUpdated">
+                                data-last-updated="@item.LastUpdated"
+                                data-subscription="@item.SubscriptionId"
+                                data-resource-group="@item.ResourceGroup">
                                 <td onclick="event.stopPropagation()">
                                     <input type="checkbox" name="selectedIds"
                                         value="@item.Name"
