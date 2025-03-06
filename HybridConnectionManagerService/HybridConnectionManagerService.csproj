@@ -20,6 +20,12 @@
     <ProjectReference Include="..\HybridConnectionManagerClient\HybridConnectionManagerLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+    <Content Include="linux\**\*" CopyToPublishDirectory="PreserveNewest">
+      <LinuxPermissions>755</LinuxPermissions>
+    </Content>
+  </ItemGroup>
+
   <ItemGroup>
     <Protobuf Include="..\HybridConnectionManagerClient\Protos\hcm.proto" GrpcServices="Server" />
   </ItemGroup>

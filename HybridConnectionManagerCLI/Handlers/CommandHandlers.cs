@@ -36,10 +36,12 @@ namespace HybridConnectionManager.CLI
             Console.WriteLine($"Access Token: {result}");
             */
 
-            var credential = MSALProvider.TokenCredential;
+            if (!MSALProvider.TryGetManagementToken(out var token))
+            {
+                Console.WriteLine("Unable to retrieve Azure Credential Token. Please ensure that your machine has Azure CLI installed or has a browser for interactive authentication.");
+                return;
+            }
 
-            var tokenRequestContext = new TokenRequestContext(new[] { "https://management.azure.com/.default" });
-            var token = await credential.GetTokenAsync(tokenRequestContext);
             Console.WriteLine($"Access Token retrieved successfully. Expires on: {token.ExpiresOn}");
         }
 
@@ -92,6 +94,12 @@ namespace HybridConnectionManager.CLI
                     Console.WriteLine("\nInteractive Mode");
                     Console.WriteLine("-----------------");
                     Console.WriteLine("\nLogging in to Azure..\n");
+
+                    if (!MSALProvider.TryGetManagementToken(out var token))
+                    {
+                        Console.WriteLine("Unable to retrieve Azure Credential Token. Please ensure that your machine has Azure CLI installed or has a browser for interactive authentication.");
+                        return;
+                    }
 
                     relayArmClient = new RelayArmClient(credential);
                     if (!StartInteractiveMode(relayArmClient, out connectionString))

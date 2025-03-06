@@ -1,0 +1,21 @@
+[Unit]
+Description=Hybrid Connection Manager Service
+After=network.target
+
+[Service]
+Type=simple
+User=__USER__
+WorkingDirectory=__INSTALL_PATH__
+ExecStart=__INSTALL_PATH__/HybridConnectionManagerService
+Restart=on-failure
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=hybridconnectionmanager
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+# Ensure the service has enough file descriptors
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
