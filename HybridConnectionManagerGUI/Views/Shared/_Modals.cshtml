@@ -241,9 +241,11 @@
                         <div class="loading-spinner"></div>
                         <span class="loading-text">Connecting to endpoint...</span>
                     </div>
-                    <div id="noConnectionMessage" class="mt-4 mb-4 text-center" style="display: none;">
-                        <i class="fas fa-info-circle me-2"></i>
-                        Could not connect to endpoint.
+                    <div id="testResultContainer" class="text-center mt-4 mb-4" style="display: none;">
+                        <div id="testResultIcon" class="status-icon mb-2">
+                            <!-- The icon will be inserted here via JavaScript -->
+                        </div>
+                        <div id="testResultMessage"></div>
                     </div>
                 </form>
             </div>

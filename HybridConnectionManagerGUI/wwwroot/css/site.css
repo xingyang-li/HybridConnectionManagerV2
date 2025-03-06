@@ -659,3 +659,37 @@ html, body {
 .azure-footer-btn i {
     margin-right: 5px;
 }
+
+.status-icon {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.status-icon-success {
+    color: #0078d4; /* Azure blue */
+}
+
+.status-icon-error {
+    color: #d13438; /* Azure red */
+}
+
+.status-icon .fas {
+    font-size: 48px;
+}
+
+/* Animation for the status icon */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.status-icon {
+    animation: fadeIn 0.3s ease-in-out forwards;
+}

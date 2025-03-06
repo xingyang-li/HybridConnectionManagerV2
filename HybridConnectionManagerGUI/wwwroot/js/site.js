@@ -510,12 +510,43 @@ function openTestEndpointModal() {
     }, 100);
 }
 
+function openTestEndpointModal() {
+    const testEndpointForm = document.getElementById('testEndpointForm');
+    const testEndpointInput = document.getElementById('testEndpointInput');
+    const testSpinner = document.getElementById('testLoadingSpinner');
+    const testButton = document.getElementById('startTestButton');
+    const testResultContainer = document.getElementById('testResultContainer');
+
+    testEndpointForm.reset();
+    testSpinner.style.display = 'none';
+    testEndpointForm.style.display = 'block';
+    testEndpointInput.disabled = false;
+    testButton.disabled = false;
+    testResultContainer.style.display = 'none';
+
+    // Add event listener to input for enabling/disabling the Connect button
+    testEndpointInput.addEventListener('input', function () {
+        testButton.disabled = !testEndpointInput.value.trim();
+    });
+
+    // Set initial button state
+    testButton.disabled = !testEndpointInput.value.trim();
+
+    testEndpointModal.show();
+
+    setTimeout(() => {
+        testEndpointInput.focus();
+    }, 100);
+}
+
 function testEndpoint() {
     const form = document.getElementById('testEndpointForm');
     const testSpinner = document.getElementById('testLoadingSpinner');
     const endpoint = document.getElementById('testEndpointInput').value.trim();
     const testButton = document.getElementById('startTestButton');
-    const noConnectionMessage = document.getElementById('noConnectionMessage');
+    const testResultContainer = document.getElementById('testResultContainer');
+    const testResultIcon = document.getElementById('testResultIcon');
+    const testResultMessage = document.getElementById('testResultMessage');
 
     if (!form.checkValidity()) {
         form.reportValidity();
@@ -526,7 +557,7 @@ function testEndpoint() {
     testButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
 
     testSpinner.style.display = 'flex';
-    noConnectionMessage.style.display = 'none';
+    testResultContainer.style.display = 'none';
 
     $.ajax({
         url: `/Main/Test?endpoint=${encodeURIComponent(endpoint)}`,
@@ -534,16 +565,21 @@ function testEndpoint() {
         contentType: 'text/plain',
         success: function (result) {
             if (result.success) {
-                noConnectionMessage.innerHTML = `<div class="alert alert-success" role="alert">Connection successful!</div>`;
-                noConnectionMessage.style.display = 'block';
+                // Success - Show blue checkmark
+                testResultIcon.innerHTML = '<i class="fas fa-check-circle status-icon-success"></i>';
+                testResultMessage.innerHTML = '<strong>Connection successful!</strong><br>The endpoint is reachable.';
             } else {
-                noConnectionMessage.innerHTML = `<div class="alert alert-danger" role="alert">${result.message}</div>`;
-                noConnectionMessage.style.display = 'block';
+                // Error - Show red X
+                testResultIcon.innerHTML = '<i class="fas fa-times-circle status-icon-error"></i>';
+                testResultMessage.innerHTML = `<strong>Connection failed</strong><br>${result.message}`;
             }
+            testResultContainer.style.display = 'block';
         },
         error: function (error) {
-            noConnectionMessage.innerHTML = `<div class="alert alert-danger" role="alert">${error.statusText}</div>`;
-            noConnectionMessage.style.display = 'block';
+            // Error - Show red X
+            testResultIcon.innerHTML = '<i class="fas fa-times-circle status-icon-error"></i>';
+            testResultMessage.innerHTML = `<strong>Error testing connection</strong><br>${error.statusText || 'Unknown error occurred'}`;
+            testResultContainer.style.display = 'block';
         },
         complete: function () {
             testButton.disabled = false;
