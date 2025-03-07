@@ -60,6 +60,9 @@ namespace HybridConnectionManager.CLI
             var login = new Command("login", "Login to Azure");
             login.SetHandler(() => CommandHandlers.LoginHandler());
 
+            var logs = new Command("logs", "View local logs for Hybrid Connection Manager Service");
+            logs.SetHandler(() => CommandHandlers.LogsHandler());
+
             var add = new Command("add", "Add a new Hybrid Connection")
             {
                 connectionStringArg,
@@ -103,7 +106,8 @@ namespace HybridConnectionManager.CLI
                 remove,
                 show,
                 list,
-                test
+                test,
+                logs
             };
 
             return await rootCommand.InvokeAsync(args);

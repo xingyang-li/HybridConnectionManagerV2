@@ -210,6 +210,44 @@ namespace HybridConnectionManager.CLI
             }
         }
 
+        public static async Task LogsHandler()
+        {
+            try
+            {
+                var logFileNames = Util.GetLogFiles();
+
+                if (logFileNames.Count == 0)
+                {
+                    Console.WriteLine("No log files exist for Hybrid Connection Manager Service on machine");
+                }
+
+                Console.WriteLine("\nListing available log files...\n");
+
+                int index = 0;
+                foreach (var logFileName in logFileNames)
+                {
+                    Console.WriteLine(String.Format("[{0}] {1}", index, logFileName));
+                    index++;
+                }
+
+                Console.Write("\nPlease select a log file to view its contents [Id]: ");
+                var input = Console.ReadLine();
+                if (!int.TryParse(input, out int logIndex) || logIndex < 0 || logIndex >= logFileNames.Count)
+                {
+                    Console.WriteLine("Invalid choice.");
+                    return;
+                }
+
+                string logContent = Util.GetLogContent(logFileNames[logIndex]);
+
+                Console.WriteLine("\n"+logContent);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
         public static bool StartInteractiveMode(RelayArmClient relayArmClient, out string connectionString)
         {
             List<SubscriptionResource> subscriptionResourcesList = new List<SubscriptionResource>();

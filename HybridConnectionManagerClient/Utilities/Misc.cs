@@ -180,7 +180,7 @@ namespace HybridConnectionManager.Library
             {
                 return new StringResponse
                 {
-                    Content = String.Format("Connection to {0}:{1} failed with: {2}", host, port, ex.Message),
+                    Content = String.Format(ex.Message),
                     Error = true
                 };
             }
@@ -311,6 +311,19 @@ namespace HybridConnectionManager.Library
             }
 
             return true;
+        }
+
+        public static List<string> GetLogFiles()
+        {
+            if (!Directory.Exists(AppDataLogDir)) { return new List<string>(); }
+            return Directory.GetFiles(AppDataLogDir).ToList();
+        }
+
+        public static string GetLogContent(string fileName)
+        {
+            using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using var reader = new StreamReader(stream);
+            return reader.ReadToEndAsync().Result;
         }
     }
 }

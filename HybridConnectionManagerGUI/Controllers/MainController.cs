@@ -224,18 +224,14 @@ namespace HybridConnectionManagerGUI.Controllers
                 return Json(new { success = false, message = "Could not connect to Hybrid Connection Manager Service." });
             }
         }
-
         public List<string> GetLogFiles()
         {
-            if (!Directory.Exists(Util.AppDataLogDir)) { return new List<string>(); }
-            return Directory.GetFiles(Util.AppDataLogDir).ToList();
+            return Util.GetLogFiles();
         }
 
         public string GetLogContent(string fileName)
         {
-            using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            using var reader = new StreamReader(stream);
-            return reader.ReadToEndAsync().Result;
+            return Util.GetLogContent(fileName);
         }
     }
 }
