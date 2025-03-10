@@ -118,7 +118,16 @@ namespace HybridConnectionManager.Service
                 return;
             }
 
-            await _listener.OpenAsync(TimeSpan.FromSeconds(timeoutSeconds));
+            try
+            {
+                await _listener.OpenAsync(TimeSpan.FromSeconds(timeoutSeconds));
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Could not register listener for {0}/{1} in ServiceBus with error: {2}", this.Information.Namespace, this.Information.Name, ex.Message);
+                return;
+            }
+
             IsOpen = true;
             Task.Factory.StartNew(() => AcceptAndRelay());
         }
@@ -133,13 +142,15 @@ namespace HybridConnectionManager.Service
             _isShuttingDown = true;
             try
             {
-                IsOpen = false;
                 await _listener.CloseAsync(TimeSpan.FromSeconds(timeoutSeconds));
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e.ToString());
+                _logger.Error("Could not close listener for {0}/{1} in ServiceBus with error: {2}", this.Information.Namespace, this.Information.Name, ex.Message);
+                return;
+
             }
+            IsOpen = false;
         }
 
         public void Dispose()
