@@ -64,12 +64,12 @@ namespace HybridConnectionManager.Service
                 {
                     Namespace = connectionInformation.Namespace,
                     Name = connectionInformation.Name,
-                    Endpoint = connectionInformation.EndpointHost + ":" + connectionInformation.EndpointPort,
+                    Endpoint = !String.IsNullOrEmpty(connectionInformation.EndpointHost) ? connectionInformation.EndpointHost + ":" + connectionInformation.EndpointPort: string.Empty,
                     Status = connectionInformation.Status,
                     NumberOfListeners = connectionInformation.NumberOfListeners,
                     ServiceBusEndpoint = connectionInformation.Namespace + ".servicebus.windows.net",
-                    CreatedOn = connectionInformation.CreatedOn,
-                    LastUpdated = connectionInformation.LastUpdated,
+                    CreatedOn = connectionInformation.CreatedOn ?? string.Empty,
+                    LastUpdated = connectionInformation.LastUpdated ?? string.Empty,
                 };
             }
             else
@@ -166,12 +166,12 @@ namespace HybridConnectionManager.Service
                 {
                     Namespace = connectionInformation.Namespace,
                     Name = connectionInformation.Name,
-                    Endpoint = connectionInformation.EndpointHost + ":" + connectionInformation.EndpointPort,
+                    Endpoint = !String.IsNullOrEmpty(connectionInformation.EndpointHost) ? connectionInformation.EndpointHost + ":" + connectionInformation.EndpointPort : string.Empty,
                     Status = connectionInformation.Status,
                     NumberOfListeners = connectionInformation.NumberOfListeners,
                     ServiceBusEndpoint = connectionInformation.Namespace + ".servicebus.windows.net",
-                    CreatedOn = connectionInformation.CreatedOn,
-                    LastUpdated = connectionInformation.LastUpdated,
+                    CreatedOn = connectionInformation.CreatedOn ?? string.Empty,
+                    LastUpdated = connectionInformation.LastUpdated ?? string.Empty,
                 };
             }
 
@@ -193,14 +193,14 @@ namespace HybridConnectionManager.Service
                 {
                     Namespace = connectionInformation.Namespace,
                     Name = connectionInformation.Name,
-                    Endpoint = connectionInformation.EndpointHost + ":" + connectionInformation.EndpointPort,
+                    Endpoint = !String.IsNullOrEmpty(connectionInformation.EndpointHost) ? connectionInformation.EndpointHost + ":" + connectionInformation.EndpointPort : string.Empty,
                     Status = connectionInformation.Status,
                     NumberOfListeners = connectionInformation.NumberOfListeners,
                     ServiceBusEndpoint = connectionInformation.Namespace + ".servicebus.windows.net",
-                    CreatedOn = connectionInformation.CreatedOn,
-                    LastUpdated = connectionInformation.LastUpdated,
-                    SubscriptionId = connectionInformation.SubscriptionId ?? "",
-                    ResourceGroup = connectionInformation.ResourceGroup ?? "",
+                    CreatedOn = connectionInformation.CreatedOn ?? string.Empty,
+                    LastUpdated = connectionInformation.LastUpdated ?? string.Empty,
+                    SubscriptionId = connectionInformation.SubscriptionId ?? string.Empty,
+                    ResourceGroup = connectionInformation.ResourceGroup ?? string.Empty,
                 });
             }
 

@@ -2,6 +2,7 @@
 using Microsoft.Azure.Relay;
 using System.Net.Sockets;
 using Serilog;
+using System.Net.Http.Headers;
 
 namespace HybridConnectionManager.Service
 {
@@ -9,6 +10,8 @@ namespace HybridConnectionManager.Service
     {
         private const int OPEN_TIMEOUT_SECONDS = 21;
         private const int CLOSE_TIMEOUT_SECONDS = 5;
+
+        private const int RETRY_OPEN_DELAY = 60000;
 
         private HybridConnectionListener _listener;
 
@@ -22,12 +25,17 @@ namespace HybridConnectionManager.Service
 
         private HybridConnectionInformation _hcInfo;
 
-        private void CommonSetup()
+        private void SetupListenerHandlers()
         {
             _listener.Offline += ListenerOffline;
             _listener.Online += ListenerOnline;
             _listener.Connecting += ListenerConnecting;
+        }
 
+        private void CommonSetup()
+        {
+
+            SetupListenerHandlers();
             IsOpen = false;
             _isShuttingDown = false;
 
@@ -53,18 +61,6 @@ namespace HybridConnectionManager.Service
             CommonSetup();
         }
 
-        public void RefreshConnection()
-        {
-            if (_hcInfo != null && !String.IsNullOrEmpty(_hcInfo.KeyName) && !String.IsNullOrEmpty(_hcInfo.KeyValue))
-            {
-                _listener = new(
-                    new(_hcInfo.Uri),
-                    TokenProvider.CreateSharedAccessSignatureTokenProvider(_hcInfo.KeyName, _hcInfo.KeyValue));
-
-                CommonSetup();
-            }
-        }
-
         public async Task RefreshConnectionInformation()
         {
             HybridConnectionRuntimeInformation runtimeInfo = null;
@@ -76,13 +72,13 @@ namespace HybridConnectionManager.Service
             catch (EndpointNotFoundException ex)
             {
                 _hcInfo.Status = "NotFound";
-                _logger.Error("Unable to retrieve runtime details for connection {0}/{1} as it does not exist anymore.", _hcInfo.Namespace, _hcInfo.Name);
+                _logger.Error("Unable to retrieve runtime details for connection {0}/{1}. Hybrid Connection resource may not exist on Azure anymore. Error: {2}", _hcInfo.Namespace, _hcInfo.Name, ex.Message);
                 return;
             }
             catch (AuthorizationFailedException ex)
             {
-                _hcInfo.Status = "NotFound";
-                _logger.Error("Local Authorization Claim for connection {0}/{1} failed.", _hcInfo.Namespace, _hcInfo.Name);
+                _hcInfo.Status = "Disconnected";
+                _logger.Error("Unable to retrieve runtime details for connection {0}/{1}. Error: {2}", _hcInfo.Namespace, _hcInfo.Name, ex.Message);
                 return;
             }
 
@@ -125,6 +121,7 @@ namespace HybridConnectionManager.Service
             catch (Exception ex)
             {
                 _logger.Error("Could not register listener for {0}/{1} in ServiceBus with error: {2}", this.Information.Namespace, this.Information.Name, ex.Message);
+                Task.Factory.StartNew(() => RetryOpening());
                 return;
             }
 
@@ -169,6 +166,26 @@ namespace HybridConnectionManager.Service
         public bool IsOpen
         {
             get; private set;
+        }
+
+        private async Task RetryOpening()
+        {
+            while (!_isShuttingDown && !IsOpen)
+            {
+                try
+                {
+                    _listener = new( new(_hcInfo.Uri), TokenProvider.CreateSharedAccessSignatureTokenProvider(_hcInfo.KeyName, _hcInfo.KeyValue));
+                    SetupListenerHandlers();
+                    await _listener.OpenAsync(TimeSpan.FromSeconds(OPEN_TIMEOUT_SECONDS));
+                    IsOpen = true;
+                    Task.Factory.StartNew(() => AcceptAndRelay());
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error("Attempt to register listener for {0}/{1} in ServiceBus failed. Retrying..", this.Information.Namespace, this.Information.Name);
+                    Thread.Sleep(RETRY_OPEN_DELAY);
+                }
+            }
         }
 
         private async Task AcceptAndRelay()

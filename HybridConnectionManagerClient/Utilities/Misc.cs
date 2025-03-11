@@ -15,6 +15,8 @@ namespace HybridConnectionManager.Library
         public static string HcConnectionStringRegexPattern = @"^Endpoint=sb:\/\/[a-zA-Z0-9-]+\.servicebus\.windows\.net\/;SharedAccessKeyName=[a-zA-Z0-9-]+;SharedAccessKey=[a-zA-Z0-9+\/=]+;EntityPath=[a-zA-Z0-9-]+$";
         public static string RootConnectionStringRegexPattern = @"^Endpoint=sb:\/\/[a-zA-Z0-9-]+\.servicebus\.windows\.net\/;SharedAccessKeyName=[a-zA-Z0-9-]+;SharedAccessKey=[a-zA-Z0-9+\/=]+$";
 
+        public static JsonSerializerSettings JsonNullHandlingSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+
         public static string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create),
             "HybridConnectionManagerV2");
 
@@ -199,7 +201,7 @@ namespace HybridConnectionManager.Library
 
                 if (!String.IsNullOrEmpty(jsonText))
                 {
-                    connections = JsonConvert.DeserializeObject<List<HybridConnectionInformation>>(jsonText);
+                    connections = JsonConvert.DeserializeObject<List<HybridConnectionInformation>>(jsonText, JsonNullHandlingSettings);
                 }
             }
             catch (Exception e)
@@ -237,7 +239,7 @@ namespace HybridConnectionManager.Library
                 }
                 else
                 {
-                    jsonText = JsonConvert.SerializeObject(connectionInfos, Formatting.Indented);
+                    jsonText = JsonConvert.SerializeObject(connectionInfos, Formatting.Indented, JsonNullHandlingSettings);
                 }
 
                 lock (_fileLock)
