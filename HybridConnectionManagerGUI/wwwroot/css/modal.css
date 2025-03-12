@@ -30,6 +30,10 @@
     margin: 5rem auto !important; /* Increased from 1.75rem to 5rem to move modal lower */
 }
 
+#detailsModal .modal-body {
+    padding-bottom: 1.25 rem;
+}
+
 #confirmModal .modal-dialog {
     position: relative;
     top: 0px; /* Move the modal up by 80px */
