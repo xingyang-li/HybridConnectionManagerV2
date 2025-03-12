@@ -11,9 +11,13 @@
                     <div class=azure-button-container2>
                         <button type="button" class="btn-azure-white" onclick="openInAzurePortal()" id="openInPortalButton">
                             <i class="fas fa-external-link-alt me-1"></i>
-                            Open in Azure Portal
+                            View in Portal
                         </button>
                         <div class="azure-button-separator"></div>
+                        <button id="detailRestartButton" class="btn-azure-white" onclick="restartCurrentConnection()">
+                            <i class="fas fa-redo"></i>
+                            Restart
+                        </button>
                         <button id="detailRemoveButton" class="btn-azure-white" onclick="removeCurrentConnection()">
                             <i class="fas fa-trash-alt"></i>
                             Remove
@@ -22,34 +26,34 @@
                     <table class="details-table">
                         <thead>
                             <tr>
-                                <th style="width: 30%">Name</th>
-                                <th>Value</th>
+                                <th>Name</th>
+                                <th style="padding: 8px 16px">Value</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>Name</td>
-                                <td id="modal-name"></td>
+                                <td id="modal-name" style="font-size: 13px; color: rgb(100, 100, 100); padding: 8px 16px"></td>
                             </tr>
                             <tr>
                                 <td>Namespace</td>
-                                <td id="modal-namespace"></td>
+                                <td id="modal-namespace" style="font-size: 13px; color: rgb(100, 100, 100); padding: 8px 16px"></td>
                             </tr>
                             <tr>
                                 <td>Status</td>
-                                <td id="modal-status"></td>
+                                <td id="modal-status" style="font-size: 13px; color: rgb(100, 100, 100); padding: 8px 16px"></td>
                             </tr>
                             <tr>
                                 <td>Endpoint</td>
-                                <td id="modal-endpoint"></td>
+                                <td id="modal-endpoint" style="font-size: 13px; color: rgb(100, 100, 100); padding: 8px 16px"></td>
                             </tr>
                             <tr>
                                 <td>Created On</td>
-                                <td id="modal-created-on"></td>
+                                <td id="modal-created-on" style="font-size: 13px; color: rgb(100, 100, 100); padding: 8px 16px"></td>
                             </tr>
                             <tr>
                                 <td>Last Updated</td>
-                                <td id="modal-last-updated"></td>
+                                <td id="modal-last-updated" style="font-size: 13px; color: rgb(100, 100, 100); padding: 8px 16px"></td>
                             </tr>
                         </tbody>
                     </table>

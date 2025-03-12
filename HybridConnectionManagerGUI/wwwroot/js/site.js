@@ -395,6 +395,43 @@ function restartSelectedConnections() {
         });
 }
 
+function restartCurrentConnection() {
+    // Using the currentItem that's already set in openDetailsModal()
+    if (currentItem) {
+        const confirmMessage = `This Hybrid Connection will be disconnected and reconnected to Service Bus.`;
+
+        showAzureConfirm(confirmMessage, "Restart Hybrid Connection")
+            .then(confirmed => {
+                if (!confirmed) return;
+
+                $.ajax({
+                    url: '/Main/Restart',
+                    type: 'POST',
+                    data: JSON.stringify({ connections: [{ namespace: currentItem.namespace, name: currentItem.name }] }),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        if (result.success) {
+                            detailModal.hide();
+                            showNotification(
+                                `Restarting ${currentItem.namespace}/${currentItem.name}`,
+                                'success'
+                            );
+                            refreshContent();
+                        } else {
+                            showNotification('Error restarting connection: ' + result.message, 'error');
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error restarting connection:', error);
+                        showNotification('Error restarting connection. Please try again.', 'error');
+                    }
+                });
+            });
+    } else {
+        showNotification('Unable to restarting connection', 'error');
+    }
+}
+
 function removeSelectedConnections() {
     const selectedBoxes = document.querySelectorAll('input[name="selectedIds"]:checked');
     if (selectedBoxes.length === 0) return;
