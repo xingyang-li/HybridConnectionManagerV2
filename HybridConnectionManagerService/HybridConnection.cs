@@ -75,10 +75,16 @@ namespace HybridConnectionManager.Service
                 _logger.Error("Unable to retrieve runtime details for connection {0}/{1}. Hybrid Connection resource may not exist on Azure anymore. Error: {2}", _hcInfo.Namespace, _hcInfo.Name, ex.Message);
                 return;
             }
-            catch (AuthorizationFailedException ex)
+            catch (Exception ex)
             {
+                string error = ex.Message;
+                if (error.Contains("Ip has been prevented to connect to the endpoint"))
+                {
+                    error = "Ip has been prevented to connect to the endpoint";
+                }
+
                 _hcInfo.Status = "Disconnected";
-                _logger.Error("Unable to retrieve runtime details for connection {0}/{1}. Error: {2}", _hcInfo.Namespace, _hcInfo.Name, ex.Message);
+                _logger.Error("Unable to retrieve runtime details for connection {0}/{1}. Error: {2}", _hcInfo.Namespace, _hcInfo.Name, error);
                 return;
             }
 
@@ -120,7 +126,13 @@ namespace HybridConnectionManager.Service
             }
             catch (Exception ex)
             {
-                _logger.Error("Could not register listener for {0}/{1} in ServiceBus with error: {2}", this.Information.Namespace, this.Information.Name, ex.Message);
+                string error = ex.Message;
+                if (error.Contains("Ip has been prevented to connect to the endpoint"))
+                {
+                    error = "Ip has been prevented to connect to the endpoint";
+                }
+
+                _logger.Error("Could not register listener for {0}/{1} in ServiceBus with error: {2}", this.Information.Namespace, this.Information.Name, error);
                 Task.Factory.StartNew(() => RetryOpening());
                 return;
             }
@@ -268,12 +280,12 @@ namespace HybridConnectionManager.Service
 
         private void ListenerOffline(object sender, EventArgs e)
         {
+            _logger.Information("Listener offline for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
+
             if (!_isShuttingDown)
             {
                 RefreshConnectionInformation().GetAwaiter().GetResult();
             }
-
-            _logger.Information("Listener offline for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
         }
 
         public HybridConnectionInformation Information
