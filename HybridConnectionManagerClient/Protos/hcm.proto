@@ -10,6 +10,7 @@ service HcMan {
     rpc ListConnections (EmptyRequest) returns (HybridConnectionInformationListResponse);
     rpc RemoveConnection (HybridConnectionRequest) returns (StringResponse);
     rpc ShowConnection (HybridConnectionRequest) returns (HybridConnectionInformationResponse);
+    rpc RestartConnection (HybridConnectionRequest) returns (StringResponse);
     rpc AuthenticateUser (EmptyRequest) returns (StringResponse);
     rpc TestEndpointForConnection (EndpointRequest) returns (StringResponse);
     rpc GetLogPath (EmptyRequest) returns (StringResponse);

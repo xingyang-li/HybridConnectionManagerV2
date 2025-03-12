@@ -35,6 +35,21 @@ namespace HybridConnectionManagerGUI.Controllers
         }
 
         [HttpPost]
+        public JsonResult Restart([FromBody] HybridConnectionsModel model)
+        {
+            try
+            {
+                RestartHybridConnections(model);
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
         public JsonResult Remove([FromBody] HybridConnectionsModel model)
         {
             try
@@ -202,6 +217,16 @@ namespace HybridConnectionManagerGUI.Controllers
             foreach (var connection in model.Connections)
             {
                 var hybridConnectionsResponse = client.RemoveConnection(connection.Namespace, connection.Name).Result;
+            }
+        }
+
+        public void RestartHybridConnections(HybridConnectionsModel model)
+        {
+            HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+
+            foreach (var connection in model.Connections)
+            {
+                var hybridConnectionsResponse = client.RestartConnection(connection.Namespace, connection.Name).Result;
             }
         }
 

@@ -51,6 +51,14 @@ namespace HybridConnectionManager.Library
             var response = await _client.RemoveConnectionAsync(request);
             return response.Content;
         }
+
+        public async Task<StringResponse> RestartConnection(string @namespace, string name)
+        {
+            var request = new HybridConnectionRequest { Namespace = @namespace, Name = name };
+            var response = await _client.RestartConnectionAsync(request);
+            return response;
+        }
+
         public async Task<StringResponse> TestEndpointForConnection(string endpoint)
         {
             var request = new EndpointRequest { Endpoint = endpoint };

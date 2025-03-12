@@ -132,7 +132,9 @@ namespace HybridConnectionManager.Service
                     error = "Ip has been prevented to connect to the endpoint";
                 }
 
-                _logger.Error("Could not register listener for {0}/{1} in ServiceBus with error: {2}", this.Information.Namespace, this.Information.Name, error);
+                _logger.Error("Could not register listener for {0}/{1} in Service Bus with error: {2}", this.Information.Namespace, this.Information.Name, error);
+
+                Thread.Sleep(RETRY_OPEN_DELAY);
                 Task.Factory.StartNew(() => RetryOpening());
                 return;
             }
@@ -194,7 +196,13 @@ namespace HybridConnectionManager.Service
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error("Attempt to register listener for {0}/{1} in ServiceBus failed. Retrying..", this.Information.Namespace, this.Information.Name);
+                    string error = ex.Message;
+                    if (error.Contains("Ip has been prevented to connect to the endpoint"))
+                    {
+                        error = "Ip has been prevented to connect to the endpoint";
+                    }
+
+                    _logger.Error("Could not register listener for {0}/{1} in Service Bus with error: {2}. Retrying...", this.Information.Namespace, this.Information.Name, error);
                     Thread.Sleep(RETRY_OPEN_DELAY);
                 }
             }

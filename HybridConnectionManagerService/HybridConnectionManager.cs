@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using HcManProto;
 using HybridConnectionManager.Library;
 using Serilog;
 
@@ -158,6 +159,35 @@ namespace HybridConnectionManager.Service
             UpdateConnectionsOnFileSystem();
 
             return removed;
+        }
+
+        public async Task<StringResponse> RestartConnection(string @namespace, string name)
+        {
+            lock (_readLock)
+            {
+                if (!_hybridConnections.ContainsKeys(@namespace, name))
+                {
+                    return new StringResponse
+                    {
+                        Error = true,
+                        Content = String.Format("Connection {0}/{1} does not exist on machine.", @namespace, name)
+                    };
+                }
+
+                var connection = _hybridConnections[@namespace, name];
+                connection.Dispose();
+
+                var newConnection = new HybridConnection(connection.Information);
+                Task.Factory.StartNew(() => newConnection.Open());
+
+                _hybridConnections[@namespace, name] = newConnection;
+
+                return new StringResponse
+                {
+                    Error = false,
+                    Content = string.Format("Restart queued for Hybrid Connection {0}/{1}", @namespace, name)
+                };
+            }
         }
 
         public List<HybridConnectionInformation> GetAllConnectionInformations()

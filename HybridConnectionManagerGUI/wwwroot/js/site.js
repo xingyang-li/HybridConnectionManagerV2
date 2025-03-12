@@ -188,6 +188,7 @@ function initializeCheckboxListeners() {
         checkbox.addEventListener('change', function (e) {
             e.stopPropagation(); // Prevent row click when clicking checkbox
             updateRemoveButton();
+            updateRestartButton();
         });
     });
 }
@@ -196,6 +197,12 @@ function updateRemoveButton() {
     const selectedCount = document.querySelectorAll('input[name="selectedIds"]:checked').length;
     const removeButton = document.getElementById('removeButton');
     removeButton.disabled = selectedCount === 0;
+}
+
+function updateRestartButton() {
+    const selectedCount = document.querySelectorAll('input[name="selectedIds"]:checked').length;
+    const restartButton = document.getElementById('restartButton');
+    restartButton.disabled = selectedCount === 0;
 }
 
 function openLogsModal() {
@@ -296,6 +303,7 @@ function initializeAllListeners() {
 
     initializeCheckboxListeners();
     updateRemoveButton();
+    updateRestartButton();
 
     document.querySelectorAll('.item-row').forEach(row => {
         row.addEventListener('click', function () {
@@ -346,6 +354,47 @@ function refreshContent() {
     });
 }
 
+function restartSelectedConnections() {
+    const selectedBoxes = document.querySelectorAll('input[name="selectedIds"]:checked');
+    if (selectedBoxes.length === 0) return;
+
+    const count = selectedBoxes.length;
+    const confirmMessage = `The selected Hybrid Connections will disconnect and reconnect to Service Bus from this machine.`;
+
+    showAzureConfirm(confirmMessage, "Restart Hybrid Connections")
+        .then(confirmed => {
+            if (!confirmed) return;
+
+            const selectedItems = Array.from(selectedBoxes).map(checkbox => ({
+                namespace: checkbox.dataset.namespace,
+                name: checkbox.dataset.name
+            }));
+
+            $.ajax({
+                url: '/Main/Restart',
+                type: 'POST',
+                data: JSON.stringify({ connections: selectedItems }),
+                contentType: 'application/json',
+                success: function (result) {
+                    if (result.success) {
+                        const count = selectedItems.length;
+                        showNotification(
+                            `Restart queued for ${count} ${count === 1 ? 'connection' : 'connections'}`,
+                            'success'
+                        );
+                        refreshContent();
+                    } else {
+                        showNotification('Error restarting connections: ' + result.message, 'error');
+                    }
+                },
+                error: function (error) {
+                    console.error('Error restarting connections:', error);
+                    showNotification('Error restarting connections. Please try again.', 'error');
+                }
+            });
+        });
+}
+
 function removeSelectedConnections() {
     const selectedBoxes = document.querySelectorAll('input[name="selectedIds"]:checked');
     if (selectedBoxes.length === 0) return;
@@ -353,7 +402,7 @@ function removeSelectedConnections() {
     const count = selectedBoxes.length;
     const confirmMessage = `The selected Hybrid Connections will be removed from your machine and your App Service will no longer be able to connect to these endpoints.`;
 
-    showAzureConfirm(confirmMessage, "Remove Hybrid Connection")
+    showAzureConfirm(confirmMessage, "Remove Hybrid Connections")
         .then(confirmed => {
             if (!confirmed) return;
 

@@ -207,8 +207,26 @@ namespace HybridConnectionManager.Service
             return new HybridConnectionInformationListResponse { ConnectionInformations = { connectionInformationsResponse } };
         }
 
+        public override async Task<StringResponse> RestartConnection(HybridConnectionRequest request, ServerCallContext context)
+        {
+            _logger.Information(string.Format("Restarting Hybrid Connection {0}/{1}...", request.Namespace, request.Name));
+
+            return await HybridConnectionManager.RestartConnection(request.Namespace, request.Name);
+        }
+
         public override async Task<StringResponse> TestEndpointForConnection(EndpointRequest request, ServerCallContext context)
         {
+            if (!Regex.IsMatch(request.Endpoint, Util.EndpointRegexPattern))
+            {
+                return new StringResponse
+                {
+                    Error = true,
+                    Content = String.Format("Endpoint {0} is of an incorrect format.", request.Endpoint)
+                };
+            }
+
+            _logger.Information("Opening TCP connection against endpoint {0}", request.Endpoint);
+
             var response = await Util.ConnectToEndpoint(request.Endpoint);
             return new StringResponse
             {
