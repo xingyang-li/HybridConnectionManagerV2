@@ -98,7 +98,7 @@ namespace HybridConnectionManager.Service
             }
             catch (Exception ex)
             {
-                LogProvider.LogError(String.Format("Failure while adding Hybrid Connection: Error {0}: ", ex.Message));
+                LogProvider.LogError(String.Format("Failure while adding Hybrid Connection: Error: {0}", ex.Message));
             }
 
             return hcInfo;

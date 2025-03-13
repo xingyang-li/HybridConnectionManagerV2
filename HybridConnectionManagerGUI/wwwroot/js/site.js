@@ -711,7 +711,7 @@ function saveNewConnection() {
                         'success'
                     );
                 } else {
-                    showAzureAlert('Error creating connection: ' + result.message, 'Input Error')
+                    showAzureAlert('Error creating connection: ' + result.message, 'Operation Error')
                         .then(() => {
                             document.getElementById('connectionStringInput').focus();
                         });

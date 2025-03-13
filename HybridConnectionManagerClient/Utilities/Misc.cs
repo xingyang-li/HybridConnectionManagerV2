@@ -80,6 +80,11 @@ namespace HybridConnectionManager.Library
         {
             try
             {
+                if (String.IsNullOrEmpty(metadata))
+                {
+                    return null;
+                }
+
                 var stream = new MemoryStream(Encoding.Unicode.GetBytes(metadata.ToLower()));
 
                 var serializer = new DataContractJsonSerializer(typeof(List<KeyValuePair>),
@@ -96,8 +101,6 @@ namespace HybridConnectionManager.Library
             }
             catch (Exception e)
             {
-                // TODO: log
-                Console.WriteLine(e.ToString());
             }
 
             return null;
