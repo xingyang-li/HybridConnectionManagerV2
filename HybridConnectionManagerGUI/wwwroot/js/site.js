@@ -631,7 +631,6 @@ function testEndpoint() {
     const endpoint = document.getElementById('testEndpointInput').value.trim();
     const testButton = document.getElementById('startTestButton');
     const testResultContainer = document.getElementById('testResultContainer');
-    const testResultIcon = document.getElementById('testResultIcon');
     const testResultMessage = document.getElementById('testResultMessage');
 
     if (!form.checkValidity()) {
@@ -652,19 +651,16 @@ function testEndpoint() {
         success: function (result) {
             if (result.success) {
                 // Success - Show blue checkmark
-                testResultIcon.innerHTML = '<i class="fas fa-check-circle status-icon-success"></i>';
-                testResultMessage.innerHTML = '<strong>Connection successful!</strong><br>The endpoint is reachable.';
+                testResultMessage.innerHTML = '<i class="fas fa-check-circle status-icon-success"></i> <strong>Connection successful!</strong><br>The endpoint is reachable.';
             } else {
                 // Error - Show red X
-                testResultIcon.innerHTML = '<i class="fas fa-times-circle status-icon-error"></i>';
-                testResultMessage.innerHTML = `<strong>Connection failed</strong><br>${result.message}`;
+                testResultMessage.innerHTML = `<i class="fas fa-times-circle status-icon-error"></i> <strong>Connection failed</strong><br>${result.message}`;
             }
             testResultContainer.style.display = 'block';
         },
         error: function (error) {
             // Error - Show red X
-            testResultIcon.innerHTML = '<i class="fas fa-times-circle status-icon-error"></i>';
-            testResultMessage.innerHTML = `<strong>Error testing connection</strong><br>${error.statusText || 'Unknown error occurred'}`;
+            testResultMessage.innerHTML = `<i class="fas fa-times-circle status-icon-error"></i> <strong>Error testing connection</strong><br>${error.statusText || 'Unknown error occurred'}`;
             testResultContainer.style.display = 'block';
         },
         complete: function () {

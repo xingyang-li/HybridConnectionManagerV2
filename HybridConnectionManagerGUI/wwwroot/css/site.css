@@ -666,10 +666,12 @@ html, body {
 }
 
 .status-icon-success {
-    color: #0078d4; /* Azure blue */
+    font-size: 1.2rem;
+    color: #00AF00;
 }
 
 .status-icon-error {
+    font-size: 1.2rem;
     color: #d13438; /* Azure red */
 }
 
