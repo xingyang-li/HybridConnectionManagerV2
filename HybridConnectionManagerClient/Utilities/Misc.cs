@@ -11,6 +11,7 @@ namespace HybridConnectionManager.Library
 {
     public static class Util
     {
+        public static string ServiceBusRegexPattern = "^[a-zA-Z0-9-]+\\.servicebus\\.windows\\.net$";
         public static string EndpointRegexPattern = "^([a-zA-Z0-9.-]+):(\\d{1,5})$";
         public static string HcConnectionStringRegexPattern = @"^Endpoint=sb:\/\/[a-zA-Z0-9-]+\.servicebus\.windows\.net\/;SharedAccessKeyName=[a-zA-Z0-9-]+;SharedAccessKey=[a-zA-Z0-9+\/=]+;EntityPath=[a-zA-Z0-9-]+$";
         public static string RootConnectionStringRegexPattern = @"^Endpoint=sb:\/\/[a-zA-Z0-9-]+\.servicebus\.windows\.net\/;SharedAccessKeyName=[a-zA-Z0-9-]+;SharedAccessKey=[a-zA-Z0-9+\/=]+$";
@@ -163,29 +164,68 @@ namespace HybridConnectionManager.Library
 
         public static async Task<StringResponse> ConnectToEndpoint(string endpoint)
         {
-            string host = endpoint.Split(':')[0];
-            int port = int.Parse(endpoint.Split(':')[1]);
-
-            try
+            StringResponse response = null;
+            if (Regex.IsMatch(endpoint, EndpointRegexPattern))
             {
-                using (TcpClient client = new TcpClient())
+                string host = endpoint.Split(':')[0];
+                int port = int.Parse(endpoint.Split(':')[1]);
+
+                try
                 {
-                    await client.ConnectAsync(host, port);
-                    return new StringResponse
+                    using (TcpClient client = new TcpClient())
                     {
-                        Content = String.Format("Connection to {0}:{1} successful", host, port),
-                        Error = false
+                        await client.ConnectAsync(host, port);
+                        response = new StringResponse
+                        {
+                            Content = String.Format("Connection to {0}:{1} successful", host, port),
+                            Error = false
+                        };
+                    }
+                }
+                catch (Exception ex)
+                {
+                    response = new StringResponse
+                    {
+                        Content = String.Format(ex.Message),
+                        Error = true
                     };
                 }
             }
-            catch (Exception ex)
+            else if (Regex.IsMatch(endpoint, ServiceBusRegexPattern))
             {
-                return new StringResponse
+                HttpClient httpClient = new HttpClient();
+                try
                 {
-                    Content = String.Format(ex.Message),
-                    Error = true
-                };
+                    var httpResponse = await httpClient.GetAsync($"https://{endpoint}");
+
+                    if (httpResponse.IsSuccessStatusCode)
+                    {
+                        response = new StringResponse
+                        {
+                            Content = String.Format("Connection to {0} successful", endpoint),
+                            Error = false
+                        };
+                    }
+                    else
+                    {
+                        response = new StringResponse
+                        {
+                            Content = String.Format("Connection to {0} failed with error: {1}", endpoint, httpResponse.Content.ReadAsStringAsync().Result),
+                            Error = true
+                        };
+                    }
+                }
+                catch (Exception ex)
+                {
+                    response = new StringResponse
+                    {
+                        Content = String.Format("Connection to {0} failed with error: {1}", endpoint, ex.Message),
+                        Error = true
+                    };
+                }
             }
+
+            return response;
         }
 
         public static List<HybridConnectionInformation> LoadConnectionsFromFilesystem()

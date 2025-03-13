@@ -21,8 +21,6 @@ namespace HybridConnectionManager.Service
         private int _endpointPort;
         private bool _isShuttingDown;
 
-        private Serilog.ILogger _logger;
-
         private HybridConnectionInformation _hcInfo;
 
         private void SetupListenerHandlers()
@@ -44,7 +42,6 @@ namespace HybridConnectionManager.Service
 
         public HybridConnection(HybridConnectionInformation information)
         {
-            _logger = Log.Logger;
             _hcInfo = information;
             _listener = new(
                 new(information.Uri),
@@ -55,7 +52,6 @@ namespace HybridConnectionManager.Service
 
         public HybridConnection(string connectionString)
         {
-            _logger = Log.Logger;
             _listener = new HybridConnectionListener(connectionString);
             _hcInfo = Util.GetInformationFromConnectionString(connectionString);
             CommonSetup();
@@ -72,7 +68,7 @@ namespace HybridConnectionManager.Service
             catch (EndpointNotFoundException ex)
             {
                 _hcInfo.Status = "NotFound";
-                _logger.Error("Unable to retrieve runtime details for connection {0}/{1}. Hybrid Connection resource may not exist on Azure anymore. Error: {2}", _hcInfo.Namespace, _hcInfo.Name, ex.Message);
+                LogProvider.LogError(String.Format("Unable to retrieve runtime details for connection {0}/{1}. Hybrid Connection resource may not exist on Azure anymore. Error: {2}", _hcInfo.Namespace, _hcInfo.Name, ex.Message));
                 return;
             }
             catch (Exception ex)
@@ -84,7 +80,7 @@ namespace HybridConnectionManager.Service
                 }
 
                 _hcInfo.Status = "Disconnected";
-                _logger.Error("Unable to retrieve runtime details for connection {0}/{1}. Error: {2}", _hcInfo.Namespace, _hcInfo.Name, error);
+                LogProvider.LogError(String.Format("Unable to retrieve runtime details for connection {0}/{1}. Error: {2}", _hcInfo.Namespace, _hcInfo.Name, error));
                 return;
             }
 
@@ -132,7 +128,7 @@ namespace HybridConnectionManager.Service
                     error = "Ip has been prevented to connect to the endpoint";
                 }
 
-                _logger.Error("Could not register listener for {0}/{1} in Service Bus with error: {2}", this.Information.Namespace, this.Information.Name, error);
+                LogProvider.LogError(String.Format("Could not register listener for {0}/{1} in Service Bus with error: {2}", this.Information.Namespace, this.Information.Name, error));
 
                 Thread.Sleep(RETRY_OPEN_DELAY);
                 Task.Factory.StartNew(() => RetryOpening());
@@ -157,7 +153,7 @@ namespace HybridConnectionManager.Service
             }
             catch (Exception ex)
             {
-                _logger.Error("Could not close listener for {0}/{1} in ServiceBus with error: {2}", this.Information.Namespace, this.Information.Name, ex.Message);
+                LogProvider.LogError(String.Format("Could not close listener for {0}/{1} in ServiceBus with error: {2}", this.Information.Namespace, this.Information.Name, ex.Message));
                 return;
 
             }
@@ -202,7 +198,7 @@ namespace HybridConnectionManager.Service
                         error = "Ip has been prevented to connect to the endpoint";
                     }
 
-                    _logger.Error("Could not register listener for {0}/{1} in Service Bus with error: {2}. Retrying...", this.Information.Namespace, this.Information.Name, error);
+                    LogProvider.LogError(String.Format("Could not register listener for {0}/{1} in Service Bus with error: {2}. Retrying...", this.Information.Namespace, this.Information.Name, error));
                     Thread.Sleep(RETRY_OPEN_DELAY);
                 }
             }
@@ -275,20 +271,20 @@ namespace HybridConnectionManager.Service
 
         private void ListenerConnecting(object sender, EventArgs e)
         {
-            _logger.Information("Listener connecting for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
+            LogProvider.LogInfo(String.Format("Listener connecting for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name));
         }
 
         private void ListenerOnline(object sender, EventArgs e)
         {
             Online?.Invoke(sender, e);
-            _logger.Information("Listener online for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
+            LogProvider.LogInfo(String.Format("Listener online for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name));
 
             RefreshConnectionInformation().GetAwaiter().GetResult();
         }
 
         private void ListenerOffline(object sender, EventArgs e)
         {
-            _logger.Information("Listener offline for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name);
+            LogProvider.LogInfo(String.Format("Listener offline for connection {0}/{1}", _hcInfo.Namespace, _hcInfo.Name));
 
             if (!_isShuttingDown)
             {

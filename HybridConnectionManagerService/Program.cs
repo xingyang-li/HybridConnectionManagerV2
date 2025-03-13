@@ -14,7 +14,7 @@ namespace HybridConnectionManager.Service
             .WriteTo.File(Util.AppDataLogFileTemplate, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, fileSizeLimitBytes: 104857600, shared: true)
             .CreateLogger();
 
-            Log.Logger.Information("Starting up Hybrid Connection Manager V2 Service with saved connections.");
+            LogProvider.LogInfo("Starting up Hybrid Connection Manager V2 Service with saved connections.");
 
             var connections = Util.LoadConnectionsFromFilesystem();
 

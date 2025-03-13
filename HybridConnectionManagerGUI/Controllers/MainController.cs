@@ -91,9 +91,9 @@ namespace HybridConnectionManagerGUI.Controllers
         [HttpPost]
         public JsonResult Test([FromQuery] string endpoint)
         {
-            if (!Regex.IsMatch(endpoint, Util.EndpointRegexPattern))
+            if (!Regex.IsMatch(endpoint, Util.EndpointRegexPattern) && !Regex.IsMatch(endpoint, Util.ServiceBusRegexPattern))
             {
-                return Json(new { success = false, Message = "Please use a valid endpoint of form [host]:[port]." });
+                return Json(new { success = false, Message = "Please use a valid endpoint of form host:port or [namespace].servicebus.windows.net" });
             }
 
             try

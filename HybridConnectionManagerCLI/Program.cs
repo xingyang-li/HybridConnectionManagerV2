@@ -51,7 +51,7 @@ namespace HybridConnectionManager.CLI
                 Arity = ArgumentArity.ZeroOrOne,
             };
 
-            var endpointStringArg = new Argument<string>("endpoint", "host:port")
+            var endpointStringArg = new Argument<string>("endpoint", "host:port or <namespace>.servicebus.windows.net")
             {
                 Arity = ArgumentArity.ExactlyOne,
             };
@@ -63,7 +63,7 @@ namespace HybridConnectionManager.CLI
             var logs = new Command("logs", "View local logs for Hybrid Connection Manager Service");
             logs.SetHandler(() => CommandHandlers.LogsHandler());
 
-            var add = new Command("add", "Add a new Hybrid Connection")
+            var add = new Command("add", "Add a new Hybrid Connection. Interactive mode will start if there are no arguments specified")
             {
                 connectionStringArg,
                 SubscriptionOption,
@@ -82,6 +82,13 @@ namespace HybridConnectionManager.CLI
             };
             remove.SetHandler((string @namespace, string name) => CommandHandlers.RemoveHandler(@namespace, name), requiredNamespaceOption, requiredNameOption);
 
+            var restart = new Command("restart", "Restart a Hybrid Connection on the local machine")
+            {
+                requiredNamespaceOption,
+                requiredNameOption
+            };
+            restart.SetHandler((string @namespace, string name) => CommandHandlers.RestartHandler(@namespace, name), requiredNamespaceOption, requiredNameOption);
+
             var show = new Command("show", "Show a Hybrid Connection")
             {
                 requiredNamespaceOption,
@@ -92,7 +99,7 @@ namespace HybridConnectionManager.CLI
             var list = new Command("list", "List all Hybrid Connections");
             list.SetHandler(() => CommandHandlers.ListHandler());
 
-            var test = new Command("test", "Test the endpoint for a given Hybrid Connection")
+            var test = new Command("test", "Test connectivity against host:port or a Service Bus address")
             {
                 endpointStringArg
             };
@@ -103,6 +110,7 @@ namespace HybridConnectionManager.CLI
             {
                 login,
                 add,
+                restart,
                 remove,
                 show,
                 list,

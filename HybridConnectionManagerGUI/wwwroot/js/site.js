@@ -827,6 +827,7 @@ function openDetailsModal(item) {
     document.getElementById('modal-status').textContent = item.status;
     document.getElementById('modal-namespace').textContent = item.namespace;
     document.getElementById('modal-endpoint').textContent = item.endpoint;
+    document.getElementById('modal-servicebus').textContent = `${item.namespace}.servicebus.windows.net`;
 
     // Show the modal
     detailModal = new bootstrap.Modal(document.getElementById('detailsModal'));

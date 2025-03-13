@@ -134,6 +134,21 @@ namespace HybridConnectionManager.CLI
             }
         }
 
+        public static async Task RestartHandler(string @namespace, string name)
+        {
+            try
+            {
+                HybridConnectionManagerClient client = new HybridConnectionManagerClient();
+                var response = await client.RestartConnection(@namespace, name);
+                Console.WriteLine(response.Content);
+            }
+            catch (RpcException ex)
+            {
+                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
+                return;
+            }
+        }
+
         public static async Task RemoveHandler(string @namespace, string name)
         {
             try
@@ -193,9 +208,9 @@ namespace HybridConnectionManager.CLI
         {
             try
             {
-                if (!Regex.IsMatch(endpoint, Util.EndpointRegexPattern))
+                if (!Regex.IsMatch(endpoint, Util.EndpointRegexPattern) && !Regex.IsMatch(endpoint, Util.ServiceBusRegexPattern))
                 {
-                    Console.WriteLine(String.Format("Endpoint {0} is invalid. Endpoint must be of form: <host>:<port>", endpoint));
+                    Console.WriteLine(String.Format("Endpoint {0} is invalid. Endpoint must be of form: <host>:<port> or <namespace>.servicebus.windows.net", endpoint));
                     return;
                 }
 

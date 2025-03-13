@@ -15,8 +15,6 @@ namespace HybridConnectionManager.Service
 
         private AzureClient AzureClient;
 
-        private Serilog.ILogger _logger;
-
         public static HybridConnectionManager Instance
         {
             get { return lazyInstance.Value; }
@@ -24,7 +22,6 @@ namespace HybridConnectionManager.Service
 
         public HybridConnectionManager()
         {
-            _logger = Log.Logger;
             AzureClient = new AzureClient();
             _hybridConnections = new TupleDictionary<string, string, HybridConnection>();
         }
@@ -101,7 +98,7 @@ namespace HybridConnectionManager.Service
             }
             catch (Exception ex)
             {
-                _logger.Error(ex.Message);
+                LogProvider.LogError(String.Format("Failure while adding Hybrid Connection: Error {0}: ", ex.Message));
             }
 
             return hcInfo;
@@ -223,7 +220,7 @@ namespace HybridConnectionManager.Service
         {
             MSALProvider.TryGetManagementToken(out var token);
             AzureClient.SetToken(token);
-            _logger.Information(String.Format("Authenticated user to Azure with token expiring on {0}", token.ExpiresOn));
+            LogProvider.LogInfo(String.Format("Authenticated user to Azure with token expiring on {0}", token.ExpiresOn));
         }
 
         public AccessToken GetAuthToken()

@@ -11,12 +11,7 @@ namespace HybridConnectionManager.Service
     {
         private static HybridConnectionManager _hybridConnectionManager;
 
-        private Serilog.ILogger _logger;
-
-        public HybridConnectionManagerServiceController()
-        {
-            _logger = Log.Logger;
-        }
+        public HybridConnectionManagerServiceController(){ }
 
         public static HybridConnectionManager HybridConnectionManager
         {
@@ -35,18 +30,19 @@ namespace HybridConnectionManager.Service
         {
             if (!Regex.IsMatch(request.ConnectionString, Util.HcConnectionStringRegexPattern))
             {
-                _logger.Error("Tried to add connection with invalid connection string {0}.", request.ConnectionString);
+                LogProvider.LogError(String.Format("Tried to add connection with invalid connection string {0}.", request.ConnectionString));
             }
 
             var connectionStringInfo = Util.GetInformationFromConnectionString(request.ConnectionString);
-            _logger.Information(string.Format("Adding Hybrid Connection {0}/{1}", connectionStringInfo.Namespace, connectionStringInfo.Name));
+
+            LogProvider.LogOperation("ADD", connectionStringInfo.Namespace, connectionStringInfo.Name);
 
             if (HybridConnectionManager.FindConnectionInformation(request.ConnectionString, out HybridConnectionInformation hcInfo))
             {
                 // Allow for overwriting dead connection
                 if (hcInfo.Status != "NotFound")
                 {
-                    _logger.Information(string.Format("Connection {0}/{1} already exists", connectionStringInfo.Namespace, connectionStringInfo.Name));
+                    LogProvider.LogInfo(string.Format("Connection {0}/{1} already exists", connectionStringInfo.Namespace, connectionStringInfo.Name));
 
                     return new HybridConnectionInformationResponse
                     {
@@ -84,14 +80,14 @@ namespace HybridConnectionManager.Service
 
         public override async Task<HybridConnectionInformationResponse> AddUsingParameters(HybridConnectionRequest request, ServerCallContext context)
         {
-            _logger.Information(string.Format("Adding Hybrid Connection {0}/{1}", request.Namespace, request.Name));
+            LogProvider.LogOperation("ADD", request.Namespace, request.Name);
 
             if (HybridConnectionManager.FindConnectionInformation(request.Namespace, request.Name, out HybridConnectionInformation hcInfo))
             {
                 // Allow for overwriting dead connection
                 if (hcInfo.Status != "NotFound")
                 {
-                    _logger.Information(string.Format("Connection {0}/{1} already exists", request.Namespace, request.Name));
+                    LogProvider.LogInfo(string.Format("Connection {0}/{1} already exists", request.Namespace, request.Name));
 
                     return new HybridConnectionInformationResponse
                     {
@@ -138,7 +134,7 @@ namespace HybridConnectionManager.Service
 
         public override async Task<StringResponse> RemoveConnection(HybridConnectionRequest request, ServerCallContext context)
         {
-            _logger.Information(string.Format("Removing Hybrid Connection {0}/{1}", request.Namespace, request.Name));
+            LogProvider.LogOperation("REMOVE", request.Namespace, request.Name);
 
             StringResponse response = new StringResponse();
 
@@ -146,12 +142,12 @@ namespace HybridConnectionManager.Service
             
             if (success)
             {
-                _logger.Information(string.Format("Removed Hybrid Connection {0}/{1}", request.Namespace, request.Name));
+                LogProvider.LogInfo(string.Format("Removed Hybrid Connection {0}/{1}", request.Namespace, request.Name));
                 response.Content = "Connection removed successfully";
             }
             else
             {
-                _logger.Information(string.Format("Could not remove Hybrid Connection {0}/{1}", request.Namespace, request.Name));
+                LogProvider.LogInfo(string.Format("Could not remove Hybrid Connection {0}/{1}", request.Namespace, request.Name));
                 response.Content = "Could not remove connection.";
             }
 
@@ -209,14 +205,14 @@ namespace HybridConnectionManager.Service
 
         public override async Task<StringResponse> RestartConnection(HybridConnectionRequest request, ServerCallContext context)
         {
-            _logger.Information(string.Format("Restarting Hybrid Connection {0}/{1}...", request.Namespace, request.Name));
+            LogProvider.LogOperation("RESTART", request.Namespace, request.Name);
 
             return await HybridConnectionManager.RestartConnection(request.Namespace, request.Name);
         }
 
         public override async Task<StringResponse> TestEndpointForConnection(EndpointRequest request, ServerCallContext context)
         {
-            if (!Regex.IsMatch(request.Endpoint, Util.EndpointRegexPattern))
+            if (!Regex.IsMatch(request.Endpoint, Util.EndpointRegexPattern) && !Regex.IsMatch(request.Endpoint, Util.ServiceBusRegexPattern))
             {
                 return new StringResponse
                 {
@@ -225,9 +221,10 @@ namespace HybridConnectionManager.Service
                 };
             }
 
-            _logger.Information("Opening TCP connection against endpoint {0}", request.Endpoint);
-
             var response = await Util.ConnectToEndpoint(request.Endpoint);
+
+            LogProvider.LogTestEvent(request.Endpoint, response.Content);
+
             return new StringResponse
             {
                 Content = response.Content,

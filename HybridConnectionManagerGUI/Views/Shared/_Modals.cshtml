@@ -48,6 +48,10 @@
                                 <td id="modal-endpoint" style="font-size: 13px; color: rgb(100, 100, 100); padding: 8px 16px"></td>
                             </tr>
                             <tr>
+                                <td>Service Bus Address</td>
+                                <td id="modal-servicebus" style="font-size: 13px; color: rgb(100, 100, 100); padding: 8px 16px"></td>
+                            </tr>
+                            <tr>
                                 <td>Created On</td>
                                 <td id="modal-created-on" style="font-size: 13px; color: rgb(100, 100, 100); padding: 8px 16px"></td>
                             </tr>
@@ -235,10 +239,10 @@
                                id="testEndpointInput"
                                required
                                autocomplete="off"
-                               placeholder="Ex: localhost:1234">
+                               placeholder="e.g. localhost:1234 or testsb.servicebus.windows.net">
                         <small class="form-text text-muted">
-                            Enter the endpoint you want the background Hybrid Connection Manager Service
-                            to connect to. This endpoint should be of form [host]:[port].
+                            Enter either a host:port endpoint or a Service Bus address you would like the background Hybrid Connection Manager Service
+                            to test connectivity against.
                         </small>
                     </div>
                     <div id="testLoadingSpinner" class="loading-spinner-container" style="display: none;">
@@ -293,7 +297,7 @@
                 <p> Please note that you will not be able to open the Azure Portal link for connections added using a connection string.</p>
                 
                 <h6>Testing an Endpoint</h6>
-                <p>Click the <strong>Test</strong> button to verify TCP connectivity to a specific endpoint.</p>
+                <p>Click the <strong>Test</strong> button to verify TCP connectivity to a host:port endpoint, or choose a service bus address to send an HTTP request.</p>
 
                 <h6>Viewing Logs</h6>
                 <p>Click the <strong>View Logs</strong> button to see the application logs.</p>
