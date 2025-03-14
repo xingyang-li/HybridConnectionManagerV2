@@ -165,7 +165,8 @@
 .azure-accordion-button:not(.collapsed) {
     color: var(--azure-primary);
     background-color: var(--azure-light-bg);
-    box-shadow: inset 0 -1px 0 var(--azure-border-color);
+    box-shadow: none;
+    border-bottom: none;
 }
 
 .azure-accordion-button:hover {
@@ -173,7 +174,7 @@
 }
 
 .azure-accordion-button:focus {
-    box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.25);
+    box-shadow: none;
     outline: none;
 }
 
@@ -191,7 +192,7 @@
 .azure-accordion-collapse {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.2s ease;
+    transition: max-height 0.1s ease;
 }
 
 .azure-accordion-collapse.show {
