@@ -181,6 +181,21 @@ function InitializeNewConnectionsListeners() {
         });
     });
 }
+
+function toggleSection(sectionId, button) {
+    const section = document.getElementById(sectionId);
+
+    // Toggle the 'show' class on the section
+    section.classList.toggle('show');
+
+    // Toggle the 'collapsed' class on the button
+    button.classList.toggle('collapsed');
+
+    // Update aria-expanded attribute
+    const isExpanded = section.classList.contains('show');
+    button.setAttribute('aria-expanded', isExpanded);
+}
+
 function initializeCheckboxListeners() {
     // Listen for individual checkbox changes
     const individualCheckboxes = document.getElementsByName('selectedIds');

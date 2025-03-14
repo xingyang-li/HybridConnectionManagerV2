@@ -271,46 +271,156 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h6>Overview</h6>
-                <p>Hybrid Connection Manager allows you to manage Azure Relay Hybrid Connections from your machine. This user interface gives you the
-                    ability to add or delete Hybrid Connections to your machine while also providing additional tools to debug and test connectivity to your endpoints. 
-                </p>
-                
-                <h6>Adding a New Connection</h6>
-                <p>Click the <strong>New</strong> button and enter a connection string or select a Hybrid Connection from your Azure subscriptions to add the connection to the machine.</p>
-                
-                <h6>Restarting A Connection</h6>
-                <p>Select one or more connections using the checkboxes and click the <strong>Restart</strong> button to disconnect and then reconnect the connections to Service Bus from the machine.</p>
+                <div class="azure-accordion" id="helpAccordion">
+                    <!-- Overview Section -->
+                    <div class="azure-accordion-item">
+                        <h2 class="azure-accordion-header" id="headingOverview">
+                            <button class="azure-accordion-button" type="button" onclick="toggleSection('collapseOverview', this)">
+                                Overview
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseOverview" class="azure-accordion-collapse show">
+                            <div class="azure-accordion-body">
+                                <p>
+                                    Hybrid Connection Manager allows you to manage Azure Relay Hybrid Connections from your machine. This user interface gives you the
+                                    ability to add or delete Hybrid Connections to your machine while also providing additional tools to debug and test connectivity to your endpoints.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
-                <h6>Removing A Connection</h6>
-                <p>Select one or more connections using the checkboxes and click the <strong>Remove</strong> button to remove the connections from the machine.</p>
+                    <!-- Adding a New Connection Section -->
+                    <div class="azure-accordion-item">
+                        <h2 class="azure-accordion-header" id="headingAddConnection">
+                            <button class="azure-accordion-button collapsed" type="button" onclick="toggleSection('collapseAddConnection', this)">
+                                Adding a New Connection
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseAddConnection" class="azure-accordion-collapse show">
+                            <div class="azure-accordion-body">
+                                <p>Click the <strong>New</strong> button and enter a connection string or select a Hybrid Connection from your Azure subscriptions to add the connection to the machine.</p>
+                            </div>
+                        </div>
+                    </div>
 
-                <h6>Viewing A Connection</h6>
-                <p>
-                    Click an entry in the Hybrid Connections table on the main page to open up a view that displays details for the selected Hybrid Connection.
-                    You will also be able to remove the connection or open up the Azure Portal page for the connection in this view.
-                </p>
+                    <!-- Restarting A Connection Section -->
+                    <div class="azure-accordion-item">
+                        <h2 class="azure-accordion-header" id="headingRestartConnection">
+                            <button class="azure-accordion-button collapsed" type="button" onclick="toggleSection('collapseRestartConnection', this)">
+                                Restarting A Connection
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseRestartConnection" class="azure-accordion-collapse show">
+                            <div class="azure-accordion-body">
+                                <p>Select one or more connections using the checkboxes and click the <strong>Restart</strong> button to disconnect and then reconnect the connections to Service Bus from the machine.</p>
+                            </div>
+                        </div>
+                    </div>
 
-                <p> Please note that you will not be able to open the Azure Portal link for connections added using a connection string.</p>
-                
-                <h6>Testing an Endpoint</h6>
-                <p>Click the <strong>Test</strong> button to verify TCP connectivity to a host:port endpoint, or choose a service bus address to send an HTTP request.</p>
+                    <!-- Removing A Connection Section -->
+                    <div class="azure-accordion-item">
+                        <h2 class="azure-accordion-header" id="headingRemoveConnection">
+                            <button class="azure-accordion-button collapsed" type="button" onclick="toggleSection('collapseRemoveConnection', this)">
+                                Removing A Connection
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseRemoveConnection" class="azure-accordion-collapse show">
+                            <div class="azure-accordion-body">
+                                <p>Select one or more connections using the checkboxes and click the <strong>Remove</strong> button to remove the connections from the machine.</p>
+                            </div>
+                        </div>
+                    </div>
 
-                <h6>Viewing Logs</h6>
-                <p>Click the <strong>View Logs</strong> button to see the application logs.</p>
-                
-                <h6>Connection Status</h6>
-                <p>The status indicator in the top right corner shows the connection status to the Hybrid Connection Manager background service.</p>
-                <p>If the status indicator displays a 'Disconnected' status or is a red color, then the background service may not be running 
-                    and your Hybrid Connection Listeners will be unable to relay TCP requests to your endpoint.</p>
+                    <!-- Viewing A Connection Section -->
+                    <div class="azure-accordion-item">
+                        <h2 class="azure-accordion-header" id="headingViewConnection">
+                            <button class="azure-accordion-button collapsed" type="button" onclick="toggleSection('collapseViewConnection', this)">
+                                Viewing A Connection
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseViewConnection" class="azure-accordion-collapse show">
+                            <div class="azure-accordion-body">
+                                <p>
+                                    Click an entry in the Hybrid Connections table on the main page to open up a view that displays details for the selected Hybrid Connection.
+                                    You will also be able to remove the connection or open up the Azure Portal page for the connection in this view.
+                                </p>
+                                <p>Please note that you will not be able to open the Azure Portal link for connections added using a connection string.</p>
+                            </div>
+                        </div>
+                    </div>
 
-                <p>If you are on a Windows machine, navigate to Services in the Start Menu and ensure the <strong>Hybrid Connection Manager Service</strong> is running.</p>
+                    <!-- Testing an Endpoint Section -->
+                    <div class="azure-accordion-item">
+                        <h2 class="azure-accordion-header" id="headingTestEndpoint">
+                            <button class="azure-accordion-button collapsed" type="button" onclick="toggleSection('collapseTestEndpoint', this)">
+                                Testing an Endpoint
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseTestEndpoint" class="azure-accordion-collapse show">
+                            <div class="azure-accordion-body">
+                                <p>Click the <strong>Test</strong> button to verify TCP connectivity to a host:port endpoint, or choose a service bus address to send an HTTP request.</p>
+                            </div>
+                        </div>
+                    </div>
 
-                <p>If you are on a Linux machine, run <code>systemctl --type=service --state=running</code> in the terminal to view if <strong>hybridconnectionmanager.service</strong> is active.</p>
-                
-                <h6>Additional Help</h6>
-                <p>For more information, visit the <a href="https://learn.microsoft.com/en-us/azure/app-service/app-service-hybrid-connections" target="_blank">Azure App Service Hybrid Connections</a> documentation.</p>
-                <p>For additional support or feature requests, please email hcmsupport@service.microsoft.com.</p>
+                    <!-- Viewing Logs Section -->
+                    <div class="azure-accordion-item">
+                        <h2 class="azure-accordion-header" id="headingViewLogs">
+                            <button class="azure-accordion-button collapsed" type="button" onclick="toggleSection('collapseViewLogs', this)">
+                                Viewing Logs
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseViewLogs" class="azure-accordion-collapse show">
+                            <div class="azure-accordion-body">
+                                <p>Click the <strong>View Logs</strong> button to see the application logs.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Connection Status Section -->
+                    <div class="azure-accordion-item">
+                        <h2 class="azure-accordion-header" id="headingConnectionStatus">
+                            <button class="azure-accordion-button collapsed" type="button" onclick="toggleSection('collapseConnectionStatus', this)">
+                                Connection Status
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseConnectionStatus" class="azure-accordion-collapse show">
+                            <div class="azure-accordion-body">
+                                <p>The status indicator in the top right corner shows the connection status to the Hybrid Connection Manager background service.</p>
+                                <p>
+                                    If the status indicator displays a 'Disconnected' status or is a red color, then the background service may not be running
+                                    and your Hybrid Connection Listeners will be unable to relay TCP requests to your endpoint.
+                                </p>
+                                <p>If you are on a Windows machine, navigate to Services in the Start Menu and ensure the <strong>Hybrid Connection Manager Service</strong> is running.</p>
+                                <p>If you are on a Linux machine, run <code>systemctl --type=service --state=running</code> in the terminal to view if <strong>hybridconnectionmanager.service</strong> is active.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Help Section -->
+                    <div class="azure-accordion-item">
+                        <h2 class="azure-accordion-header" id="headingAdditionalHelp">
+                            <button class="azure-accordion-button collapsed" type="button" onclick="toggleSection('collapseAdditionalHelp', this)">
+                                Additional Help
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseAdditionalHelp" class="azure-accordion-collapse show">
+                            <div class="azure-accordion-body">
+                                <p>For more information, visit the <a href="https://learn.microsoft.com/en-us/azure/app-service/app-service-hybrid-connections" target="_blank">Azure App Service Hybrid Connections Documentation</a>.</p>
+                                <p>For additional support or feature requests, please email hcmsupport@service.microsoft.com.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn-azure-white" data-bs-dismiss="modal">Close</button>
