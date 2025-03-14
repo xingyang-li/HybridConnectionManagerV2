@@ -1,7 +1,7 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
 
-	<Package Name="Hybrid Connection Manager V2"
+	<Package Name="Hybrid Connection Manager"
 			 Manufacturer="Microsoft Corporation"
 			 Version="1.0.0.0"
 			 UpgradeCode="8A7CEB47-92D3-4DB0-9984-014124463789">
@@ -39,7 +39,7 @@
 
 		<!-- Main installation directory structure -->
 		<StandardDirectory Id="ProgramFilesFolder">
-			<Directory Id="INSTALLFOLDER" Name="HybridConnectionManagerV2">
+			<Directory Id="INSTALLFOLDER" Name="HybridConnectionManager">
 				<Directory Id="ServiceDir" Name="Service" />
 				<Directory Id="GUIDir" Name="GUI" />
 				<Directory Id="CLIDir" Name="CLI" />
@@ -48,12 +48,12 @@
 
 		<!-- Define Start Menu directory structure -->
 		<StandardDirectory Id="ProgramMenuFolder">
-			<Directory Id="ApplicationProgramsFolder" Name="Hybrid Connection Manager V2" />
+			<Directory Id="ApplicationProgramsFolder" Name="Hybrid Connection Manager" />
 		</StandardDirectory>
 
 		<!-- Program Data directory structure -->
 		<StandardDirectory Id="CommonAppDataFolder">
-			<Directory Id="HCM_APPDATA" Name="HybridConnectionManagerV2" />
+			<Directory Id="HCM_APPDATA" Name="HybridConnectionManager" />
 		</StandardDirectory>
 
 		<Property Id="MSIRESTARTMANAGERCONTROL" Value="Disable"/>
@@ -137,7 +137,7 @@
 						WorkingDirectory="GUIDir" />
 				<RemoveFolder Id="CleanUpGUIShortcut" On="uninstall" />
 				<RegistryValue Root="HKCU"
-							 Key="Software\Microsoft\HybridConnectionManagerV2"
+							 Key="Software\Microsoft\HybridConnectionManager"
 							 Name="gui_installed"
 							 Type="integer"
 							 Value="1"
@@ -153,7 +153,7 @@
 						WorkingDirectory="CLIDir" />
 				<RemoveFolder Id="CleanUpCLIShortcut" On="uninstall" />
 				<RegistryValue Root="HKCU"
-							 Key="Software\Microsoft\HybridConnectionManagerV2"
+							 Key="Software\Microsoft\HybridConnectionManager"
 							 Name="cli_installed"
 							 Type="integer"
 							 Value="1"
@@ -169,7 +169,7 @@
 						WorkingDirectory="ServiceDir" />
 				<RemoveFolder Id="CleanUpServiceShortcut" On="uninstall" />
 				<RegistryValue Root="HKCU"
-							 Key="Software\Microsoft\HybridConnectionManagerV2"
+							 Key="Software\Microsoft\HybridConnectionManager"
 							 Name="service_shortcut_installed"
 							 Type="integer"
 							 Value="1"

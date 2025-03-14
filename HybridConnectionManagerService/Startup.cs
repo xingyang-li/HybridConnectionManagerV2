@@ -37,9 +37,9 @@ namespace HybridConnectionManager.Service
 
         public void OnShutdown()
         {
-            Log.Logger.Information("Shutting down Hybrid Connection Manager V2 Service.");
+            Log.Logger.Information("Shutting down Hybrid Connection Manager Service.");
             HybridConnectionManager.Instance.Shutdown();
-            Log.Logger.Information("Shut down Hybrid Connection Manager V2 Service.");
+            Log.Logger.Information("Shut down Hybrid Connection Manager Service.");
         }
     }
 }

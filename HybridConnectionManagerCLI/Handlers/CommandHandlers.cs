@@ -18,23 +18,6 @@ namespace HybridConnectionManager.CLI
 
         public static async Task LoginHandler()
         {
-            /*
-            try
-            {
-                HybridConnectionManagerClient client = new HybridConnectionManagerClient();
-                var response = await client.AuthenticateUser();
-                Console.WriteLine(response);
-            }
-            catch (RpcException ex)
-            {
-                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
-                return;
-            }*/
-
-            /*
-            var result = await MSALProvider.GetTokenAsync();
-            Console.WriteLine($"Access Token: {result}");
-            */
 
             if (!MSALProvider.TryGetManagementToken(out var token))
             {
@@ -129,7 +112,7 @@ namespace HybridConnectionManager.CLI
             }
             catch (RpcException ex)
             {
-                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
+                Console.WriteLine("Could not reach Hybrid Connection Manager Service. Please ensure the background service is running and https://localhost:5001 is reachable.");
                 return;
             }
         }
@@ -144,7 +127,7 @@ namespace HybridConnectionManager.CLI
             }
             catch (RpcException ex)
             {
-                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
+                Console.WriteLine("Could not reach Hybrid Connection Manager Service. Please ensure the background service is running and https://localhost:5001 is reachable.");
                 return;
             }
         }
@@ -159,7 +142,7 @@ namespace HybridConnectionManager.CLI
             }
             catch (RpcException ex)
             {
-                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
+                Console.WriteLine("Could not reach Hybrid Connection Manager Service. Please ensure the background service is running and https://localhost:5001 is reachable.");
                 return;
             }
         }
@@ -183,7 +166,7 @@ namespace HybridConnectionManager.CLI
             }
             catch (RpcException ex)
             {
-                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
+                Console.WriteLine("Could not reach Hybrid Connection Manager Service. Please ensure the background service is running and https://localhost:5001 is reachable.");
                 return;
             }
         }
@@ -199,7 +182,7 @@ namespace HybridConnectionManager.CLI
             }
             catch (RpcException ex)
             {
-                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
+                Console.WriteLine("Could not reach Hybrid Connection Manager Service. Please ensure the background service is running and https://localhost:5001 is reachable.");
                 return;
             }
         }
@@ -220,7 +203,7 @@ namespace HybridConnectionManager.CLI
             }
             catch (RpcException ex)
             {
-                Console.WriteLine("Could not reach Hybrid Connection Manager V2. Please ensure HybridConnectionManagerV2 is running and https://localhost:5001 is reachable.");
+                Console.WriteLine("Could not reach Hybrid Connection Manager Service. Please ensure the background service is running and https://localhost:5001 is reachable.");
                 return;
             }
         }

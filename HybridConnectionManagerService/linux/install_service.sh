@@ -16,8 +16,6 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 APP_DIR="$(dirname "$SCRIPT_DIR")"
 PROJ_DIR="$(dirname "$APP_DIR")"
 
-CLI_PATH="$PROJ_DIR/CLI/hcm"
-
 # Default installation path
 DEFAULT_INSTALL_PATH="/opt/$SERVICE_NAME"
 INSTALL_PATH=$DEFAULT_INSTALL_PATH
@@ -54,10 +52,6 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
-
-echo "Adding Hybrid Connection Manager CLI to path if needed"
-chmod 755 $CLI_PATH
-export PATH="$PATH:$CLI_PATH"
 
 echo "Removing previous installation of Hybrid Connection Manager Service..."
 sudo systemctl stop $SERVICE_NAME
@@ -122,4 +116,4 @@ echo "  - Start: sudo systemctl start $SERVICE_NAME"
 echo "  - Stop: sudo systemctl stop $SERVICE_NAME"
 echo "  - Restart: sudo systemctl $SERVICE_NAME"
 echo "  - Status: sudo systemctl status $SERVICE_NAME"
-echo "  - View logs: sudo journalctl -u $SERVICE_NAME"
+echo "  - View logs: cd /usr/share/HybridConnectionManager/Logs"

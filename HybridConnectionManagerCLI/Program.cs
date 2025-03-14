@@ -106,7 +106,7 @@ namespace HybridConnectionManager.CLI
             test.SetHandler((string endpoint) => CommandHandlers.TestHandler(endpoint), endpointStringArg);
 
             // Root
-            var rootCommand = new RootCommand("Hybrid Connection Manager V2 CLI")
+            var rootCommand = new RootCommand("Hybrid Connection Manager CLI")
             {
                 login,
                 add,

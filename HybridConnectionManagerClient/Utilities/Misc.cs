@@ -19,7 +19,7 @@ namespace HybridConnectionManager.Library
         public static JsonSerializerSettings JsonNullHandlingSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
         public static string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create),
-            "HybridConnectionManagerV2");
+            "HybridConnectionManager");
 
         public static string AppDataLogDir = Path.Combine(AppDataPath, "Logs");
 

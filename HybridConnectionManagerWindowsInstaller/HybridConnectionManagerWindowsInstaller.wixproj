@@ -1,6 +1,6 @@
 ﻿<Project Sdk="WixToolset.Sdk/5.0.2">
   <PropertyGroup>
-    <OutputName>HybridConnectionManagerV2</OutputName>
+    <OutputName>HybridConnectionManager</OutputName>
     <OutputType>Package</OutputType>
     <ServicePublishDir>..\HybridConnectionManagerService\bin\Release\net8.0\win-x64\publish</ServicePublishDir>
     <GUIPublishDir>..\HybridConnectionManagerGUI\bin\Release\net8.0\win-x64\publish</GUIPublishDir>
