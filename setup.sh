@@ -18,5 +18,7 @@ export PATH="$HCM:$PATH"
 
 echo "Setting up hybridconnectionmanager.service.."
 
-chmod 777 ./Service/linux/install_service.sh
+chmod 755 ./CLI/hcm
+chmod 755 ./Service/linux/install_service.sh
+
 ./Service/linux/install_service.sh
