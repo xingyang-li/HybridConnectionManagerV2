@@ -8,7 +8,7 @@
     <PackageReference Include="ElectronNET.API" Version="23.6.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HybridConnectionManagerClient\HybridConnectionManagerLibrary.csproj" />
+    <ProjectReference Include="..\HybridConnectionManagerLibrary\HybridConnectionManagerLibrary.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="electron.manifest.json">

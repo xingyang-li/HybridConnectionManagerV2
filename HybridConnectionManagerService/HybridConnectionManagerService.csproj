@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HybridConnectionManagerClient\HybridConnectionManagerLibrary.csproj" />
+    <ProjectReference Include="..\HybridConnectionManagerLibrary\HybridConnectionManagerLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\HybridConnectionManagerClient\Protos\hcm.proto" GrpcServices="Server" />
+    <Protobuf Include="..\HybridConnectionManagerLibrary\Protos\hcm.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>
