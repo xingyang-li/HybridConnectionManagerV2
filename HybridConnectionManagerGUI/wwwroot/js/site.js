@@ -73,6 +73,7 @@ function InitializeNewConnectionsListeners() {
             const newConnectionsTable = document.getElementById('newConnectionsTable');
             const noConnectionsMessage = document.getElementById('noConnectionsMessage');
             const loadingSpinner = document.getElementById('loadingSpinner');
+            const subscriptionSelect = document.getElementById('subscriptionSelect');
 
             if (this.value === 'connectionStringType') {
                 connectionStringForm.style.display = 'block';
@@ -81,11 +82,13 @@ function InitializeNewConnectionsListeners() {
                 noConnectionsMessage.style.display = 'none';
                 loadingSpinner.style.display = 'none';
                 newConnectionsTable.style.display = 'none';
+                subscriptionSelect.selectedIndex = 0;
             } else {
                 connectionStringForm.style.display = 'none';
                 alternativeForm.style.display = 'block';
                 connectionStringInput.disabled = true;
                 connectionStringInput.value = '';
+                newConnectionsTable.style.display = 'none';
 
                 try {
                     const response = await fetch('/Main/GetSubscriptions');

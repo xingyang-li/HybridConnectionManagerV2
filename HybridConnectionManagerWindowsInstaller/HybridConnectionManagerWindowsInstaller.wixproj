@@ -2,9 +2,6 @@
   <PropertyGroup>
     <OutputName>HybridConnectionManager</OutputName>
     <OutputType>Package</OutputType>
-    <ServicePublishDir>..\HybridConnectionManagerService\bin\Release\net8.0\win-x64\publish</ServicePublishDir>
-    <GUIPublishDir>..\HybridConnectionManagerGUI\bin\Release\net8.0\win-x64\publish</GUIPublishDir>
-    <CLIPublishDir>..\HybridConnectionManagerCLI\bin\Release\net8.0\win-x64\publish</CLIPublishDir>
   </PropertyGroup>
   <PropertyGroup>
     <DefineConstants>
